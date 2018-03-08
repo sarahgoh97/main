@@ -10,9 +10,9 @@ ifdef::env-github[]
 :tip-caption: :bulb:
 :note-caption: :information_source:
 endif::[]
-:repoURL: https://github.com/se-edu/addressbook-level4/tree/master
+:repoURL: https://github.com/CS2103JAN2018-T11-B2/main/
 
-By: `Team SE-EDU`      Since: `Jun 2016`      Licence: `MIT`
+By: `CS2103-T11-B2`      Since: `Jan 2018`      Licence: `MIT`
 
 == Setting up
 
@@ -798,43 +798,53 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 [width="59%",cols="22%,<23%,<25%,<30%",options="header",]
 |=======================================================================
 |Priority |As a ... |I want to ... |So that I can...
-|`* * *` |new user |see usage instructions |refer to instructions when I forget how to use the App
+|`* * *` |administrator |group police officers together |form teams to carry out various tasks: patrol rotations, perimeter control, cell guards
 
-|`* * *` |user |add a new person |
-
-|`* * *` |user |delete a person |remove entries that I no longer need
-
-|`* * *` |user |find a person by name |locate details of persons without having to go through the entire list
-
-|`* * *` |administrator |Group police officers together |Form teams to carry out various tasks: patrol rotations, perimeter control, cell guards
-
-|`* * *` |police officer |Have a track record of each prisoner’s past offences
+|`* * *` |police officer |have a track record of each prisoner’s past offences
                           Type 1 – Injuring officer
                           Type 2 – Infighting with other inmates
                           Type 3 – Vandalism
- |Use the appropriate level of precaution when dealing with unruly individuals
+ |use the appropriate level of precaution when dealing with unruly individuals
 
-|`* * *` |police officer |Keep track of each prisoner’s holding cells |Ensure that there are two prisoners per cell and that certain bad prisoner combinations are avoided
+|`* * *` |police officer |keep track of each prisoner’s holding cells |ensure that there are two prisoners per cell and that certain bad prisoner combinations are avoided
 
-|`* * *` |administrator |Assign ranks to each police officer |Enforce access rights to view/edit prisoner and officer data
+|`* * *` |administrator |assign ranks to each police officer |enforce access rights to view/edit prisoner and officer data
 
-|`* *` |user |hide <<private-contact-detail,private contact details>> by default |minimize chance of someone else seeing them by accident
+|`* * *` |police officer |check the length of imprisonment of prisoners I am in charge of |know when they are leaving
 
-|`* *` |prisoner |Know my release date |Look forward to the day I can see my family/friends again
+|`* * *` |police officer |add prisoners to prison cells |the prisoners have a prison cell to stay in
 
-|`* *` |police officer |Assign prisoners to different recess blocks |Separate those that start fights or cause trouble when together
+|`* * *` |police officer |check number of prison cells available |decide whether to take more prisoners in
 
-|`* *` |administrator |Shuffle patrol guards around teams every day |Each team is made up of different members every day, prisoners will acquaint themselves with specific guards
+|`* * *` |police officer |delete a prisoner |add more prisoners to prison
 
-|`* *` |administrator |Divide cells into sections (A, B, C, D) and name each cell numerically (A1, A2, etc…) |Refer to each cell easily when assigning prisoners to them
+|`* * *` |police officer |check when I am on duty |see when I have to come to work
 
-|`*` |user with many persons in the address book |sort persons by name |locate a person easily
+|`* * *` |police officer |check who are in my team |coordinate with my team
 
-|`*` |police officer |See my assigned prisoners’ social networks: friends, enemies, family, etc… |Use this as reference when dealing with inmates
+|`* * *` |administrator |add police officers |give access to new police officers
 
-|`*` |police officer |Assign prisoners to solitary confinement |Punish those that have continuously committed serious offences
+|`* *` |police officer |assign prisoners to different recess blocks |separate those that start fights or cause trouble when together
 
-|=======================================================================
+|`* *` |administrator |shuffle patrol guards around teams every day |each team is made up of different members every day, prisoners will acquaint themselves with specific guards
+
+|`* *` |administrator |divide cells into sections (A, B, C, D) and name each cell numerically (A1, A2, etc…) |refer to each cell easily when assigning prisoners to them
+
+|`* *` |police officer |check whether there are visitor appointments |inform prisoners and bring them to see their visitors
+
+|`* *` |police officer |edit details of prisoners |update information of prisoners
+
+|`* *` |police officer |transfer people to other prisons |have more empty cells for more prisoners
+
+|`*` |prisoner |know my release date |look forward to the day I can see my family/friends again
+
+|`*` |police officer |see my assigned prisoners’ social networks: friends, enemies, family, etc… |use this as reference when dealing with inmates
+
+|`*` |police officer |assign prisoners to solitary confinement |punish those that have continuously committed serious offences
+
+|`*` |cook |check dietary requirements of all people in prison |cook sufficient food
+
+|`*` |counselor |check what prisoners' crimes |understand my patients better
 
 _{More to be added}_
 
@@ -844,30 +854,51 @@ _{More to be added}_
 (For all use cases below, the *System* is the `AddressBook` and the *Actor* is the `user`, unless specified otherwise)
 
 [discrete]
-=== Use case: Delete person
-
+=== Use case: Add a prisoner
+(User is the "Police Officer".)
 *MSS*
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+1.  PO requests to add prisoner
+2.  AB adds prisoner
+3.  PO requests to list cells that are empty/not filled
+4.  AB shows a list of empty/not filled cells
+5.  PO requests to view a specific cell’s prisoner’s details
+6.  AB shows details of prisoner in cell
+7.  PO requests to add a prisoner to a specific cell
+8.   AB adds prisoner to cell
 +
 Use case ends.
 
 *Extensions*
 
 [none]
-* 2a. The list is empty.
+* 2a. There are no cells available for new prisoner.
++
+[none]
+** 2a1. AB shows an error message.
 +
 Use case ends.
 
-* 3a. The given index is invalid.
+* 5a. The given index is invalid, outside range.
 +
 [none]
-** 3a1. AddressBook shows an error message.
+** 5a1. AddressBook shows an error message.
 +
-Use case resumes at step 2.
+Use case resumes at step 4.
+
+* 5b. The given index of cell has no prisoners.
++
+[none]
+** 5b1. AddressBook shows an error message.
++
+Use case resumes at step 4.
+
+* 7a. The given index is invalid.
++
+[none]
+** 7a1. AddressBook shows an error message.
++
+Use case resumes at step 6.
 
 _{More to be added}_
 
@@ -877,6 +908,8 @@ _{More to be added}_
 .  Should work on any <<mainstream-os,mainstream OS>> as long as it has Java `1.8.0_60` or higher installed.
 .  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
 .  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+.  Should have different levels of access for users of different ranks.
+.  Should have a backup copy at all times in case a user accidentally deletes any information.
 
 _{More to be added}_
 
@@ -888,6 +921,9 @@ Windows, Linux, Unix, OS-X
 
 [[private-contact-detail]] Private contact detail::
 A contact detail that is not meant to be shared with others
+
+[[prisoner]] Prisoner::
+A person has been imprisoned for a crime.
 
 [appendix]
 == Product Survey
