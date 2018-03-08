@@ -798,17 +798,17 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 [width="59%",cols="22%,<23%,<25%,<30%",options="header",]
 |=======================================================================
 |Priority |As a ... |I want to ... |So that I can...
-|`* * *` |administrator |Group police officers together |Form teams to carry out various tasks: patrol rotations, perimeter control, cell guards
+|`* * *` |administrator |group police officers together |form teams to carry out various tasks: patrol rotations, perimeter control, cell guards
 
-|`* * *` |police officer |Have a track record of each prisoner’s past offences
+|`* * *` |police officer |have a track record of each prisoner’s past offences
                           Type 1 – Injuring officer
                           Type 2 – Infighting with other inmates
                           Type 3 – Vandalism
- |Use the appropriate level of precaution when dealing with unruly individuals
+ |use the appropriate level of precaution when dealing with unruly individuals
 
-|`* * *` |police officer |Keep track of each prisoner’s holding cells |Ensure that there are two prisoners per cell and that certain bad prisoner combinations are avoided
+|`* * *` |police officer |keep track of each prisoner’s holding cells |ensure that there are two prisoners per cell and that certain bad prisoner combinations are avoided
 
-|`* * *` |administrator |Assign ranks to each police officer |Enforce access rights to view/edit prisoner and officer data
+|`* * *` |administrator |assign ranks to each police officer |enforce access rights to view/edit prisoner and officer data
 
 |`* * *` |police officer |check the length of imprisonment of prisoners I am in charge of |know when they are leaving
 
@@ -824,11 +824,11 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |administrator |add police officers |give access to new police officers
 
-|`* *` |police officer |Assign prisoners to different recess blocks |Separate those that start fights or cause trouble when together
+|`* *` |police officer |assign prisoners to different recess blocks |separate those that start fights or cause trouble when together
 
-|`* *` |administrator |Shuffle patrol guards around teams every day |Each team is made up of different members every day, prisoners will acquaint themselves with specific guards
+|`* *` |administrator |shuffle patrol guards around teams every day |each team is made up of different members every day, prisoners will acquaint themselves with specific guards
 
-|`* *` |administrator |Divide cells into sections (A, B, C, D) and name each cell numerically (A1, A2, etc…) |Refer to each cell easily when assigning prisoners to them
+|`* *` |administrator |divide cells into sections (A, B, C, D) and name each cell numerically (A1, A2, etc…) |refer to each cell easily when assigning prisoners to them
 
 |`* *` |police officer |check whether there are visitor appointments |inform prisoners and bring them to see their visitors
 
@@ -836,13 +836,11 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* *` |police officer |transfer people to other prisons |have more empty cells for more prisoners
 
-|`* *` |prisoner |Know my release date |Look forward to the day I can see my family/friends again
+|`*` |prisoner |know my release date |look forward to the day I can see my family/friends again
 
-|`*` |user with many persons in the address book |sort persons by name |locate a person easily
+|`*` |police officer |see my assigned prisoners’ social networks: friends, enemies, family, etc… |use this as reference when dealing with inmates
 
-|`*` |police officer |See my assigned prisoners’ social networks: friends, enemies, family, etc… |Use this as reference when dealing with inmates
-
-|`*` |police officer |Assign prisoners to solitary confinement |Punish those that have continuously committed serious offences
+|`*` |police officer |assign prisoners to solitary confinement |punish those that have continuously committed serious offences
 
 |`*` |cook |check dietary requirements of all people in prison |cook sufficient food
 
