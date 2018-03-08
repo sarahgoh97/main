@@ -4,6 +4,7 @@ import java.time.Clock;
 import java.util.Date;
 import java.util.logging.Logger;
 
+import javafx.collections.ObservableList;
 import org.controlsfx.control.StatusBar;
 
 import com.google.common.eventbus.Subscribe;
@@ -11,8 +12,10 @@ import com.google.common.eventbus.Subscribe;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Region;
+import org.fxmisc.easybind.EasyBind;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
+import seedu.address.model.person.Person;
 
 /**
  * A ui for the status bar that is displayed at the footer of the application.
@@ -44,12 +47,19 @@ public class StatusBarFooter extends UiPart<Region> {
     private StatusBar saveLocationStatus;
 
 
-    public StatusBarFooter(String saveLocation) {
+    public StatusBarFooter(String saveLocation, ObservableList<Person> personList) {
         super(FXML);
         setSyncStatus(SYNC_STATUS_INITIAL);
         setSaveLocation("./" + saveLocation);
+        setNumberOfPeopleStatus(personList.size());
+        setConnections(personList);
         registerAsAnEventHandler(this);
-        setNumberOfPeopleStatus(1);
+    }
+
+    private void setConnections(ObservableList<Person> personList) {
+        ObservableList<PersonCard> mappedList = EasyBind.map(
+                personList, (person) -> new PersonCard(person, personList.indexOf(person) + 1));
+        setNumberOfPeopleStatus(mappedList.size());
     }
 
     /**
@@ -84,6 +94,6 @@ public class StatusBarFooter extends UiPart<Region> {
         String lastUpdated = new Date(now).toString();
         logger.info(LogsCenter.getEventHandlingLogMessage(abce, "Setting last updated status to " + lastUpdated));
         setSyncStatus(String.format(SYNC_STATUS_UPDATED, lastUpdated));
-        setNumberOfPeopleStatus(1);
+        setNumberOfPeopleStatus(abce.data.getPersonList().size());
     }
 }
