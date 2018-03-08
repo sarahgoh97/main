@@ -4,26 +4,22 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Objects;
 import java.util.Set;
-
 import seedu.address.model.tag.Tag;
-import seedu.address.model.tag.UniqueTagList;
-import seedu.address.model.person.Release_Date;
 
 
-//Prisoner class is child class of Person: but each instance has a release date
+/*Prisoner class is child class of Person: but each instance has a release date*/
+public class Prisoner extends Person {
 
-public class Prisoner extends Person{
+    private final ReleaseDate ReleaseDate;
 
-    private final Release_Date release_date;
-
-    public Prisoner(Name name, Phone phone, Email email, Address address, Set<Tag> tags, Release_Date release_date) {
+    public Prisoner(Name name, Phone phone, Email email, Address address, Set<Tag> tags, ReleaseDate ReleaseDate) {
         super(name, phone, email, address, tags);
-        requireAllNonNull(name, phone, email, address, tags, release_date);
-        this.release_date = release_date;
+        requireAllNonNull(name, phone, email, address, tags, ReleaseDate);
+        this.ReleaseDate = ReleaseDate;
     }
 
-    public Release_Date getRelease_date() {
-        return release_date;
+    public ReleaseDate getRelease_date() {
+        return ReleaseDate;
     }
 
     @Override
@@ -63,5 +59,6 @@ public class Prisoner extends Person{
                 .append(" Tags: ");
         getTags().forEach(builder::append);
         builder.append(" Release Date: ").append(getRelease_date());
-        return builder.toString();}
+        return builder.toString();
+    }
 }
