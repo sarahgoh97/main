@@ -806,9 +806,34 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |user |find a person by name |locate details of persons without having to go through the entire list
 
+|`* * *` |administrator |Group police officers together |Form teams to carry out various tasks: patrol rotations, perimeter control, cell guards
+
+|`* * *` |police officer |Have a track record of each prisoner’s past offences
+                          Type 1 – Injuring officer
+                          Type 2 – Infighting with other inmates
+                          Type 3 – Vandalism
+ |Use the appropriate level of precaution when dealing with unruly individuals
+
+|`* * *` |police officer |Keep track of each prisoner’s holding cells |Ensure that there are two prisoners per cell and that certain bad prisoner combinations are avoided
+
+|`* * *` |administrator |Assign ranks to each police officer |Enforce access rights to view/edit prisoner and officer data
+
 |`* *` |user |hide <<private-contact-detail,private contact details>> by default |minimize chance of someone else seeing them by accident
 
+|`* *` |prisoner |Know my release date |Look forward to the day I can see my family/friends again
+
+|`* *` |police officer |Assign prisoners to different recess blocks |Separate those that start fights or cause trouble when together
+
+|`* *` |administrator |Shuffle patrol guards around teams every day |Each team is made up of different members every day, prisoners will acquaint themselves with specific guards
+
+|`* *` |administrator |Divide cells into sections (A, B, C, D) and name each cell numerically (A1, A2, etc…) |Refer to each cell easily when assigning prisoners to them
+
 |`*` |user with many persons in the address book |sort persons by name |locate a person easily
+
+|`*` |police officer |See my assigned prisoners’ social networks: friends, enemies, family, etc… |Use this as reference when dealing with inmates
+
+|`*` |police officer |Assign prisoners to solitary confinement |Punish those that have continuously committed serious offences
+
 |=======================================================================
 
 _{More to be added}_
