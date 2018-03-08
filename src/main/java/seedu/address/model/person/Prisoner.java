@@ -4,18 +4,21 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Objects;
 import java.util.Set;
+
 import seedu.address.model.tag.Tag;
 
 
-/*Prisoner class is child class of Person: but each instance has a release date*/
+/**
+ * Prisoner class is child class of Person: but each instance has a release date
+ */
 public class Prisoner extends Person {
 
     private final ReleaseDate ReleaseDate;
 
-    public Prisoner(Name name, Phone phone, Email email, Address address, Set<Tag> tags, ReleaseDate ReleaseDate) {
+    public Prisoner(Name name, Phone phone, Email email, Address address, Set<Tag> tags, ReleaseDate releaseDate) {
         super(name, phone, email, address, tags);
-        requireAllNonNull(name, phone, email, address, tags, ReleaseDate);
-        this.ReleaseDate = ReleaseDate;
+        requireAllNonNull(name, phone, email, address, tags, releaseDate);
+        this.ReleaseDate = releaseDate;
     }
 
     public ReleaseDate getRelease_date() {
@@ -43,7 +46,8 @@ public class Prisoner extends Person {
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(this.getName(), this.getPhone(), this.getEmail(), this.getAddress(), this.getTags(), this.getRelease_date());
+        return Objects.hash(this.getName(), this.getPhone(), this.getEmail(), this.getAddress(), this.getTags(),
+                this.getRelease_date());
     }
 
     @Override
