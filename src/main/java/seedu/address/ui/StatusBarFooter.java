@@ -39,6 +39,8 @@ public class StatusBarFooter extends UiPart<Region> {
     @FXML
     private StatusBar syncStatus;
     @FXML
+    private StatusBar numberOfPeopleStatus;
+    @FXML
     private StatusBar saveLocationStatus;
 
 
@@ -47,6 +49,7 @@ public class StatusBarFooter extends UiPart<Region> {
         setSyncStatus(SYNC_STATUS_INITIAL);
         setSaveLocation("./" + saveLocation);
         registerAsAnEventHandler(this);
+        setNumberOfPeopleStatus(1);
     }
 
     /**
@@ -71,11 +74,16 @@ public class StatusBarFooter extends UiPart<Region> {
         Platform.runLater(() -> this.syncStatus.setText(status));
     }
 
+    private void setNumberOfPeopleStatus(int numberOfPeople) {
+        Platform.runLater(() -> this.numberOfPeopleStatus.setText(numberOfPeople + " person(s) listed."));
+    }
+
     @Subscribe
     public void handleAddressBookChangedEvent(AddressBookChangedEvent abce) {
         long now = clock.millis();
         String lastUpdated = new Date(now).toString();
         logger.info(LogsCenter.getEventHandlingLogMessage(abce, "Setting last updated status to " + lastUpdated));
         setSyncStatus(String.format(SYNC_STATUS_UPDATED, lastUpdated));
+        setNumberOfPeopleStatus(1);
     }
 }
