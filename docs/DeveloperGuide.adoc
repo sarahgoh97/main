@@ -816,10 +816,11 @@ _{More to be added}_
 [appendix]
 == Use Cases
 
-(For all use cases below, the *System* is the `AddressBook` and the *Actor* is the `user`, unless specified otherwise)
+(For all use cases below, the *System* is the `AddressBook` unless specified otherwise)
 
 [discrete]
 === Use case: Delete person
+Actor: user
 
 *MSS*
 
@@ -841,6 +842,34 @@ Use case ends.
 +
 [none]
 ** 3a1. AddressBook shows an error message.
++
+Use case resumes at step 2.
+
+[discrete]
+=== Use case: Assign prisoner to a cell
+Actor: police officer
+
+*MSS*
+
+1.  Police officer selects a prisoner
+2.  Police officer requests a list of available cells with room available
+3.  AddressBook shows a list of available cells
+4.  Police officer requests to add prisoner to vacant cell
+5.  AddressBook updates prisoner status and cell status
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. The cell list is empty.
++
+Use case ends.
+
+* 3a. Prisoner is already assigned to a cell.
++
+[none]
+** 3a1. AddressBook removes cell tag from prisoner status and removes prisoner from cell status
 +
 Use case resumes at step 2.
 
