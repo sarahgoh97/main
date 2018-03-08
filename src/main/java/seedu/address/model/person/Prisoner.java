@@ -13,16 +13,16 @@ import seedu.address.model.tag.Tag;
  */
 public class Prisoner extends Person {
 
-    private final ReleaseDate ReleaseDate;
+    private final ReleaseDate releaseDate;
 
     public Prisoner(Name name, Phone phone, Email email, Address address, Set<Tag> tags, ReleaseDate releaseDate) {
         super(name, phone, email, address, tags);
         requireAllNonNull(name, phone, email, address, tags, releaseDate);
-        this.ReleaseDate = releaseDate;
+        this.releaseDate = releaseDate;
     }
 
     public ReleaseDate getRelease_date() {
-        return ReleaseDate;
+        return releaseDate;
     }
 
     @Override
