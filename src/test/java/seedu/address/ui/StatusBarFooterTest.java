@@ -10,7 +10,6 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.util.Date;
 
-import javafx.collections.ObservableList;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -18,9 +17,7 @@ import org.junit.Test;
 
 import guitests.guihandles.StatusBarFooterHandle;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
-import seedu.address.logic.Logic;
 import seedu.address.model.AddressBook;
-import seedu.address.model.person.Person;
 
 public class StatusBarFooterTest extends GuiUnitTest {
 
