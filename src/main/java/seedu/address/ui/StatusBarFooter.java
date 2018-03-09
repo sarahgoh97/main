@@ -69,7 +69,7 @@ public class StatusBarFooter extends UiPart<Region> {
         return clock;
     }
 
-    private void setSaveLocation(String location) {
+    void setSaveLocation(String location) {
         Platform.runLater(() -> this.saveLocationStatus.setText(location));
     }
 
