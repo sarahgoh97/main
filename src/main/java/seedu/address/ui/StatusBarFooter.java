@@ -12,7 +12,6 @@ import com.google.common.eventbus.Subscribe;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Region;
-import org.fxmisc.easybind.EasyBind;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
 import seedu.address.model.person.Person;
@@ -52,15 +51,9 @@ public class StatusBarFooter extends UiPart<Region> {
         setSyncStatus(SYNC_STATUS_INITIAL);
         setSaveLocation("./" + saveLocation);
         setNumberOfPeopleStatus(personList.size());
-        setConnections(personList);
         registerAsAnEventHandler(this);
     }
 
-    private void setConnections(ObservableList<Person> personList) {
-        ObservableList<PersonCard> mappedList = EasyBind.map(
-                personList, (person) -> new PersonCard(person, personList.indexOf(person) + 1));
-        setNumberOfPeopleStatus(mappedList.size());
-    }
 
     /**
      * Sets the clock used to determine the current time.
