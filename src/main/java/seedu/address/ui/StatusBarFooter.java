@@ -4,12 +4,12 @@ import java.time.Clock;
 import java.util.Date;
 import java.util.logging.Logger;
 
-import javafx.collections.ObservableList;
 import org.controlsfx.control.StatusBar;
 
 import com.google.common.eventbus.Subscribe;
 
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
