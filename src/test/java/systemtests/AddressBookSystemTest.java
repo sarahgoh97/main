@@ -296,6 +296,7 @@ public abstract class AddressBookSystemTest {
             assertEquals(MainApp.class.getResource(FXML_FILE_FOLDER + DEFAULT_PAGE), getBrowserPanel().getLoadedUrl());
             assertEquals("./" + testApp.getStorageSaveLocation(), getStatusBarFooter().getSaveLocation());
             assertEquals(SYNC_STATUS_INITIAL, getStatusBarFooter().getSyncStatus());
+            assertEquals(testApp.getModel().getAddressBook().getPersonList().size() + " person(s) total.",getStatusBarFooter().getNumberOfPeopleStatus());
         } catch (Exception e) {
             throw new AssertionError("Starting state is wrong.", e);
         }
