@@ -78,7 +78,7 @@ public class StatusBarFooter extends UiPart<Region> {
     }
 
     private void setNumberOfPeopleStatus(int numberOfPeople) {
-        Platform.runLater(() -> this.numberOfPeopleStatus.setText(numberOfPeople + " person(s) listed."));
+        Platform.runLater(() -> this.numberOfPeopleStatus.setText(numberOfPeople + " person(s) total."));
     }
 
     @Subscribe
