@@ -11,7 +11,7 @@ public class Role {
 
 
     public static final String MESSAGE_ROLE_CONSTRAINTS =
-            "Enter 'g' or 'p' to assign the role as Guard or Prisoner respectively";
+            "Role can only take on the values 'g' or 'p', which represents Guard or Prisoner respectively";
     public final String value;
 
     /**
