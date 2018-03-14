@@ -17,7 +17,7 @@ By: `CS2103-B2`      Since: `Jan 2018`      Licence: `MIT`
 
 == Introduction
 
-AddressBook Level 4 (AB4) is for those who *prefer to use a desktop app for managing contacts*. More importantly, AB4 is *optimized for those who prefer to work with a Command Line Interface* (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, AB4 can get your contact management tasks done faster than traditional GUI apps. Interested? Jump to the <<Quick Start>> to get started. Enjoy!
+PrisonBook is for those who *prefer to use a desktop app for managing their prison and accessing the database of prisoners*. More importantly, PrisonBook is *optimized for those who prefer to work with a Command Line Interface* (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, PrisonBook can help you manage your prison faster than traditional GUI apps. Interested? Jump to the <<Quick Start>> to get started. Enjoy!
 
 == Quick Start
 
@@ -73,10 +73,33 @@ Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
 
+=== Adding a prisoner to a cell: `addcell or ac` (incomplete)
+
+Adds a person to one of the cells in the prison +
+Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]...`
+
+[TIP]
+A person must have at least a prisoner tag
+
+Examples:
+
+* `addcell n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 t/prisoner`
+* `ac n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/prisoner`
+
+
 === Listing all persons : `list or l`
 
 Shows a list of all persons in the address book. +
 Format: `list`
+
+=== Listing prisoners in a cell : `listcell or lc` (incomplete)
+
+Shows a list of all persons in a prison cell in the address book. +
+Format: `list CELL`
+
+Examples:
+* `listcell a1`
+* `lc c13`
 
 === Editing a person : `edit or e`
 
@@ -137,6 +160,26 @@ Deletes the 2nd person in the address book.
 * `find Betsy` +
 `delete 1` +
 Deletes the 1st person in the results of the `find` command.
+
+=== Deleting a person from a cell : `deletecell or dc` (incomplete)
+
+Deletes the specified person from the cell in the PrisonBook. +
+Format: `deletecell INDEX`
+
+****
+* Deletes the person at the specified `INDEX`.
+* The index refers to the index number shown in the most recent listing.
+* The index *must be a positive integer* 1, 2, 3, ...
+****
+
+Examples:
+
+* `lc a2` +
+`deletecell 2` +
+Deletes the 2nd person in the cell in the PrisonBook.
+* `listcell b4` +
+`dc 1`
+Deletes the 1st person in the cell in the PrisonBook.
 
 === Selecting a person : `select or s`
 
@@ -220,7 +263,7 @@ The `redo` command fails as there are no `undo` commands executed previously.
 
 === Clearing all entries : `clear or c`
 
-Clears all entries from the address book. +
+Clears all entries from the address book. Clears all prison cells. +
 Format: `clear`
 
 === Exiting the program : `exit`
