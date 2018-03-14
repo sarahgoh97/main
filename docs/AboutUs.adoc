@@ -17,12 +17,12 @@ Role: Project Advisor
 
 '''
 
-=== John Roe
+=== Isaac
 image::lejolly.jpg[width="150", align="left"]
-{empty}[http://github.com/lejolly[github]] [<<johndoe#, portfolio>>]
+{empty}[http://github.com/zacci[github]] [<<zacci#, portfolio>>]
 
-Role: Team Lead +
-Responsibilities: UI
+Role: Team Lead + Testing IC
+Responsibilities: Ensuring Code is tested thoroughly before merging. Maintaining Versioning.
 
 '''
 
