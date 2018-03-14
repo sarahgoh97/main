@@ -930,6 +930,7 @@ Use case ends.
 ** 3a1. AB removes cell tag from prisoner status and removes prisoner from cell status
 +
 Use case resumes at step 2.
+
 [discrete]
 === Use case: Get the list of prisoners in a certain cell
 Actor: police officer (PO)
@@ -963,8 +964,6 @@ _{More to be added}_
 .  System should respond within 2 seconds
 .  Should have different levels of access for users of different ranks.
 .  Should have a backup copy at all times in case a user accidentally deletes any information.
-
-_{More to be added}_
 
 [appendix]
 == Glossary
