@@ -4,9 +4,6 @@ import seedu.address.model.person.Person;
 
 import java.util.ArrayList;
 
-import static java.util.Objects.requireNonNull;
-import static seedu.address.commons.core.Messages.MESSAGE_CELL_FULL;
-
 /*
  * Represents a cell in the prison.
  * Guarantees: cell cannot exceed maximum number of people
@@ -27,4 +24,6 @@ public class Cell {
     public ArrayList<Person> getPrisoners() { return prisoners; }
 
     public String getCellAddress() { return cellAddress; }
+
+    public int getNumberOfPrisoners() { return prisoners.size(); }
 }

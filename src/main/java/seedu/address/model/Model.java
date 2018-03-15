@@ -3,6 +3,7 @@ package seedu.address.model;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
+import seedu.address.model.cell.CellMap;
 import seedu.address.model.person.Person;
 import seedu.address.model.cell.Cell;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
@@ -21,6 +22,9 @@ public interface Model {
 
     /** Returns the AddressBook */
     ReadOnlyAddressBook getAddressBook();
+
+    /** Returns the cellMap */
+    CellMap getCellMap();
 
     /** Deletes the given person. */
     void deletePerson(Person target) throws PersonNotFoundException;

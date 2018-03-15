@@ -31,12 +31,22 @@ public class CellMap {
      * Prints a map of the cells on the map and their addresses
      */
     public void printCellMap() {
+        System.out.print(getCellMap());
+    }
+
+    /*
+     * Returns a map of the cells and their addresses
+     */
+    public String getCellMap() {
+        StringBuilder sb = new StringBuilder();
         for (Cell[] cArray: cellMap) {
             for (Cell c: cArray) {
-                System.out.print(c.getCellAddress() + "\t");
+                sb.append(c.getCellAddress() + " [" + c.getNumberOfPrisoners() + "] ");
             }
-            System.out.println();
+            sb.delete(sb.length()-1, sb.length());
+            sb.append("\n");
         }
+        return sb.toString();
     }
 
     /**
