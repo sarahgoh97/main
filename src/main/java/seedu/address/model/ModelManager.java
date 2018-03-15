@@ -43,7 +43,6 @@ public class ModelManager extends ComponentManager implements Model {
         logger.info("Initialising cellMap");
         cellMap = new CellMap();
         logger.info("Initialised cellMap");
-        cellMap.printCellMap();
     }
 
     public ModelManager() {
@@ -63,7 +62,9 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public CellMap getCellMap() { return cellMap; }
+    public CellMap getCellMap() {
+        return cellMap;
+    }
 
     /** Raises an event to indicate the model has changed */
     private void indicateAddressBookChanged() {

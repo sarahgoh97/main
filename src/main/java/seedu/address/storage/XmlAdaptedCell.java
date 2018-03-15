@@ -1,14 +1,14 @@
 package seedu.address.storage;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import javax.xml.bind.annotation.XmlElement;
+
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.CellMap;
 import seedu.address.model.cell.Cell;
 import seedu.address.model.person.Person;
-
-import javax.xml.bind.annotation.XmlElement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 /**
  * JAXB-friendly version of the Person.
@@ -64,7 +64,7 @@ public class XmlAdaptedCell {
         if (this.cellAddress == null || !Cell.isValidCellAddress(this.cellAddress)) {
             throw new IllegalValueException(INVALID_CELL);
         }
-        return new Cell(CellMap.MAX_ROW-1, CellMap.MAX_COL-1);
+        return new Cell(CellMap.MAX_ROW - 1, CellMap.MAX_COL - 1);
     }
 
     @Override

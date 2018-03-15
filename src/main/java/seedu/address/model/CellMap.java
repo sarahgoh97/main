@@ -2,22 +2,19 @@ package seedu.address.model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
 import seedu.address.model.cell.Cell;
-import seedu.address.model.person.Person;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static java.util.Objects.requireNonNull;
-
+/**
+ * Contains the cells of the prison for the PrisonBook
+ * Cells are not allowed to exceed the maximum fixed size of the prison
+ */
 public class CellMap {
     public static final int MAX_ROW = 2;
     public static final int MAX_COL = 5;
     private Cell[][] cellMap;
 
-    /*
+    /**
      * Represents a fixed-sized map of the cells in the prison.
      * Initialised at start of program.
      */
@@ -25,27 +22,20 @@ public class CellMap {
         resetData();
     }
 
-    /*
+    /**
      * Prints a map of the cells on the map and their addresses
      */
     public void printCellMap() {
-        System.out.print(getCellMap());
+        System.out.print(cellMap);
     }
 
-    /*
-     * Returns a map of the cells and their addresses
+    /**
+     * Returns the actual array
      */
-    public String getCellMap() {
-        StringBuilder sb = new StringBuilder();
-        for (Cell[] cArray: cellMap) {
-            for (Cell c: cArray) {
-                sb.append(c.getCellAddress() + " [" + c.getNumberOfPrisoners() + "] ");
-            }
-            sb.delete(sb.length()-1, sb.length());
-            sb.append("\n");
-        }
-        return sb.toString();
+    public Cell[][] getCellMap() {
+        return cellMap;
     }
+
     /**
      * For storage purposes
      */
@@ -69,5 +59,28 @@ public class CellMap {
                 cellMap[currRow][currCol] = new Cell(currRow, currCol);
             }
         }
+    }
+
+    /**
+     * Returns a map of the cells and their addresses
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (Cell[] cArray: cellMap) {
+            for (Cell c: cArray) {
+                sb.append(c.getCellAddress() + " [" + c.getNumberOfPrisoners() + "] ");
+            }
+            sb.delete(sb.length() - 1, sb.length());
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof CellMap // instanceof handles nulls
+                && this.toString().equals((other.toString())));
     }
 }

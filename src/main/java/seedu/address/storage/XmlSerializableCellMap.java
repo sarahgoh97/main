@@ -1,14 +1,13 @@
 package seedu.address.storage;
 
-
-import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.model.CellMap;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.model.CellMap;
 
 /**
  * An Immutable CellMap that is serializable to XML format
@@ -55,7 +54,7 @@ public class XmlSerializableCellMap {
         if (!(other instanceof XmlSerializableCellMap)) {
             return false;
         }
-        XmlSerializableCellMap otherCM = (XmlSerializableCellMap) other;
-        return otherCM.cellMap.equals(otherCM.cellMap);
+        XmlSerializableCellMap otherCellMap = (XmlSerializableCellMap) other;
+        return otherCellMap.cellMap.equals(otherCellMap.cellMap);
     }
 }

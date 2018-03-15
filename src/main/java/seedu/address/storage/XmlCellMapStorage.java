@@ -17,14 +17,18 @@ import seedu.address.model.CellMap;
 /**
  * A class to access CellMap stored as an xml file on the hard disk
  */
-public class XmlCellMapStorage implements CellMapStorage{
+public class XmlCellMapStorage implements CellMapStorage {
     private static final Logger logger = LogsCenter.getLogger(XmlCellMapStorage.class);
 
     private String filePath;
 
-    public XmlCellMapStorage(String filePath) { this.filePath = filePath; }
+    public XmlCellMapStorage(String filePath) {
+        this.filePath = filePath;
+    }
 
-    public String getCellMapFilePath() {return filePath; }
+    public String getCellMapFilePath() {
+        return filePath;
+    }
 
     @Override
     public Optional<CellMap> readCellMap() throws DataConversionException, IOException {
