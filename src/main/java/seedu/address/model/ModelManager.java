@@ -63,6 +63,7 @@ public class ModelManager extends ComponentManager implements Model {
         return addressBook;
     }
 
+    @Override
     public CellMap getCellMap() { return cellMap; }
 
     /** Raises an event to indicate the model has changed */
