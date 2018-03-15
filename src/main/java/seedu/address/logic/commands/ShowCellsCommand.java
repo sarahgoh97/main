@@ -1,8 +1,6 @@
 package seedu.address.logic.commands;
 
-import seedu.address.model.cell.CellMap;
-
-import static seedu.address.model.Model.PREDICATE_SHOW_ALL_CELLS;
+import seedu.address.model.CellMap;
 
 public class ShowCellsCommand extends Command{
     /**

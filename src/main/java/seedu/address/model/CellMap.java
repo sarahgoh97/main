@@ -1,5 +1,8 @@
-package seedu.address.model.cell;
+package seedu.address.model;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import seedu.address.model.cell.Cell;
 import seedu.address.model.person.Person;
 
 import java.util.ArrayList;
@@ -10,8 +13,8 @@ import java.util.stream.Collectors;
 import static java.util.Objects.requireNonNull;
 
 public class CellMap {
-    private final int maxRow = 2;
-    private final int maxCol = 5;
+    public static final int MAX_ROW = 2;
+    public static final int MAX_COL = 5;
     private Cell[][] cellMap;
 
     /*
@@ -19,12 +22,7 @@ public class CellMap {
      * Initialised at start of program.
      */
     public CellMap() {
-        cellMap = new Cell[maxRow][maxCol];
-        for (int currRow = 0; currRow < maxRow; currRow++) {
-            for (int currCol = 0; currCol < maxCol; currCol++) {
-                cellMap[currRow][currCol] = new Cell(currRow, currCol);
-            }
-        }
+        resetData();
     }
 
     /*
@@ -48,14 +46,26 @@ public class CellMap {
         }
         return sb.toString();
     }
+    /**
+     * For storage purposes
+     */
+    public ObservableList<Cell> getCellList() {
+        ObservableList<Cell> cellList = FXCollections.observableArrayList();
+        for (Cell[] cArray : cellMap) {
+            for (Cell c : cArray) {
+                cellList.add(c);
+            }
+        }
+        return FXCollections.unmodifiableObservableList(cellList);
+    }
 
     /**
      * Resets the existing data of this {@code CellMap}.
      */
     public void resetData() {
-        cellMap = new Cell[maxRow][maxCol];
-        for (int currRow = 0; currRow < maxRow; currRow++) {
-            for (int currCol = 0; currCol < maxCol; currCol++) {
+        cellMap = new Cell[MAX_ROW][MAX_COL];
+        for (int currRow = 0; currRow < MAX_ROW; currRow++) {
+            for (int currCol = 0; currCol < MAX_COL; currCol++) {
                 cellMap[currRow][currCol] = new Cell(currRow, currCol);
             }
         }
