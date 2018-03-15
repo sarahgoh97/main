@@ -1,5 +1,6 @@
 package seedu.address.model.cell;
 
+import seedu.address.model.CellMap;
 import seedu.address.model.person.Person;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public class Cell {
     /*
      * Represents a cell in the Prison.
      */
-    protected Cell(int row, int column) {
+    public Cell(int row, int column) {
         prisoners = new ArrayList<Person>(MAX_SIZE);
         cellAddress = ++row + "-" + ++column;
     }
@@ -26,4 +27,12 @@ public class Cell {
     public String getCellAddress() { return cellAddress; }
 
     public int getNumberOfPrisoners() { return prisoners.size(); }
+
+    /**
+     * Returns true if a given string is a valid cell.
+     */
+    public static boolean isValidCellAddress(String test) {
+        return test.charAt(0) <= CellMap.MAX_ROW &&
+                test.charAt(2) <= CellMap.MAX_COL;
+    }
 }
