@@ -782,6 +782,9 @@ See this https://github.com/se-edu/addressbook-level4/pull/599[PR] for the step-
 
 *Target user profile*:
 
+* works at a prison with around 1000 inmates
+* has a need to keep track of prisoner locations and details
+* has a need to organize and direct guards efficiently
 * has a need to manage a significant number of contacts
 * prefer desktop apps over other types
 * can type fast
@@ -789,6 +792,11 @@ See this https://github.com/se-edu/addressbook-level4/pull/599[PR] for the step-
 * is reasonably comfortable using CLI apps
 
 *Value proposition*: manage contacts faster than a typical mouse/GUI driven app
+
+[appendix]
+== Feature contribution
+* find by tag: This function will allow admins to filter user list by tags. Tags may include classification of Prisoner vs. Guards, Prisoner cell blocks and cell numbers, Guards' current teams and assignments, etc...
+
 
 [appendix]
 == User Stories
