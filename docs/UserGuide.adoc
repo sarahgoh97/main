@@ -1,4 +1,4 @@
-= AddressBook Level 4 - User Guide
+= PrisonBook - User Guide
 :toc:
 :toc-title:
 :toc-placement: preamble
@@ -27,8 +27,8 @@ PrisonBook is for those who *prefer to use a desktop app for managing their pris
 Having any Java 8 version is not enough. +
 This app will not work with earlier versions of Java 8.
 +
-.  Download the latest `addressbook.jar` link:{repoURL}/releases[here].
-.  Copy the file to the folder you want to use as the home folder for your Address Book.
+.  Download the latest `prisonbook.jar` link:{repoURL}/releases[here].
+.  Copy the file to the folder you want to use as the home folder for your PrisonBook.
 .  Double-click the file to start the app. The GUI should appear in a few seconds.
 +
 image::Ui.png[width="790"]
@@ -62,7 +62,7 @@ Format: `help`
 
 === Adding a person: `add or a`
 
-Adds a person to the address book +
+Adds a person to the prison book +
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]...`
 
 [TIP]
@@ -89,12 +89,12 @@ Examples:
 
 === Listing all persons : `list or l`
 
-Shows a list of all persons in the address book. +
+Shows a list of all persons in the prison book. +
 Format: `list`
 
 === Listing prisoners in a cell : `listcell or lc` (incomplete)
 
-Shows a list of all persons in a prison cell in the address book. +
+Shows a list of all persons in a prison cell in the prison book. +
 Format: `list CELL`
 
 Examples:
@@ -103,7 +103,7 @@ Examples:
 
 === Editing a person : `edit or e`
 
-Edits an existing person in the address book. +
+Edits an existing person in the prison book. +
 Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]...`
 
 ****
@@ -121,29 +121,33 @@ Edits the phone number and email address of the 1st person to be `91234567` and 
 * `edit 2 n/Betsy Crower t/` +
 Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
 
-=== Locating persons by name: `find or f`
+// tag::find[]
+=== Locating persons by name or tags: `find or f`
 
-Finds persons whose names contain any of the given keywords. +
-Format: `find KEYWORD [MORE_KEYWORDS]`
+Finds persons whose names/tags contain any of the given keywords. +
+Format: `find n/NAME_KEYWORD [MORE_KEYWORDS] t/TAG_KEYWORD [MORE_KEYWORDS]`
 
 ****
 * The search is case insensitive. e.g `hans` will match `Hans`
 * The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
-* Only the name is searched.
+* Only the name and tags are searched.
 * Only full words will be matched e.g. `Han` will not match `Hans`
 * Persons matching at least one keyword will be returned (i.e. `OR` search). e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
 ****
 
 Examples:
 
-* `find John` +
+* `find n/John` +
 Returns `john` and `John Doe`
-* `find Betsy Tim John` +
+* `find n/Betsy Tim John` +
 Returns any person having names `Betsy`, `Tim`, or `John`
+* `find n/Betsy t/Friends` +
+Returns any person having names `Betsy` or are tagged `Friends`
+// end::find[]
 
 === Deleting a person : `delete or d`
 
-Deletes the specified person from the address book. +
+Deletes the specified person from the prison book. +
 Format: `delete INDEX`
 
 ****
@@ -156,7 +160,7 @@ Examples:
 
 * `list` +
 `delete 2` +
-Deletes the 2nd person in the address book.
+Deletes the 2nd person in the prison book.
 * `find Betsy` +
 `delete 1` +
 Deletes the 1st person in the results of the `find` command.
@@ -196,7 +200,7 @@ Examples:
 
 * `list` +
 `select 2` +
-Selects the 2nd person in the address book.
+Selects the 2nd person in the prison book.
 * `find Betsy` +
 `select 1` +
 Selects the 1st person in the results of the `find` command.
@@ -214,12 +218,12 @@ Pressing the kbd:[&uarr;] and kbd:[&darr;] arrows will display the previous and 
 // tag::undoredo[]
 === Undoing previous command : `undo or u`
 
-Restores the address book to the state before the previous _undoable_ command was executed. +
+Restores the prison book to the state before the previous _undoable_ command was executed. +
 Format: `undo`
 
 [NOTE]
 ====
-Undoable commands: those commands that modify the address book's content (`add`, `delete`, `edit` and `clear`).
+Undoable commands: those commands that modify the prison book's content (`add`, `delete`, `edit` and `clear`).
 ====
 
 Examples:
@@ -263,7 +267,7 @@ The `redo` command fails as there are no `undo` commands executed previously.
 
 === Clearing all entries : `clear or c`
 
-Clears all entries from the address book. Clears all prison cells. +
+Clears all entries from the prison book. Clears all prison cells. +
 Format: `clear`
 
 === Exiting the program : `exit`
