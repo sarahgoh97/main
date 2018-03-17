@@ -27,7 +27,7 @@ public class FindCommandParserTest {
                 new FindCommand(new ContainsKeywordsPredicate(Arrays.asList("Alice", "Bob"),
                         Arrays.asList("Tag1","Tag2")));
 
-        assertParseSuccess(parser, FindCommandDescriptionBuilder "find n/Alice Bob t/Tag1 Tag2", expectedFindCommand);
+        assertParseSuccess(parser, "find n/Alice Bob t/Tag1 Tag2", expectedFindCommand);
 
         // multiple whitespaces between keywords
         assertParseSuccess(parser, "find \n n/Alice \n \t n/Bob  \t t/Tag1 \n t/Tag2", expectedFindCommand);
