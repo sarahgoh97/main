@@ -37,7 +37,7 @@ Responsibilities: Assigning tasks regarding documentation and checking pull requ
 '''
 
 === Chung-Yen (Philos) Tsai
-image::philos22.jpg[width="150", align="left"]
+image::philos22.jpg[width="250", align="left"]
 {empty}[http://github.com/philos22[github]] [<<philos22#, portfolio>>]
 
 Role: Code QC/QA IC +
