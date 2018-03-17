@@ -1,7 +1,7 @@
 package seedu.address.model.person;
 
+import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Predicate;
 
 import seedu.address.commons.util.StringUtil;
@@ -19,15 +19,16 @@ public class TagContainsKeywordsPredicate implements Predicate<Person> {
     @Override
     public boolean test(Person person) {
         // Making a string of all tags
-        Set tags = person.getTags();
-        String tagNames = "";
-        for (Object tag: tags) {
-            tagNames += tag.toString() + " ";
+        Iterator tagIteration = person.getTags().iterator();
+        StringBuilder strBuild = new StringBuilder();
+        strBuild.append(tagIteration.next());
+        while (tagIteration.hasNext()) {
+            strBuild.append(" " + tagIteration.next());
         }
-        final String tagList = tagNames;
+        String tagList = strBuild.toString().replace("[","").replace("]", "");
 
         return keywords.stream()
-                .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(String.valueOf(person.getTags()), keyword));
+                .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(tagList, keyword));
     }
 
     @Override
