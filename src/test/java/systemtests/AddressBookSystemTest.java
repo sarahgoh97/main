@@ -148,7 +148,7 @@ public abstract class AddressBookSystemTest {
      * Displays all persons with any parts of their names matching {@code keyword} (case-insensitive).
      */
     protected void showPersonsWithName(String keyword) {
-        executeCommand(FindCommand.COMMAND_WORD + " " + keyword);
+        executeCommand(FindCommand.COMMAND_WORD + " n/" + keyword);
         assertTrue(getModel().getFilteredPersonList().size() < getModel().getAddressBook().getPersonList().size());
     }
 
@@ -174,7 +174,7 @@ public abstract class AddressBookSystemTest {
      * and the person list panel displays the persons in the model correctly.
      */
     protected void assertApplicationDisplaysExpected(String expectedCommandInput, String expectedResultMessage,
-            Model expectedModel) {
+                                                     Model expectedModel) {
         assertEquals(expectedCommandInput, getCommandBox().getInput());
         assertEquals(expectedResultMessage, getResultDisplay().getText());
         assertEquals(expectedModel, getModel());
