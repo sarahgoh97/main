@@ -880,14 +880,11 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |=======================================================================
 
-_{More to be added}_
 // end::UserStories[]
 
 // tag::UseCases[]
 [appendix]
 == Use Cases
-
-(For all use cases below, the *System* is the `AddressBook` (AB) unless specified otherwise)
 
 [discrete]
 === Use case: Add a prisoner
@@ -985,8 +982,6 @@ Use case ends.
 +
 Use case ends.
 
-
-_{More to be added}_
 // end::UseCases[]
 
 // tag::NFR[]
