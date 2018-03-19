@@ -784,6 +784,9 @@ See this https://github.com/se-edu/addressbook-level4/pull/599[PR] for the step-
 
 *Target user profile*:
 
+* works at a prison with around 1000 inmates
+* has a need to keep track of prisoner locations and details
+* has a need to organize and direct guards efficiently
 * has a need to manage a significant number of contacts
 * prefer desktop apps over other types
 * can type fast
@@ -792,6 +795,14 @@ See this https://github.com/se-edu/addressbook-level4/pull/599[PR] for the step-
 
 *Value proposition*: manage contacts faster than a typical mouse/GUI driven app
 
+// tag::FeatureContribution[]
+[appendix]
+== Feature Contribution
+* find by tag: This function will allow admins to filter user list by tags. Tags may include classification of Prisoner vs. Guards, Prisoner cell blocks and cell numbers, Guards' current teams and assignments, etc...
+
+// end::FeatureContribution[]
+
+// tag::UserStories[]
 [appendix]
 == User Stories
 
@@ -851,7 +862,9 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 |=======================================================================
 
 _{More to be added}_
+// end::UserStories[]
 
+// tag::UseCases[]
 [appendix]
 == Use Cases
 
@@ -955,7 +968,9 @@ Use case ends.
 
 
 _{More to be added}_
+// end::UseCases[]
 
+// tag::NFR[]
 [appendix]
 == Non Functional Requirements
 
@@ -966,6 +981,8 @@ _{More to be added}_
 .  System should respond within 2 seconds
 .  Should have different levels of access for users of different ranks.
 .  Should have a backup copy at all times in case a user accidentally deletes any information.
+
+// end::NFR[]
 
 [appendix]
 == Glossary
@@ -982,9 +999,13 @@ A person has been imprisoned for a crime.
 [appendix]
 == Product Survey
 
-*Product Name*
+*PrisonBook*
 
-Author: ...
+Author:
+Isaac
+Sarah Goh Shi Ning
+Philos (Chung-Yen) Tsai
+
 
 Pros:
 
