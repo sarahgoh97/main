@@ -15,7 +15,8 @@ public class Prisoner extends Person {
 
     private final ReleaseDate releaseDate;
 
-    public Prisoner(Name name, Phone phone, Email email, Address address, Role role, Set<Tag> tags, ReleaseDate releaseDate) {
+    public Prisoner(Name name, Phone phone, Email email, Address address, Role role, Set<Tag> tags,
+                    ReleaseDate releaseDate) {
         super(name, phone, email, address, role, tags);
         requireAllNonNull(name, phone, email, address, tags, releaseDate);
         this.releaseDate = releaseDate;
