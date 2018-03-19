@@ -784,33 +784,6 @@ See this https://github.com/se-edu/addressbook-level4/pull/599[PR] for the step-
 
 *Target user profile*:
 
-* owns/manages a prison
-* prefer desktop apps over other types
-* can type fast
-* prefers typing over mouse input
-* is reasonably comfortable using CLI apps
-
-*Value proposition*: manage prison faster than a typical mouse/GUI driven app
-
-*Feature Contributions*:
-
-* Chung-Yen Tsai (philos22)
-  1. Major enhancement:
-  2. Minor enhancement:
-
-* Isaac Gideon Tan (zacci)
-  1. Major enhancement:
-  2. Minor enhancement:
-
-* Sarah Goh Shi Ning (sarahgoh97)
-  1. Major enhancement: +
-  Creating a cell system/map of all the prison cells in the prison.
-  This helps users add and remove prisoners to their prison and prevent users from overcrowding their prison.
-  It can also help users keep track of locations of the cells of each prisoner.
-  2. Minor enhancement: +
-  Allow user to change between bright and dark themes.
-  This helps users to prevent people nearby from looking at the information.
-  At the same time, it also has a bright theme that helps users use the app more easily.
 
 [appendix]
 == User Stories
