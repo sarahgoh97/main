@@ -25,9 +25,11 @@ public class ModelManager extends ComponentManager implements Model {
 
     private final AddressBook addressBook;
     private final FilteredList<Person> filteredPersons;
+    private final CellMap cellMap;
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
+     * Also initialises an empty cellMap.
      */
     public ModelManager(ReadOnlyAddressBook addressBook, UserPrefs userPrefs) {
         super();
@@ -37,6 +39,10 @@ public class ModelManager extends ComponentManager implements Model {
 
         this.addressBook = new AddressBook(addressBook);
         filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
+
+        logger.info("Initialising cellMap");
+        cellMap = new CellMap();
+        logger.info("Initialised cellMap");
     }
 
     public ModelManager() {
@@ -46,12 +52,18 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void resetData(ReadOnlyAddressBook newData) {
         addressBook.resetData(newData);
+        cellMap.resetData();
         indicateAddressBookChanged();
     }
 
     @Override
     public ReadOnlyAddressBook getAddressBook() {
         return addressBook;
+    }
+
+    @Override
+    public CellMap getCellMap() {
+        return cellMap;
     }
 
     /** Raises an event to indicate the model has changed */
