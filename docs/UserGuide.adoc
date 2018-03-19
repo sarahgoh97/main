@@ -73,7 +73,7 @@ Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
 
-=== Adding a prisoner to a cell: `addcell or ac` (incomplete)
+=== Adding a prisoner to a cell: `addcell or ac` (upcoming)
 
 Adds a person to one of the cells in the prison +
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]...`
@@ -92,7 +92,7 @@ Examples:
 Shows a list of all persons in the prison book. +
 Format: `list`
 
-=== Listing prisoners in a cell : `listcell or lc` (incomplete)
+=== Listing prisoners in a cell : `listcell or lc` (upcoming)
 
 Shows a list of all persons in a prison cell in the prison book. +
 Format: `list CELL`
@@ -100,6 +100,13 @@ Format: `list CELL`
 Examples:
 * `listcell a1`
 * `lc c13`
+
+=== Showing cells in the map: `map or m` (v1.1)
+
+Shows a table of prison cells like a map. +
+Format: `map`
+
+
 
 === Editing a person : `edit or e`
 
@@ -165,7 +172,7 @@ Deletes the 2nd person in the prison book.
 `delete 1` +
 Deletes the 1st person in the results of the `find` command.
 
-=== Deleting a person from a cell : `deletecell or dc` (incomplete)
+=== Deleting a person from a cell : `deletecell or dc` (upcoming)
 
 Deletes the specified person from the cell in the PrisonBook. +
 Format: `deletecell INDEX`
@@ -303,6 +310,7 @@ e.g. `edit 2 n/James Lee e/jameslee@example.com`
 * *Find* : `find KEYWORD [MORE_KEYWORDS]` +
 e.g. `find James Jake`
 * *List* : `list`
+* *Map* : `map`
 * *Help* : `help`
 * *Select* : `select INDEX` +
 e.g.`select 2`
