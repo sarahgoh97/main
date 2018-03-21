@@ -25,6 +25,16 @@ public abstract class Command {
     }
 
     /**
+     * Constructs a feedback message to summarise an operation that displayed the result of a search by tag.
+     *
+     * @param displaySize used to generate summary
+     * @return summary message for tag search displayed
+     */
+    public static String getMessageForTagShownSummary(int displaySize) {
+        return String.format(Messages.MESSAGE_TAGS_RESULT_LISTED_OVERVIEW, displaySize);
+    }
+
+    /**
      * Executes the command and returns the result message.
      *
      * @return feedback message of the operation result for display
