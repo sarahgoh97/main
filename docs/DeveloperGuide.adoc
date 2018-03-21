@@ -205,6 +205,7 @@ The `Model`,
 
 * stores a `UserPref` object that represents the user's preferences.
 * stores the Address Book data.
+* stores the cells in the prison.
 * exposes an unmodifiable `ObservableList<Person>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
 * does not depend on any of the other three components.
 
@@ -220,6 +221,7 @@ The `Storage` component,
 
 * can save `UserPref` objects in json format and read it back.
 * can save the Address Book data in xml format and read it back.
+* can save the cell map in xml format and read it back.
 
 [[Design-Commons]]
 === Common classes
@@ -794,9 +796,30 @@ See this https://github.com/se-edu/addressbook-level4/pull/599[PR] for the step-
 *Value proposition*: manage contacts faster than a typical mouse/GUI driven app
 
 // tag::FeatureContribution[]
-[appendix]
-== Feature Contribution
-* find by tag: This function will allow admins to filter user list by tags. Tags may include classification of Prisoner vs. Guards, Prisoner cell blocks and cell numbers, Guards' current teams and assignments, etc...
+
+*Feature Contributions*:
+
+* Chung-Yen (Philos) Tsai (philos22)
+  1. Major enhancement: +
+  Scheduling: Keeps track of schedule of prisoners and guards.
+  2. Minor enhancement: +
+  Find by tag: This function will allow admins to filter user list by tags. Tags may include classification of Prisoner vs. Guards, Prisoner cell blocks and cell numbers, Guards' current teams and assignments, etc...
+
+* Isaac Gideon Tan (zacci)
+  1. Major enhancement: +
+  Login and Authorization Levels: Enable creation of account for guards, logging in, and authorization levels for commands that may compromise the security of the Prison data.
+  2. Minor enhancement: +
+  Additional Attribute to store 'Role' information. To identify the person as a Prisoner or Guard
+
+* Sarah Goh Shi Ning (sarahgoh97)
+  1. Major enhancement: +
+  Creating a cell system/map of all the prison cells in the prison.
+  This helps users add and remove prisoners to their prison and prevent users from overcrowding their prison.
+  It can also help users keep track of locations of the cells of each prisoner.
+  2. Minor enhancement: +
+  Allow user to change between bright and dark themes.
+  This helps users to prevent people nearby from looking at the information.
+  At the same time, it also has a bright theme that helps users use the app more easily.
 
 // end::FeatureContribution[]
 
@@ -859,14 +882,11 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |=======================================================================
 
-_{More to be added}_
 // end::UserStories[]
 
 // tag::UseCases[]
 [appendix]
 == Use Cases
-
-(For all use cases below, the *System* is the `AddressBook` (AB) unless specified otherwise)
 
 [discrete]
 === Use case: Add a prisoner
@@ -964,8 +984,6 @@ Use case ends.
 +
 Use case ends.
 
-
-_{More to be added}_
 // end::UseCases[]
 
 // tag::NFR[]
