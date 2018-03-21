@@ -25,7 +25,7 @@ public class TagContainsKeywordsPredicate implements Predicate<Person> {
         while (tagIteration.hasNext()) {
             strBuild.append(" " + tagIteration.next());
         }
-        String tagList = strBuild.toString().replace("[","").replace("]", "");
+        String tagList = strBuild.toString().replace("[", "").replace("]", "");
 
         return keywords.stream()
                 .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(tagList, keyword));
