@@ -1,12 +1,13 @@
 package seedu.address.logic.commands;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.Objects;
+
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.Person;
 
-import java.util.Objects;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * Adds a prisoner to a cell in the address book.
