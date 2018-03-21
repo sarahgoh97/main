@@ -21,6 +21,11 @@ public class Cell {
         cellAddress = ++row + "-" + ++column;
     }
 
+    protected void addPrisoner(Person prisoner) {
+        prisoners.add(prisoner);
+        System.out.println("i, " + cellAddress + "has a new prisoner");
+    }
+
     public ArrayList<Person> getPrisoners() {
         return prisoners;
     }

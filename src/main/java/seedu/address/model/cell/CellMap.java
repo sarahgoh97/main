@@ -2,6 +2,7 @@ package seedu.address.model.cell;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import seedu.address.model.person.Person;
 
 /**
  * Contains the cells of the prison for the PrisonBook
@@ -33,6 +34,20 @@ public class CellMap {
     public Cell[][] getCellMap() {
         return cellMap;
     }
+
+    /**
+     * Adds a prisoner to a specified cell.
+     */
+    public void addPrisonerToCell(Person prisoner, String cellAddress) {
+        int row = Integer.parseInt(cellAddress.substring(0, cellAddress.indexOf("-")));
+        int col = Integer.parseInt(cellAddress.substring(cellAddress.indexOf("-") + 1));
+        addPrisonerToCell(prisoner, row, col);
+    }
+
+    private void addPrisonerToCell(Person prisoner, int row, int col) {
+        cellMap[row - 1][col - 1].addPrisoner(prisoner);
+    }
+
 
     /**
      * For storage purposes
