@@ -1,6 +1,6 @@
 package seedu.address.logic.commands;
 
-import seedu.address.model.CellMap;
+import seedu.address.model.cell.CellMap;
 
 /**
  * Shows all cells and number of prisoners in each of them to the user.

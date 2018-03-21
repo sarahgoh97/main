@@ -2,7 +2,6 @@ package seedu.address.model.cell;
 
 import java.util.ArrayList;
 
-import seedu.address.model.CellMap;
 import seedu.address.model.person.Person;
 
 /**

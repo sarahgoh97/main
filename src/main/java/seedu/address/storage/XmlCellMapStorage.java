@@ -12,7 +12,7 @@ import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.exceptions.DataConversionException;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.FileUtil;
-import seedu.address.model.CellMap;
+import seedu.address.model.cell.CellMap;
 
 /**
  * A class to access CellMap stored as an xml file on the hard disk

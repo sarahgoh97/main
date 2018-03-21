@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 import seedu.address.commons.exceptions.DataConversionException;
-import seedu.address.model.CellMap;
+import seedu.address.model.cell.CellMap;
 
 /**
  * Represents a storage for {@link CellMap}.

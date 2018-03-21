@@ -1,9 +1,7 @@
-package seedu.address.model;
+package seedu.address.model.cell;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
-import seedu.address.model.cell.Cell;
 
 /**
  * Contains the cells of the prison for the PrisonBook
