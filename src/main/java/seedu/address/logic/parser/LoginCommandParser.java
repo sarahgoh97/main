@@ -4,6 +4,7 @@ import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT
 import static seedu.address.logic.parser.CliSyntax.PREFIX_USERNAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PASSWORD;
 
+
 import java.util.stream.Stream;
 
 import seedu.address.commons.exceptions.IllegalValueException;
@@ -29,7 +30,18 @@ public class LoginCommandParser implements Parser<LoginCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, LoginCommand.MESSAGE_USAGE));
         }
 
-        return new LoginCommand();
+        String username = "";
+        String password = "";
+        try {
+            username = ParserUtil.parseUsername(argMultimap.getValue(PREFIX_USERNAME));
+            password = ParserUtil.parsePassword(argMultimap.getValue(PREFIX_PASSWORD));
+        } catch (IllegalValueException ive) {
+            throw new ParseException(ive.getMessage(), ive);
+        }
+
+
+        return new LoginCommand(username,password);
+
     }
 
     /**

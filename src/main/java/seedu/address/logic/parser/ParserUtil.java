@@ -190,4 +190,40 @@ public class ParserUtil {
         }
         return tagSet;
     }
+
+    /**
+     * Parses a @code String username
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws IllegalValueException if the given {@code password} is invalid.
+     */
+    public static String parseUsername(String username) throws IllegalValueException {
+        requireNonNull(username);
+        String trimmedUsername = username.trim();
+        return trimmedUsername;
+    }
+
+    public static String parseUsername(Optional<String> username) throws IllegalValueException {
+        //requireNonNull(username); null accepted for now
+        return username.isPresent() ? parseUsername(username.get()) : "";
+    }
+
+    /**
+     * Parses a @code String password
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws IllegalValueException if the given {@code password} is invalid.
+     */
+    public static String parsePassword(String password) throws IllegalValueException {
+        requireNonNull(password);
+        String trimmedPassword = password.trim();
+        return trimmedPassword;
+    }
+
+    public static String parsePassword(Optional<String> password) throws IllegalValueException {
+        //requireNonNull(password); null accepted for now
+        return password.isPresent() ? parsePassword(password.get()) : "";
+    }
+
+
 }
