@@ -26,9 +26,10 @@ public class FindCommandParser implements Parser<FindCommand> {
      */
     public FindCommand parse(String args) throws ParseException {
 
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args,PREFIX_NAME,PREFIX_TAG);
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_TAG);
 
-        if (!(arePrefixesPresent(argMultimap, PREFIX_NAME) || arePrefixesPresent(argMultimap, PREFIX_TAG) || !argMultimap.getPreamble().isEmpty())) {
+        if (!(arePrefixesPresent(argMultimap, PREFIX_NAME) || arePrefixesPresent(argMultimap, PREFIX_TAG)
+                || !argMultimap.getPreamble().isEmpty())) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
@@ -36,12 +37,10 @@ public class FindCommandParser implements Parser<FindCommand> {
         if (arePrefixesPresent(argMultimap, PREFIX_NAME)) {
             String[] nameKeywords = argMultimap.getValue(PREFIX_NAME).get().split("\\s+");
             return new FindCommand(new NameContainsKeywordsPredicate(Arrays.asList(nameKeywords)));
-        }
-        else if (arePrefixesPresent(argMultimap, PREFIX_TAG)) {
+        } else if (arePrefixesPresent(argMultimap, PREFIX_TAG)) {
             String[] tagKeywords = argMultimap.getValue(PREFIX_TAG).get().split("\\s+");
             return new FindCommand(new TagContainsKeywordsPredicate(Arrays.asList(tagKeywords)));
-        }
-        else {
+        } else {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
     }
