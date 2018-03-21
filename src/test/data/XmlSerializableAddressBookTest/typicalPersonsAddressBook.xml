@@ -25,6 +25,7 @@
         <email>heinz@example.com</email>
         <address>wall street</address>
         <role>p</role>
+        <tagged>ENEMY</tagged>
     </persons>
     <persons>
         <name>Daniel Meier</name>
