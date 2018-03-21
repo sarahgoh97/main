@@ -23,7 +23,6 @@ public class Cell {
 
     protected void addPrisoner(Person prisoner) {
         prisoners.add(prisoner);
-        System.out.println("i, " + cellAddress + "has a new prisoner");
     }
 
     public ArrayList<Person> getPrisoners() {
