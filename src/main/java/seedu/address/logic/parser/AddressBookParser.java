@@ -78,12 +78,12 @@ public class AddressBookParser {
         case ListCommand.COMMAND_ALIAS:
             return new ListCommand();
 
-            case LoginCommand.COMMAND_WORD:
-                return new LoginCommandParser().parse(arguments);
+        case LoginCommand.COMMAND_WORD:
+            return new LoginCommandParser().parse(arguments);
 
-            case HistoryCommand.COMMAND_WORD:
-            case HistoryCommand.COMMAND_ALIAS:
-                return new HistoryCommand();
+        case HistoryCommand.COMMAND_WORD:
+        case HistoryCommand.COMMAND_ALIAS:
+            return new HistoryCommand();
 
         case ExitCommand.COMMAND_WORD:
             return new ExitCommand();

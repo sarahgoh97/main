@@ -110,7 +110,7 @@ public class AddCommandTest {
         public void logout(){};
 
         @Override
-        public Session getSession(){
+        public Session getSession() {
             return new Session();
         };
 

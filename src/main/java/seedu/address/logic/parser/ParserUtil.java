@@ -203,6 +203,10 @@ public class ParserUtil {
         return trimmedUsername;
     }
 
+    /**
+     * Parses a {@code Optional<String> username} into an {@code Optional<username>} if {@code username} is present.
+     * See header comment of this class regarding the use of {@code Optional} parameters.
+     */
     public static String parseUsername(Optional<String> username) throws IllegalValueException {
         //requireNonNull(username); null accepted for now
         return username.isPresent() ? parseUsername(username.get()) : "";
@@ -220,6 +224,10 @@ public class ParserUtil {
         return trimmedPassword;
     }
 
+    /**
+     * Parses a {@code Optional<String> password} into an {@code Optional<password>} if {@code password} is present.
+     * See header comment of this class regarding the use of {@code Optional} parameters.
+     */
     public static String parsePassword(Optional<String> password) throws IllegalValueException {
         //requireNonNull(password); null accepted for now
         return password.isPresent() ? parsePassword(password.get()) : "";

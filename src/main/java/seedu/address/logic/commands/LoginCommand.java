@@ -1,6 +1,8 @@
 package seedu.address.logic.commands;
 
-
+/**
+ * Attempts to log in user with given Username and Password
+ */
 public class LoginCommand extends Command {
 
     public static final String COMMAND_WORD = "login";
@@ -20,7 +22,7 @@ public class LoginCommand extends Command {
     private final String username;
     private final String password;
 
-    public LoginCommand(String username,String password) {
+    public LoginCommand(String username, String password) {
         this.username = username;
         this.password = password;
     }
@@ -28,10 +30,10 @@ public class LoginCommand extends Command {
 
     @Override
     public CommandResult execute() {
-        if (attemptLogin(username,password) <= -1){
+        if (attemptLogin(username, password) <= -1) {
             return new CommandResult("Login Failed. Username entered: " + username + " Pw entered: " + password);
         } else {
-            model.login(username,attemptLogin(username,password));
+            model.login(username, attemptLogin(username, password));
             return new CommandResult(MESSAGE_LOGIN_SUCCESS);
         }
     }
@@ -40,15 +42,18 @@ public class LoginCommand extends Command {
      *   Returns -1 if username or password is wrong.
      *   Returns the user's security level if username and password is verified against database.
      */
-    private int attemptLogin (String username, String password){
-        if (!isValidUser(username,password)){
+    private int attemptLogin (String username, String password) {
+        if (!isValidUser(username, password)) {
             return -1;
         } else {
             return getSecurityLevel(username);
         }
     }
 
-    private boolean isValidUser(String username, String password){
+    /**
+     *   Check if username and password is verified against database.
+     */
+    private boolean isValidUser(String username, String password) {
         if (username.equals(ACCEPTED_USERNAME) && password.equals(ACCEPTED_PASSWORD)) {
             return true;
         } else {
@@ -56,7 +61,7 @@ public class LoginCommand extends Command {
         }
     }
 
-    private int getSecurityLevel(String username){
+    private int getSecurityLevel(String username) {
         if (username.equals(ACCEPTED_USERNAME)) {
             return SECURITY_LEVEL;
         } else {

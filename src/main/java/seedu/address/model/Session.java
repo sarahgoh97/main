@@ -9,24 +9,24 @@ public class Session {
     private String username;
     private int securityLevel;
 
-    public Session(){
+    public Session() {
         resetSession();
     }
 
     /**
      * Sets session details for user upon successful login
      */
-    public void login(String username, int securityLevel){
+    public void login(String username, int securityLevel) {
         this.isLoggedIn = true;
         this.username = username;
         this.securityLevel = securityLevel;
     }
 
-    public void logout(){
+    public void logout() {
         resetSession();
     }
 
-    private void resetSession(){
+    private void resetSession() {
         isLoggedIn = false;
         username = "";
         securityLevel = 0;
