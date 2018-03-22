@@ -26,6 +26,15 @@ public interface Model {
     /** Returns the cellMap */
     CellMap getCellMap();
 
+    /** Returns the session */
+    Session getSession();
+
+    /** Clears existing session*/
+    void logout();
+
+    /** Logs in verified user and assigns security level to the session */
+    void login(String username, int securityLevel);
+
     /** Deletes the given person. */
     void deletePerson(Person target) throws PersonNotFoundException;
 
