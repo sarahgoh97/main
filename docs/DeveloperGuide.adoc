@@ -358,7 +358,6 @@ image::UndoRedoActivityDiagram.png[width="650"]
 * **Alternative 2:** Use `HistoryManager` for undo/redo
 ** Pros: We do not need to maintain a separate stack, and just reuse what is already in the codebase.
 ** Cons: Requires dealing with commands that have already been undone: We must remember to skip these commands. Violates Single Responsibility Principle and Separation of Concerns as `HistoryManager` now needs to do two * different things.
-// end::undoredo[]
 
 //tag::loginsecurity[]
 === Login and Security Feature
@@ -378,9 +377,9 @@ The implementation of the logging-in and the security levels is implemented in t
 image::LogicClassDiagramwSession.png[width="800"]
 
 Every user input will first go through the `SessionManager` which will check if the user is currently logged in, as well as retrieve the user's security level. It will then pass the security level to the `AddressBookParser` which will then decide whether or not to create the Command based on the required security level of the entered command.
-//end::loginsecurity
 
 //tag::cellmap[]
+=== Cell System Feature
 ==== Current Implementation
 
 In a prison, it is necessary to have cells, where prisoners stay in. It is important to keep track of the prisoners in the cell
@@ -481,7 +480,7 @@ In much further implementations, guards/prison workers can also be assigned to c
 
 _[more to come]_
 
-//end::cellmap[]
+//end::undoredo[]
 
 // tag::dataencryption[]
 === [Proposed] Data Encryption
