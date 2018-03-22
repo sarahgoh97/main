@@ -4,6 +4,7 @@ import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
 import seedu.address.model.cell.Cell;
+import seedu.address.model.cell.CellMap;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
@@ -24,6 +25,15 @@ public interface Model {
 
     /** Returns the cellMap */
     CellMap getCellMap();
+
+    /** Returns the session */
+    Session getSession();
+
+    /** Clears existing session*/
+    void logout();
+
+    /** Logs in verified user and assigns security level to the session */
+    void login(String username, int securityLevel);
 
     /** Deletes the given person. */
     void deletePerson(Person target) throws PersonNotFoundException;

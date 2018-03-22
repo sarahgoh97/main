@@ -73,18 +73,18 @@ Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
 
-=== Adding a prisoner to a cell: `addcell or ac` (upcoming)
+=== Adding a prisoner to a cell: `addcell or ac` (Partially here in v1.2)
 
 Adds a person to one of the cells in the prison +
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]...`
+Format: `ac INDEX CELLADDRESS`
 
 [TIP]
 A person must have at least a prisoner tag
 
 Examples:
 
-* `addcell n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 t/prisoner`
-* `ac n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/prisoner`
+* `addcell 1 1-1`
+* `ac 2 2-1`
 
 
 === Listing all persons : `list or l`
@@ -92,7 +92,7 @@ Examples:
 Shows a list of all persons in the prison book. +
 Format: `list`
 
-=== Listing prisoners in a cell : `listcell or lc` (upcoming)
+=== Listing prisoners in a cell : `listcell or lc` (coming in V2.0)
 
 Shows a list of all persons in a prison cell in the prison book. +
 Format: `list CELL`
@@ -101,7 +101,7 @@ Examples:
 * `listcell a1`
 * `lc c13`
 
-=== Showing cells in the map: `map or m` (v1.1)
+=== Showing cells in the map: `map or m` (Here in v1.1)
 
 Shows a table of prison cells like a map. +
 Format: `map`
@@ -172,7 +172,7 @@ Deletes the 2nd person in the prison book.
 `delete 1` +
 Deletes the 1st person in the results of the `find` command.
 
-=== Deleting a person from a cell : `deletecell or dc` (upcoming)
+=== Deleting a person from a cell : `deletecell or dc` (coming in V2.0)
 
 Deletes the specified person from the cell in the PrisonBook. +
 Format: `deletecell INDEX`
@@ -302,6 +302,8 @@ _{explain how the user can enable/disable data encryption}_
 
 * *Add* `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]...` +
 e.g. `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
+* *AddCell* `addcell INDEX CELLADDRESS`
+e.g. `1 1-1`
 * *Clear* : `clear`
 * *Delete* : `delete INDEX` +
 e.g. `delete 3`

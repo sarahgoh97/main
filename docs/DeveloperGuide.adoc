@@ -360,6 +360,156 @@ image::UndoRedoActivityDiagram.png[width="650"]
 ** Cons: Requires dealing with commands that have already been undone: We must remember to skip these commands. Violates Single Responsibility Principle and Separation of Concerns as `HistoryManager` now needs to do two * different things.
 // end::undoredo[]
 
+//tag::loginsecurity[]
+=== Login and Security Feature
+==== Current Implementation
+===== Model Aspect
+
+The implementation of the Login and Security feature is implemented by a `Session` which resides inside `Model Manager`. It supports the logging in and logging out of a user as well as support restricted access for specific commands. For example read access (list command) vs write access (add command and edit command).
+
+image::ModelClassDiagramwSession.jpg[width="800"]
+
+As can be seen from the diagram, a Session is initialised upon the creation of the ModelManager.
+
+===== Logic Aspect
+
+The implementation of the logging-in and the security levels is implemented in the `SessionManager` which is an additional step between the `LogicManager` and the `AddressBookParser`.
+
+image::LogicClassDiagramwSession.png[width="800"]
+
+Every user input will first go through the `SessionManager` which will check if the user is currently logged in, as well as retrieve the user's security level. It will then pass the security level to the `AddressBookParser` which will then decide whether or not to create the Command based on the required security level of the entered command.
+//end::loginsecurity
+
+//tag::cellmap[]
+==== Current Implementation
+
+In a prison, it is necessary to have cells, where prisoners stay in. It is important to keep track of the prisoners in the cell
+and whether the cell is full.
+
+This cell system is most clearly represented using a 2-D array. Hence, this was used as the basis of the map system of the prison.
+When implemented, it will take up the right side area of the application (but this has not yet been implemented). Below is
+an idea of what the UI may look like by the end of the project. The current implementation is still shown in the box below the user input.
+This basic map shows the basic implementation of the cell system and helps keep track of what is happening in the cells.
+
+image::currentMap.PNG[width="400"]
+
+image::futureMap.PNG[width="400"]
+
+With this map system of cells, the cells can be viewed. Not only that, prisoners can also be added into them and removed from them.
+These changes can be viewed in the bigger map which displays the number of people in them (also shown in the UI mockup above,
+represented by the square brackets) or in individual cells.
+
+To ensure that the number of prisoners in each cell does not exceed its limits, exceptions will be put in place to prevent such occurences.
+Also, exceptions that prevent users from adding prisoners into cells that do not exist (ie. there is no such cell in the prison).
+For future implementations, we can also allow only the prison wardens/owners to redefine the maximum size of the prison as their prisons
+may grow or shrink in the future. In this scenario, we will strive only to hit our non-functional requirements.
+
+[source,java]
+----
+//in CellMap.java
+private void addPrisonerToCell(Person prisoner, int row, int col) {
+        cellMap[row - 1][col - 1].addPrisoner(prisoner);
+}
+----
+
+This then adds a prisoner into the specified cell.
+[source,java]
+----
+//in Cell.java
+protected void addPrisoner(Person prisoner) {
+        prisoners.add(prisoner);
+}
+----
+
+Suppose that the user has access to the functions to add prisoners into prison cells.
+
+The cell map will have all the cells and its current occupants.
+
+The user executes a new `addCommand`. If the command is parsed successfully, and if the person added is a prisoner,
+the display result will prompt the user with a question to continue to add the prisoner to a cell with a map shown below it.
+
+Once the user uses the addcell command for the new prisoner, the prisoner is then added into the cell and the cell map system is updated.
+
+Besides the cell map system being updated, we will also update the addresses of these prisoners added to the prison, since they now live in the prison, rather than in their own homes.
+
+For future implementations, there will also be a command to remove prisoners, when they are being transferred to another cell,
+or if they can leave prison and go back home to their loved ones. This will be done in a similar manner to addcell.
+
+In much further implementations, guards/prison workers can also be assigned to cells, not as prisoners but as according to their job descriptions.
+
+==== Design Considerations
+
+===== Aspect: Data Structure of Cells in CellMap
+
+* **Alternative 1 (current choice):** Use a 2-D array`
+** Pros: Easy to visualise the system.
+** Cons: Harder to do more functions that the Java API has provided. Does not fit in with the other models of Person and Tag with their UniquePersonList and UniqueTagList
+* **Alternative 2:** Use a 2-level ArrayList`
+** Pros: Can use Java functions meant for Lists, can have different number of units for each block
+** Cons: Not uniform number of units for each block will be harder to take into consideration when using the individual cells.
+
+===== Aspect: Implementation of ShowCellsCommand (map)
+
+* **Alternative 1 (current choice):** Create a new Command to show the map.
+** Pros: Easy to implement, similar to listing. Extending the current list of commands. Only when function is called can the map be seen.
+** Cons: Easy to forget which cell in the map can add prisoners but the map is not permanently there.
+* **Alternative 2:** Keep the map always on display.
+** Pros: Easier to see when adding prisoners to cells.
+** Cons: Risk security as access to map is not limited. Even if it is, anyone walking by can see the information easily.
+
+
+===== Aspect: Implementation of AddCellCommand (addcell)
+
+* **Alternative 1 (current choice):** Prisoners are added into cells in a cellMap.
+** Pros: Cells are always there and can hold prisoners. Since these groups are still Persons with a guard role or prisoner role, not all persons may have a cell.
+** Cons: More difficult to see the individual's cell. (have not implemented updating addresses)
+* **Alternative 2:** Not have a cell map but to add cells to prisoners.
+** Pros: Might be more intuitive for the user, to check a prisoner's cell location.
+** Cons: Harder to manage a system of cells. Easy to accidentally overcrowd a cell.
+* **Alternative 3:** Automatically assigning cells to prisoners
+** Pros: Removes the burden of choosing a cell for user. Fewer commands required as prisoners are automatically added.
+** Cons: More complex in automatically choosing cells for prisoners. User might want to have control on which prisoners should be in which cell.
+
+===== Aspect: Implementation of RemoveCellCommand (removecell)
+
+* **Alternative 1 (current choice):** Can choose to remove prisoner from a cell and will automatically remove from prison when prisoner is deleted.
+** Pros: Allows users to transfer prisoners to other cells (with addcell as well). Less administration required of user.
+** Cons: Events-driven system to call RemoveCellCommand will be more complicated to coordinate
+* **Alternative 2:** Choose to empty a prison cell.
+** Pros: More efficient in removing prisoners, instead of 1 by 1.
+** Cons: Need to handle more than one prisoner that has been released or broken out.
+
+_[more to come]_
+
+//end::cellmap[]
+
+//tag::scheduling[]
+=== Guard Scheduling Feature
+==== Current Implementation
+
+The Guard Scheduling feature can be accessed via entering the command `cal`.
+
+It opens an additional calendar window with its own command input.
+
+Calendar Commands that are supported are:
+add e/eventname t/timestamp
+remove [eventID]
+edit [eventID] e/eventname t/timestamp
+
+The PrisonBook Calendar will send a HTTPS request to the Google Calendar API and change the Google account calendar.
+Upon confirmation of successful change by the Google Calendar APIR, the change will be reflected in the PrisonBook Calendar window.
+
+===== Aspect: Implementation of editing calendar
+
+* Alternative 1 (current choice): Using command line to type with prefixes for event names and their timings.
+Pros: Ties in with users who prefer typing over mouse clicking.
+Cons: Not as intuitive as selecting timeslots to edit. Need more prefixes for users to learn.
+* Alternative 2: Have buttons for users to click to edit.
+ Pros: More intutitive as less things to type.
+ Cons: No longer command line based.
+
+//end::scheduling
+
 // tag::dataencryption[]
 === [Proposed] Data Encryption
 

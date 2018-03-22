@@ -19,9 +19,10 @@ import seedu.address.logic.CommandHistory;
 import seedu.address.logic.UndoRedoStack;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
-import seedu.address.model.CellMap;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
+import seedu.address.model.Session;
+import seedu.address.model.cell.CellMap;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
@@ -101,6 +102,17 @@ public class AddCommandTest {
         public CellMap getCellMap() {
             return new CellMap();
         }
+
+        @Override
+        public void login(String username, int securityLevel){};
+
+        @Override
+        public void logout(){};
+
+        @Override
+        public Session getSession() {
+            return new Session();
+        };
 
         @Override
         public void addPerson(Person person) throws DuplicatePersonException {
