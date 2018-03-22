@@ -483,6 +483,33 @@ _[more to come]_
 
 //end::cellmap[]
 
+//tag::scheduling[]
+=== Guard Scheduling Feature
+==== Current Implementation
+
+The Guard Scheduling feature can be accessed via entering the command `cal`.
+
+It opens an additional calendar window with its own command input.
+
+Calendar Commands that are supported are:
+add e/eventname t/timestamp
+remove [eventID]
+edit [eventID] e/eventname t/timestamp
+
+The PrisonBook Calendar will send a HTTPS request to the Google Calendar API and change the Google account calendar.
+Upon confirmation of successful change by the Google Calendar APIR, the change will be reflected in the PrisonBook Calendar window.
+
+===== Aspect: Implementation of editing calendar
+
+* Alternative 1 (current choice): Using command line to type with prefixes for event names and their timings.
+Pros: Ties in with users who prefer typing over mouse clicking.
+Cons: Not as intuitive as selecting timeslots to edit. Need more prefixes for users to learn.
+* Alternative 2: Have buttons for users to click to edit.
+ Pros: More intutitive as less things to type.
+ Cons: No longer command line based.
+
+//end::scheduling
+
 // tag::dataencryption[]
 === [Proposed] Data Encryption
 
