@@ -360,6 +360,26 @@ image::UndoRedoActivityDiagram.png[width="650"]
 ** Cons: Requires dealing with commands that have already been undone: We must remember to skip these commands. Violates Single Responsibility Principle and Separation of Concerns as `HistoryManager` now needs to do two * different things.
 // end::undoredo[]
 
+=== Login and Security Feature
+==== Current Implementation
+===== Model Aspect
+
+The implementation of the Login and Security feature is implemented by a `Session` which resides inside `Model Manager`. It supports the logging in and logging out of a user as well as support restricted access for specific commands. For example read access (list command) vs write access (add command and edit command).
+
+image::ModelClassDiagramwSession.jpg[width="800"]
+
+As can be seen from the diagram, a Session is initialised upon the creation of the ModelManager.
+
+===== Logic Aspect
+
+The implementation of the logging-in and the security levels is implemented in the `SessionManager` which is an additional step between the `LogicManager` and the `AddressBookParser`.
+
+image::LogicClassDiagramwSession.png[width="800"]
+
+Every user input will first go through the `SessionManager` which will check if the user is currently logged in, as well as retrieve the user's security level. It will then pass the security level to the `AddressBookParser` which will then decide whether or not to create the Command based on the required security level of the entered command.
+
+// end::undoredo[]
+
 // tag::dataencryption[]
 === [Proposed] Data Encryption
 
