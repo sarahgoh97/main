@@ -2,7 +2,6 @@ package seedu.address.model.cell;
 
 import java.util.ArrayList;
 
-import seedu.address.model.CellMap;
 import seedu.address.model.person.Person;
 
 /**
@@ -20,6 +19,10 @@ public class Cell {
     public Cell(int row, int column) {
         prisoners = new ArrayList<Person>(MAX_SIZE);
         cellAddress = ++row + "-" + ++column;
+    }
+
+    protected void addPrisoner(Person prisoner) {
+        prisoners.add(prisoner);
     }
 
     public ArrayList<Person> getPrisoners() {

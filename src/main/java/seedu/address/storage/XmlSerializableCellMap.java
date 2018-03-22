@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.model.CellMap;
+import seedu.address.model.cell.CellMap;
 
 /**
  * An Immutable CellMap that is serializable to XML format
