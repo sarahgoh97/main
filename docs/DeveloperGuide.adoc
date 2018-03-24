@@ -381,6 +381,7 @@ Every user input will first go through the `SessionManager` which will check if 
 //end::loginsecurity
 
 //tag::cellmap[]
+=== Prison Cell Map
 ==== Current Implementation
 
 In a prison, it is necessary to have cells, where prisoners stay in. It is important to keep track of the prisoners in the cell
@@ -482,6 +483,61 @@ In much further implementations, guards/prison workers can also be assigned to c
 _[more to come]_
 
 //end::cellmap[]
+
+//tag::findbytag[]
+=== Find Command by Tag
+==== Current Implementation
+When the Find command is called, FindCommandParser will look for the tag and/or name prefixes (t/ and n/ respectively).
+The arguments following each prefix will be made into a list. A mapping is then generated with the prefixes as the keys
+ and the argument-lists as values. The name search portion will run like before, the tag search will follow a similar
+ approach; creating a new predicate instance and return matching results if they exist.
+
+==== Design Considerations
+===== Aspect: Find Command
+* **Alternative 1 (current choice):** Add on to the current Find command
+** Pros: Allows filtering by names and/or tags
+** Cons: Requires user to include prefixes in the command to differentiate between name and tag arguments
+* **Alternative 2:** Create new command for finding tags
+** Pros: More convenient if user only needs to filter by tags or filter by names separately, no need for prefixes
+** Cons: Cannot filter by names and tags in a single command
+
+===== Aspect: Argument Deliminator
+* **Alternative 1 (current choice):** Only one prefix with all arguments coming after, delimited by space
+** Pros: Relatively convenient for user when they are inputting multiple arguments
+** Cons: Easier for users to mistakenly merge two arguments into one when forgetting a space
+* **Alternative 2:** One prefix required for each argument
+** Pros: Allows user to order name and tag arguments in any order - the tag arguments and name arguments do not
+ have to be grouped together after a single prefix
+** Cons: May become tedious and redundant when inputting multiple arguments, more prone to typos and human error
+
+//end::findbytag[]
+
+//tag::scheduling[]
+=== Guard Scheduling Feature
+==== Current Implementation
+
+The Guard Scheduling feature can be accessed via entering the command `cal`.
+
+It opens an additional calendar window with its own command input.
+
+Calendar Commands that are supported are:
+add e/eventname t/timestamp
+remove [eventID]
+edit [eventID] e/eventname t/timestamp
+
+The PrisonBook Calendar will send a HTTPS request to the Google Calendar API and change the Google account calendar.
+Upon confirmation of successful change by the Google Calendar APIR, the change will be reflected in the PrisonBook Calendar window.
+
+===== Aspect: Implementation of editing calendar
+
+* Alternative 1 (current choice): Using command line to type with prefixes for event names and their timings.
+Pros: Ties in with users who prefer typing over mouse clicking.
+Cons: Not as intuitive as selecting timeslots to edit. Need more prefixes for users to learn.
+* Alternative 2: Have buttons for users to click to edit.
+ Pros: More intutitive as less things to type.
+ Cons: No longer command line based.
+
+//end::scheduling
 
 // tag::dataencryption[]
 === [Proposed] Data Encryption
