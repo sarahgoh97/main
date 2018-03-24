@@ -12,6 +12,7 @@ public class CellMap {
     public static final int MAX_ROW = 2;
     public static final int MAX_COL = 5;
     private Cell[][] cellMap;
+    private final ObservableList<Cell> internalList = FXCollections.observableArrayList();
 
     /**
      * Represents a fixed-sized map of the cells in the prison.
@@ -20,6 +21,7 @@ public class CellMap {
     public CellMap() {
         resetData();
     }
+
 
     /**
      * Prints a map of the cells on the map and their addresses
@@ -36,18 +38,32 @@ public class CellMap {
     }
 
     /**
+     * @param cellAddress has to be within boundaries
+     * @return Cell from cellAddress
+     */
+    public Cell getCell(String cellAddress) {
+        int row = Cell.getRow(cellAddress) - 1;
+        int col = Cell.getCol(cellAddress) - 1;
+        return cellMap[row][col];
+    }
+
+    public void setCell(Cell cell, String cellAddress) {
+        Cell c = getCell(cellAddress);
+        c = cell;
+    }
+
+    /**
      * Adds a prisoner to a specified cell.
      */
     public void addPrisonerToCell(Person prisoner, String cellAddress) {
-        int row = Integer.parseInt(cellAddress.substring(0, cellAddress.indexOf("-")));
-        int col = Integer.parseInt(cellAddress.substring(cellAddress.indexOf("-") + 1));
+        int row = Cell.getRow(cellAddress) - 1;
+        int col = Cell.getCol(cellAddress) - 1;
         addPrisonerToCell(prisoner, row, col);
     }
 
     private void addPrisonerToCell(Person prisoner, int row, int col) {
-        cellMap[row - 1][col - 1].addPrisoner(prisoner);
+        cellMap[row][col].addPrisoner(prisoner);
     }
-
 
     /**
      * For storage purposes
@@ -69,7 +85,7 @@ public class CellMap {
         cellMap = new Cell[MAX_ROW][MAX_COL];
         for (int currRow = 0; currRow < MAX_ROW; currRow++) {
             for (int currCol = 0; currCol < MAX_COL; currCol++) {
-                cellMap[currRow][currCol] = new Cell(currRow, currCol);
+                cellMap[currRow][currCol] = new Cell(currRow + 1, currCol + 1);
             }
         }
     }

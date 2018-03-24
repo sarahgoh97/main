@@ -9,7 +9,7 @@ import seedu.address.model.person.Person;
  * Guarantees: cell cannot exceed maximum number of people
  */
 public class Cell {
-    private static final int MAX_SIZE = 2;
+    public static final int MAX_SIZE = 2;
     private final ArrayList<Person> prisoners;
     private String cellAddress;
 
@@ -18,10 +18,18 @@ public class Cell {
      */
     public Cell(int row, int column) {
         prisoners = new ArrayList<Person>(MAX_SIZE);
-        cellAddress = ++row + "-" + ++column;
+        cellAddress = row + "-" + column;
     }
 
-    protected void addPrisoner(Person prisoner) {
+    public static int getCol(String cellAddress) {
+        return Integer.parseInt(cellAddress.substring(cellAddress.indexOf("-") + 1));
+    }
+
+    public static int getRow(String cellAddress) {
+        return Integer.parseInt(cellAddress.substring(0, cellAddress.indexOf("-"))) + 1;
+    }
+
+    public void addPrisoner(Person prisoner) {
         prisoners.add(prisoner);
     }
 

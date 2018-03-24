@@ -158,6 +158,17 @@ public class AddressBook implements ReadOnlyAddressBook {
         tags.add(t);
     }
 
+    //// cell-level operations
+
+    /**
+     *
+     * @param c is the cell to add to the map
+     */
+    public void addCell(Cell c) {
+        String cellAddress = c.getCellAddress();
+        cells.setCell(c, cellAddress);
+    }
+
     //// util methods
 
     @Override

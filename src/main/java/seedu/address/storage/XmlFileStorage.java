@@ -35,28 +35,4 @@ public class XmlFileStorage {
             throw new DataConversionException(e);
         }
     }
-
-    /**
-     * Saves the given cell map to the specified file.
-     */
-    public static void saveCellMapToFile(File file, XmlSerializableCellMap cellMap)
-            throws FileNotFoundException {
-        try {
-            XmlUtil.saveDataToFile(file, cellMap);
-        } catch (JAXBException e) {
-            throw new AssertionError("Unexpected exception " + e.getMessage());
-        }
-    }
-
-    /**
-     * Returns cell map in the file or an empty cell map
-     */
-    public static XmlSerializableCellMap loadCellMapFromSaveFile(File file) throws DataConversionException,
-            FileNotFoundException {
-        try {
-            return XmlUtil.getDataFromFile(file, XmlSerializableCellMap.class);
-        } catch (JAXBException e) {
-            throw new DataConversionException(e);
-        }
-    }
 }
