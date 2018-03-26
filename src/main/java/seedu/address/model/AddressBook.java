@@ -1,6 +1,7 @@
 package seedu.address.model;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,8 +14,12 @@ import java.util.stream.Collectors;
 import javafx.collections.ObservableList;
 import seedu.address.model.cell.Cell;
 import seedu.address.model.cell.CellMap;
+import seedu.address.model.cell.exceptions.AlreadyInCellException;
 import seedu.address.model.cell.exceptions.FullCellException;
+import seedu.address.model.cell.exceptions.NonExistentCellException;
+import seedu.address.model.cell.exceptions.NotPrisonerException;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Role;
 import seedu.address.model.person.UniquePersonList;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
@@ -124,13 +129,6 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     /**
-     * Replaces the given person {@code target} in the list with {@code updatedPrisoner}.
-     */
-    public void updatePrisoner(Person target, Person updatedPrisoner) {
-        persons.setPrisoner(target, updatedPrisoner);
-    }
-
-    /**
      *  Updates the master tag list to include tags in {@code person} that are not in the list.
      *  @return a copy of this {@code person} such that every tag in this person points to a Tag object in the master
      *  list.
@@ -149,7 +147,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         personTags.forEach(tag -> correctTagReferences.add(masterTagObjects.get(tag)));
         return new Person(
                 person.getName(), person.getPhone(), person.getEmail(), person.getAddress(), person.getRole(),
-                correctTagReferences);
+                correctTagReferences, person.getIsInCell());
     }
 
     /**
@@ -187,12 +185,29 @@ public class AddressBook implements ReadOnlyAddressBook {
      * @param prisoner to be added into the cell
      * @throws FullCellException if the cell already has the maximum number of prisoners
      */
-    public void addPrisonerToCell(String cellAddress, Person prisoner) throws FullCellException {
-        if (cells.getCell(cellAddress).getNumberOfPrisoners() < Cell.MAX_SIZE) {
-            cells.addPrisonerToCell(prisoner, cellAddress);
-        } else {
+    public void addPrisonerToCell(String cellAddress, Person prisoner) throws FullCellException,
+            NonExistentCellException, NotPrisonerException, AlreadyInCellException {
+        requireAllNonNull(prisoner, cellAddress);
+        if (!Cell.isValidCellAddress(cellAddress)) {
+            throw new NonExistentCellException();
+        } else if (!prisoner.getRole().equals(Role.PRISONER)) {
+            throw new NotPrisonerException();
+        } else if (prisoner.getIsInCell()) {
+            throw new AlreadyInCellException();
+        } else if (cells.getCell(cellAddress).getNumberOfPrisoners() >= Cell.MAX_SIZE) {
             throw new FullCellException();
+        } else {
+            Person updatedPrisoner = new Person(prisoner, true, cellAddress);
+            updatePrisoner(prisoner, updatedPrisoner);
+            cells.addPrisonerToCell(prisoner, cellAddress);
         }
+    }
+
+    /**
+     * Replaces the given person {@code target} in the list with {@code updatedPrisoner}.
+     */
+    public void updatePrisoner(Person target, Person updatedPrisoner) {
+        persons.setPrisoner(target, updatedPrisoner);
     }
 
     //// util methods

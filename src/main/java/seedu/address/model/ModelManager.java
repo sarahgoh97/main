@@ -12,12 +12,11 @@ import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
-import seedu.address.model.cell.Cell;
+import seedu.address.model.cell.exceptions.AlreadyInCellException;
 import seedu.address.model.cell.exceptions.FullCellException;
 import seedu.address.model.cell.exceptions.NonExistentCellException;
 import seedu.address.model.cell.exceptions.NotPrisonerException;
 import seedu.address.model.person.Person;
-import seedu.address.model.person.Role;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 
@@ -109,24 +108,12 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void updatePrisoner(Person target, boolean isInCell, String cellAddress) {
-        requireAllNonNull(target, isInCell, cellAddress);
-        Person updatedPrisoner = new Person(target, true, cellAddress);
-        addressBook.updatePrisoner(target, updatedPrisoner);
-    }
-
-    @Override
     public void addPrisonerToCell(Person prisoner, String cellAddress)
-            throws FullCellException, NonExistentCellException, NotPrisonerException {
+            throws FullCellException, NonExistentCellException,
+            NotPrisonerException, AlreadyInCellException {
         requireAllNonNull(prisoner, cellAddress);
-        if (!Cell.isValidCellAddress(cellAddress)) {
-            throw new NonExistentCellException();
-        } else if (!prisoner.getRole().equals(Role.PRISONER)) {
-            throw new NotPrisonerException();
-        } else {
-            addressBook.addPrisonerToCell(cellAddress, prisoner);
-            indicateAddressBookChanged();
-        }
+        addressBook.addPrisonerToCell(cellAddress, prisoner);
+        indicateAddressBookChanged();
     }
 
     //=========== Filtered Person List Accessors =============================================================

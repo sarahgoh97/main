@@ -6,13 +6,11 @@ import java.util.Objects;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.model.cell.exceptions.AlreadyInCellException;
 import seedu.address.model.cell.exceptions.FullCellException;
 import seedu.address.model.cell.exceptions.NonExistentCellException;
 import seedu.address.model.cell.exceptions.NotPrisonerException;
 import seedu.address.model.person.Person;
-import seedu.address.model.person.exceptions.DuplicatePersonException;
-import seedu.address.model.person.exceptions.PersonNotFoundException;
-
 
 /**
  * Adds a prisoner to a cell in the address book.
@@ -30,7 +28,8 @@ public class AddCellCommand extends UndoableCommand {
     public static final String MESSAGE_ADD_CELL_SUCCESS = "Prisoner %s added to %s.";
     public static final String MESSAGE_FULL_CELL = "Cell %s is already full. Here is the map:\n%s";
     public static final String MESSAGE_NON_EXISTENT_CELL = "This cell %s does not exist. Here is the map:\n%s";
-    public static final String MESSAGE_NOT_PRISONER = "Person %s is not a prisoner.";
+    public static final String MESSAGE_NOT_PRISONER = "%s is not a prisoner.";
+    public static final String MESSAGE_ALREADY_IN_CELL = "%s is already in cell %s";
 
     public final Index index;
 
@@ -55,7 +54,6 @@ public class AddCellCommand extends UndoableCommand {
         requireNonNull(prisonerToAdd);
         try {
             model.addPrisonerToCell(prisonerToAdd, cellAddress);
-            model.updatePrisoner(prisonerToAdd, true, cellAddress);
             return new CommandResult(String.format(MESSAGE_ADD_CELL_SUCCESS, prisonerToAdd.getName(), cellAddress));
         } catch (FullCellException fce) {
             throw new CommandException(String.format(MESSAGE_FULL_CELL,
@@ -67,6 +65,9 @@ public class AddCellCommand extends UndoableCommand {
                             model.getAddressBook().getCellList().toString())));
         } catch (NotPrisonerException npe) {
             throw new CommandException(String.format(MESSAGE_NOT_PRISONER, prisonerToAdd.getName()));
+        } catch (AlreadyInCellException aice) {
+            throw new CommandException(String.format(MESSAGE_ALREADY_IN_CELL,
+                    prisonerToAdd.getName(), prisonerToAdd.getAddress()));
         }
     }
 

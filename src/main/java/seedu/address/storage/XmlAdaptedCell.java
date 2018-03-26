@@ -65,7 +65,6 @@ public class XmlAdaptedCell {
         int col = Cell.getCol(cellAddress);
         Cell cell = new Cell(row, col);
 
-        final List<Person> cellPrisoners = new ArrayList<>();
         for (XmlAdaptedPerson person : prisoners) {
             cell.addPrisoner(person.toModelType());
         }
