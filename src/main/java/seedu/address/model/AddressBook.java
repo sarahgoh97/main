@@ -63,6 +63,9 @@ public class AddressBook implements ReadOnlyAddressBook {
         this.tags.setTags(tags);
     }
 
+    public void setCells(ObservableList<Cell> cells) {
+        this.cells.setCells(cells);
+    }
     /**
      * Resets the existing data of this {@code AddressBook} with {@code newData}.
      */
@@ -78,6 +81,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         } catch (DuplicatePersonException e) {
             throw new AssertionError("AddressBooks should not have duplicate persons");
         }
+        setCells(newData.getCellList());
     }
 
     //// person-level operations
@@ -169,11 +173,16 @@ public class AddressBook implements ReadOnlyAddressBook {
         cells.setCell(c, cellAddress);
     }
 
+    public void addPrisonerToCell(String cellAddress, Person prisoner) {
+        cells.addPrisonerToCell(prisoner, cellAddress);
+    }
+
     //// util methods
 
     @Override
     public String toString() {
-        return persons.asObservableList().size() + " persons, " + tags.asObservableList().size() +  " tags";
+        return persons.asObservableList().size() + " persons, " + tags.asObservableList().size() +  " tags"
+                + cells.getCellList();
         // TODO: refine later
     }
 
@@ -197,7 +206,8 @@ public class AddressBook implements ReadOnlyAddressBook {
         return other == this // short circuit if same object
                 || (other instanceof AddressBook // instanceof handles nulls
                 && this.persons.equals(((AddressBook) other).persons)
-                && this.tags.equalsOrderInsensitive(((AddressBook) other).tags));
+                && this.tags.equalsOrderInsensitive(((AddressBook) other).tags)
+                && this.cells.equals(((AddressBook) other).cells));
     }
 
     @Override

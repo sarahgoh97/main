@@ -22,21 +22,6 @@ public class CellMap {
         resetData();
     }
 
-
-    /**
-     * Prints a map of the cells on the map and their addresses
-     */
-    public void printCellMap() {
-        System.out.print(cellMap);
-    }
-
-    /**
-     * Returns the actual array
-     */
-    public Cell[][] getCellMap() {
-        return cellMap;
-    }
-
     /**
      * @param cellAddress has to be within boundaries
      * @return Cell from cellAddress
@@ -44,12 +29,27 @@ public class CellMap {
     public Cell getCell(String cellAddress) {
         int row = Cell.getRow(cellAddress) - 1;
         int col = Cell.getCol(cellAddress) - 1;
-        return cellMap[row][col];
+        return internalList.get(row * MAX_COL + col);
+    }
+
+    public void setCells(ObservableList<Cell> cells) {
+        for (Cell c: cells) {
+            setCell(c, c.getCellAddress());
+        }
+        internalList.clear();
+        internalList.setAll(cells);
     }
 
     public void setCell(Cell cell, String cellAddress) {
-        Cell c = getCell(cellAddress);
-        c = cell;
+        int row = Cell.getRow(cellAddress) - 1;
+        int col = Cell.getCol(cellAddress) - 1;
+        cellMap[row][col] = cell;
+        int num = row * MAX_COL + col;
+        if (num >= internalList.size()) {
+            internalList.add(cell);
+        } else {
+            internalList.set(num, cell);
+        }
     }
 
     /**
@@ -61,21 +61,21 @@ public class CellMap {
         addPrisonerToCell(prisoner, row, col);
     }
 
+    /**
+     * private method called from public method above
+     */
     private void addPrisonerToCell(Person prisoner, int row, int col) {
+        Cell cell = cellMap[row][col];
         cellMap[row][col].addPrisoner(prisoner);
+        int index = (row) * MAX_COL + col;
+        internalList.set(index, cell);
     }
 
     /**
      * For storage purposes
      */
     public ObservableList<Cell> getCellList() {
-        ObservableList<Cell> cellList = FXCollections.observableArrayList();
-        for (Cell[] cArray : cellMap) {
-            for (Cell c : cArray) {
-                cellList.add(c);
-            }
-        }
-        return FXCollections.unmodifiableObservableList(cellList);
+        return FXCollections.unmodifiableObservableList(internalList);
     }
 
     /**
@@ -83,9 +83,12 @@ public class CellMap {
      */
     public void resetData() {
         cellMap = new Cell[MAX_ROW][MAX_COL];
+        internalList.clear();
         for (int currRow = 0; currRow < MAX_ROW; currRow++) {
             for (int currCol = 0; currCol < MAX_COL; currCol++) {
-                cellMap[currRow][currCol] = new Cell(currRow + 1, currCol + 1);
+                Cell cell = new Cell(currRow + 1, currCol + 1);
+                cellMap[currRow][currCol] = cell;
+                internalList.add(cell);
             }
         }
     }

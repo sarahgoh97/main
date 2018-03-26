@@ -15,7 +15,11 @@ public class ShowCellsCommand extends Command {
 
     @Override
     public CommandResult execute() {
-        CellMap cellMap = model.getCellMap();
-        return new CommandResult(cellMap + MESSAGE_SUCCESS);
+        String cells = model.getAddressBook().getCellList().toString();
+        for (int i = 1; i <= CellMap.MAX_ROW; i++) {
+            cells = cells.replace(", " + i + "-1", i + "-1");
+        }
+        cells = cells.substring(1, cells.length() - 1);
+        return new CommandResult(cells + "\n" + MESSAGE_SUCCESS);
     }
 }

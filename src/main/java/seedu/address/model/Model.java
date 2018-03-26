@@ -23,9 +23,6 @@ public interface Model {
     /** Returns the AddressBook */
     ReadOnlyAddressBook getAddressBook();
 
-    /** Returns the cellMap */
-    CellMap getCellMap();
-
     /** Returns the session */
     Session getSession();
 
@@ -40,6 +37,9 @@ public interface Model {
 
     /** Adds the given person */
     void addPerson(Person person) throws DuplicatePersonException;
+
+    /** Adds given prisoner into a cell */
+    void addPrisonerToCell(Person prisoner, String cellAddress);
 
     /**
      * Replaces the given person {@code target} with {@code editedPerson}.

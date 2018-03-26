@@ -22,7 +22,6 @@ import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.Session;
-import seedu.address.model.cell.CellMap;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
@@ -98,10 +97,6 @@ public class AddCommandTest {
      * A default model stub that have all of the methods failing.
      */
     private class ModelStub implements Model {
-        @Override
-        public CellMap getCellMap() {
-            return new CellMap();
-        }
 
         @Override
         public void login(String username, int securityLevel){};
@@ -116,6 +111,11 @@ public class AddCommandTest {
 
         @Override
         public void addPerson(Person person) throws DuplicatePersonException {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void addPrisonerToCell(Person prisoner, String cellAddress) {
             fail("This method should not be called.");
         }
 

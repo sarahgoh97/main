@@ -12,6 +12,7 @@ public class Cell {
     public static final int MAX_SIZE = 2;
     private final ArrayList<Person> prisoners;
     private String cellAddress;
+    private boolean isLast;
 
     /*
      * Represents a cell in the Prison.
@@ -19,6 +20,11 @@ public class Cell {
     public Cell(int row, int column) {
         prisoners = new ArrayList<Person>(MAX_SIZE);
         cellAddress = row + "-" + column;
+        if (column == CellMap.MAX_COL) {
+            isLast = true;
+        } else {
+            isLast = false;
+        }
     }
 
     public static int getCol(String cellAddress) {
@@ -26,7 +32,7 @@ public class Cell {
     }
 
     public static int getRow(String cellAddress) {
-        return Integer.parseInt(cellAddress.substring(0, cellAddress.indexOf("-"))) + 1;
+        return Integer.parseInt(cellAddress.substring(0, cellAddress.indexOf("-")));
     }
 
     public void addPrisoner(Person prisoner) {
@@ -49,7 +55,19 @@ public class Cell {
      * Returns true if a given string is a valid cell.
      */
     public static boolean isValidCellAddress(String test) {
-        return test.charAt(0) <= CellMap.MAX_ROW
-                && test.charAt(2) <= CellMap.MAX_COL;
+        int row = getRow(test);
+        int col = getCol(test);
+        return row <= CellMap.MAX_ROW && row > 0
+                && col <= CellMap.MAX_COL && col > 0;
     }
+
+    @Override
+    public String toString() {
+        String string = getCellAddress() + " [" + getNumberOfPrisoners() + "]";
+        if (isLast) {
+            return string + "\n";
+        }
+        return string;
+    }
+
 }

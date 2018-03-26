@@ -44,7 +44,7 @@ public class AddCellCommand extends UndoableCommand {
     @Override
     public CommandResult executeUndoableCommand() throws CommandException {
         prisonerToAdd = model.getFilteredPersonList().get(index.getZeroBased());
-        model.getCellMap().addPrisonerToCell(prisonerToAdd, cellAddress);
+        model.addPrisonerToCell(prisonerToAdd, cellAddress);
         return new CommandResult(String.format(MESSAGE_ADD_CELL_SUCCESS, prisonerToAdd.getName(), cellAddress));
     }
 
