@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 import javafx.collections.ObservableList;
 import seedu.address.model.cell.Cell;
 import seedu.address.model.cell.CellMap;
+import seedu.address.model.cell.exceptions.FullCellException;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
@@ -39,7 +40,7 @@ public interface Model {
     void addPerson(Person person) throws DuplicatePersonException;
 
     /** Adds given prisoner into a cell */
-    void addPrisonerToCell(Person prisoner, String cellAddress);
+    void addPrisonerToCell(Person prisoner, String cellAddress) throws FullCellException;
 
     /**
      * Replaces the given person {@code target} with {@code editedPerson}.

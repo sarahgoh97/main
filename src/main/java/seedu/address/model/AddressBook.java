@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import javafx.collections.ObservableList;
 import seedu.address.model.cell.Cell;
 import seedu.address.model.cell.CellMap;
+import seedu.address.model.cell.exceptions.FullCellException;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.UniquePersonList;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
@@ -173,8 +174,18 @@ public class AddressBook implements ReadOnlyAddressBook {
         cells.setCell(c, cellAddress);
     }
 
-    public void addPrisonerToCell(String cellAddress, Person prisoner) {
-        cells.addPrisonerToCell(prisoner, cellAddress);
+    /**
+     *
+     * @param cellAddress to get the correct cell
+     * @param prisoner to be added into the cell
+     * @throws FullCellException if the cell already has the maximum number of prisoners
+     */
+    public void addPrisonerToCell(String cellAddress, Person prisoner) throws FullCellException {
+        if (cells.getCell(cellAddress).getNumberOfPrisoners() < Cell.MAX_SIZE) {
+            cells.addPrisonerToCell(prisoner, cellAddress);
+        } else {
+            throw new FullCellException();
+        }
     }
 
     //// util methods
