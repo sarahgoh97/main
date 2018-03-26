@@ -23,6 +23,7 @@ public class Person {
 
     private final UniqueTagList tags;
 
+    private boolean isInCell = false;
     /**
      * Every field must be present and not null.
      */
@@ -52,6 +53,23 @@ public class Person {
         this.role = role;
         // protect internal tags from changes in the arg list
         this.tags = new UniqueTagList(tags);
+    }
+
+    /**
+     * Constructor for updatedPrisoner after being added to cell
+     * @param person is prisoner being added to cell
+     * @param isInCell is true if adding to cell
+     * @param cellAddress
+     */
+    public Person (Person person, boolean isInCell, String cellAddress) {
+        requireAllNonNull(person, isInCell);
+        this.name = person.getName();
+        this.phone = person.getPhone();
+        this.email = person.getEmail();
+        this.address = new Address(cellAddress + "[imprisoned]");
+        this.role = person.getRole();
+        this.tags = new UniqueTagList(person.getTags());
+        this.isInCell = isInCell;
     }
 
     public Name getName() {

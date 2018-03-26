@@ -109,6 +109,13 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
+    public void updatePrisoner(Person target, boolean isInCell, String cellAddress) {
+        requireAllNonNull(target, isInCell, cellAddress);
+        Person updatedPrisoner = new Person(target, true, cellAddress);
+        addressBook.updatePrisoner(target, updatedPrisoner);
+    }
+
+    @Override
     public void addPrisonerToCell(Person prisoner, String cellAddress)
             throws FullCellException, NonExistentCellException, NotPrisonerException {
         requireAllNonNull(prisoner, cellAddress);

@@ -10,6 +10,8 @@ import seedu.address.model.cell.exceptions.FullCellException;
 import seedu.address.model.cell.exceptions.NonExistentCellException;
 import seedu.address.model.cell.exceptions.NotPrisonerException;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.exceptions.DuplicatePersonException;
+import seedu.address.model.person.exceptions.PersonNotFoundException;
 
 
 /**
@@ -50,9 +52,10 @@ public class AddCellCommand extends UndoableCommand {
     public CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(model);
         prisonerToAdd = model.getFilteredPersonList().get(index.getZeroBased());
-        requireNonNull(model);
+        requireNonNull(prisonerToAdd);
         try {
             model.addPrisonerToCell(prisonerToAdd, cellAddress);
+            model.updatePrisoner(prisonerToAdd, true, cellAddress);
             return new CommandResult(String.format(MESSAGE_ADD_CELL_SUCCESS, prisonerToAdd.getName(), cellAddress));
         } catch (FullCellException fce) {
             throw new CommandException(String.format(MESSAGE_FULL_CELL,

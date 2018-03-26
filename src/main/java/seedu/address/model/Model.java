@@ -4,7 +4,6 @@ import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
 import seedu.address.model.cell.Cell;
-import seedu.address.model.cell.CellMap;
 import seedu.address.model.cell.exceptions.FullCellException;
 import seedu.address.model.cell.exceptions.NonExistentCellException;
 import seedu.address.model.cell.exceptions.NotPrisonerException;
@@ -54,6 +53,11 @@ public interface Model {
      */
     void updatePerson(Person target, Person editedPerson)
             throws DuplicatePersonException, PersonNotFoundException;
+
+    /**
+     * Replaces the given person with new address of cell.
+     */
+    void updatePrisoner(Person target, boolean isInCell, String cellAddress);
 
     /** Returns an unmodifiable view of the filtered person list */
     ObservableList<Person> getFilteredPersonList();
