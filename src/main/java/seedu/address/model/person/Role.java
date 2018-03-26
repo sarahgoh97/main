@@ -12,6 +12,8 @@ public class Role {
 
     public static final String MESSAGE_ROLE_CONSTRAINTS =
             "Role can only take on the values 'g' or 'p', which represents Guard or Prisoner respectively";
+    public static final Role PRISONER = new Role("p");
+    public static final Role GUARD = new Role("g");
     public final String value;
 
     /**

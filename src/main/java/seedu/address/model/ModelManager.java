@@ -15,7 +15,9 @@ import seedu.address.commons.events.model.AddressBookChangedEvent;
 import seedu.address.model.cell.Cell;
 import seedu.address.model.cell.exceptions.FullCellException;
 import seedu.address.model.cell.exceptions.NonExistentCellException;
+import seedu.address.model.cell.exceptions.NotPrisonerException;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Role;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 
@@ -108,13 +110,15 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public void addPrisonerToCell(Person prisoner, String cellAddress)
-            throws FullCellException, NonExistentCellException {
+            throws FullCellException, NonExistentCellException, NotPrisonerException {
         requireAllNonNull(prisoner, cellAddress);
-        if (Cell.isValidCellAddress(cellAddress)) {
+        if (!Cell.isValidCellAddress(cellAddress)) {
+            throw new NonExistentCellException();
+        } else if (!prisoner.getRole().equals(Role.PRISONER)) {
+            throw new NotPrisonerException();
+        } else {
             addressBook.addPrisonerToCell(cellAddress, prisoner);
             indicateAddressBookChanged();
-        } else {
-            throw new NonExistentCellException();
         }
     }
 

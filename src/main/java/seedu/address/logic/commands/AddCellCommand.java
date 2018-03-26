@@ -8,6 +8,7 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.cell.exceptions.FullCellException;
 import seedu.address.model.cell.exceptions.NonExistentCellException;
+import seedu.address.model.cell.exceptions.NotPrisonerException;
 import seedu.address.model.person.Person;
 
 
@@ -27,6 +28,7 @@ public class AddCellCommand extends UndoableCommand {
     public static final String MESSAGE_ADD_CELL_SUCCESS = "Prisoner %s added to %s.";
     public static final String MESSAGE_FULL_CELL = "Cell %s is already full. Here is the map:\n%s";
     public static final String MESSAGE_NON_EXISTENT_CELL = "This cell %s does not exist. Here is the map:\n%s";
+    public static final String MESSAGE_NOT_PRISONER = "Person %s is not a prisoner.";
 
     public final Index index;
 
@@ -60,6 +62,8 @@ public class AddCellCommand extends UndoableCommand {
             throw new CommandException(String.format(MESSAGE_NON_EXISTENT_CELL,
                     cellAddress, new ShowCellsCommand().getMapString(
                             model.getAddressBook().getCellList().toString())));
+        } catch (NotPrisonerException npe) {
+            throw new CommandException(String.format(MESSAGE_NOT_PRISONER, prisonerToAdd.getName()));
         }
     }
 

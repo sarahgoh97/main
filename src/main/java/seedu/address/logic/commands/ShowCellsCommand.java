@@ -17,7 +17,7 @@ public class ShowCellsCommand extends Command {
     public CommandResult execute() {
         String cells = model.getAddressBook().getCellList().toString();
         String map = getMapString(cells);
-        return new CommandResult(cells + "\n" + MESSAGE_SUCCESS);
+        return new CommandResult(map + "\n" + MESSAGE_SUCCESS);
     }
 
     public String getMapString(String cells) {
