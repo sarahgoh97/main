@@ -7,6 +7,7 @@ import java.util.Objects;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.cell.exceptions.FullCellException;
+import seedu.address.model.cell.exceptions.NonExistentCellException;
 import seedu.address.model.person.Person;
 
 
@@ -24,7 +25,8 @@ public class AddCellCommand extends UndoableCommand {
             + "Example: " + COMMAND_WORD + " 1 1-1";
 
     public static final String MESSAGE_ADD_CELL_SUCCESS = "Prisoner %s added to %s.";
-    public static final String MESSAGE_FULL_CELL = "Invalid cell. Cell %s is already full.";
+    public static final String MESSAGE_FULL_CELL = "Cell %s is already full. Here is the map:\n%s";
+    public static final String MESSAGE_NON_EXISTENT_CELL = "This cell %s does not exist. Here is the map:\n%s";
 
     public final Index index;
 
@@ -38,10 +40,8 @@ public class AddCellCommand extends UndoableCommand {
     public AddCellCommand(Index index, String cellAddress) {
         requireNonNull(index);
         requireNonNull(cellAddress);
-
         this.index = index;
         this.cellAddress = cellAddress;
-        System.out.println(cellAddress);
     }
 
     @Override
@@ -53,7 +53,13 @@ public class AddCellCommand extends UndoableCommand {
             model.addPrisonerToCell(prisonerToAdd, cellAddress);
             return new CommandResult(String.format(MESSAGE_ADD_CELL_SUCCESS, prisonerToAdd.getName(), cellAddress));
         } catch (FullCellException fce) {
-            throw new CommandException(MESSAGE_FULL_CELL);
+            throw new CommandException(String.format(MESSAGE_FULL_CELL,
+                    cellAddress, new ShowCellsCommand().getMapString(
+                            model.getAddressBook().getCellList().toString())));
+        } catch (NonExistentCellException nece) {
+            throw new CommandException(String.format(MESSAGE_NON_EXISTENT_CELL,
+                    cellAddress, new ShowCellsCommand().getMapString(
+                            model.getAddressBook().getCellList().toString())));
         }
     }
 

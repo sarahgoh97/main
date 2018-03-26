@@ -12,7 +12,9 @@ import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
+import seedu.address.model.cell.Cell;
 import seedu.address.model.cell.exceptions.FullCellException;
+import seedu.address.model.cell.exceptions.NonExistentCellException;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
@@ -106,10 +108,14 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public void addPrisonerToCell(Person prisoner, String cellAddress)
-            throws FullCellException {
+            throws FullCellException, NonExistentCellException {
         requireAllNonNull(prisoner, cellAddress);
-        addressBook.addPrisonerToCell(cellAddress, prisoner);
-        indicateAddressBookChanged();
+        if (Cell.isValidCellAddress(cellAddress)) {
+            addressBook.addPrisonerToCell(cellAddress, prisoner);
+            indicateAddressBookChanged();
+        } else {
+            throw new NonExistentCellException();
+        }
     }
 
     //=========== Filtered Person List Accessors =============================================================

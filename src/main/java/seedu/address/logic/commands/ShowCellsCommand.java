@@ -16,10 +16,16 @@ public class ShowCellsCommand extends Command {
     @Override
     public CommandResult execute() {
         String cells = model.getAddressBook().getCellList().toString();
+        String map = getMapString(cells);
+        return new CommandResult(cells + "\n" + MESSAGE_SUCCESS);
+    }
+
+    public String getMapString(String cells) {
         for (int i = 1; i <= CellMap.MAX_ROW; i++) {
             cells = cells.replace(", " + i + "-1", i + "-1");
         }
         cells = cells.substring(1, cells.length() - 1);
-        return new CommandResult(cells + "\n" + MESSAGE_SUCCESS);
+
+        return cells;
     }
 }
