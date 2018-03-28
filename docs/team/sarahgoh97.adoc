@@ -1,0 +1,58 @@
+= Sarah Goh Shi Ning- Project Portfolio
+:imagesDir: ../images
+:stylesDir: ../stylesheets
+
+== PROJECT: PrisonBook
+
+---
+
+== Overview
+
+Prisonbook is a desktop address book application used for Prison Guards/Inmates management. The user interacts with it using a CLI, and it has a GUI created with JavaFX. It is written in Java, and has about 10 kLoC.
+
+== Summary of contributions
+
+* *Major enhancement*: Allowing guards and prison wardens to manage the prison cells.
+** What it does: There is a cell map that has a fixed size and certain number of cells.
+Allows guards and prison wardens to add prisoners to cells (and in future to remove them and view them in cells)
+** Justification: This helps to keep track of prisoners.
+
+* *Minor enhancement*: changing theme of prisonBook (not done)
+
+* *Code contributed*: [https://github.com[Functional code]] [https://github.com[Test code]] _{give links to collated code files}_
+
+* *Other contributions*:
+
+** Project management:
+*** Managed release `v1.3` on GitHub
+** Enhancements to existing features:
+*** Status bar shows number of people in th PrisonBook
+** Documentation:
+*** Did slight revisions to existing contents of the User Guide
+
+== Contributions to the User Guide
+
+
+|===
+|_Given below are sections I contributed to the User Guide. They showcase my ability to write documentation targeting end-users._
+|===
+
+include::../UserGuide.adoc[tag=addcell]
+include::../UserGuide.adoc[tag=listcell]
+include::../UserGuide.adoc[tag=map]
+include::../UserGuide.adoc[tag=deletecell]
+
+== Contributions to the Developer Guide
+
+|===
+|_Given below are sections I contributed to the Developer Guide. They showcase my ability to write technical documentation and the technical depth of my contributions to the project._
+|===
+
+include::../DeveloperGuide.adoc[tag=cellmap]
+
+include::../DeveloperGuide.adoc[tag=FeatureContribution]
+
+include::../DeveloperGuide.adoc[tag=UserStories]
+
+include::../DeveloperGuide.adoc[tag=UseCases]
+

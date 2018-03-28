@@ -10,12 +10,22 @@ public class ShowCellsCommand extends Command {
     public static final String COMMAND_WORD = "map";
     public static final String COMMAND_ALIAS = "m";
 
-    public static final String MESSAGE_SUCCESS = "Shown cells with number of people in them.";
+    public static final String MESSAGE_SUCCESS = "%s\nShown cells with number of people in them.";
 
 
     @Override
     public CommandResult execute() {
-        CellMap cellMap = model.getCellMap();
-        return new CommandResult(cellMap + MESSAGE_SUCCESS);
+        String cells = model.getAddressBook().getCellList().toString();
+        String map = getMapString(cells);
+        return new CommandResult(String.format(MESSAGE_SUCCESS, map));
+    }
+
+    public String getMapString(String cells) {
+        for (int i = 1; i <= CellMap.MAX_ROW; i++) {
+            cells = cells.replace(", " + i + "-1", i + "-1");
+        }
+        cells = cells.substring(1, cells.length() - 1);
+
+        return cells;
     }
 }

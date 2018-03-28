@@ -12,12 +12,14 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
+import static seedu.address.testutil.TypicalCells.getTypicalCells;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import seedu.address.model.AddressBook;
+import seedu.address.model.cell.Cell;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 
@@ -28,28 +30,28 @@ public class TypicalPersons {
 
     public static final Person ALICE = new PersonBuilder().withName("Alice Pauline")
             .withAddress("123, Jurong West Ave 6, #08-111").withEmail("alice@example.com")
-            .withPhone("85355255")
+            .withPhone("85355255").withRole("p")
             .withTags("friends").build();
     public static final Person BENSON = new PersonBuilder().withName("Benson Meier")
             .withAddress("311, Clementi Ave 2, #02-25")
-            .withEmail("johnd@example.com").withPhone("98765432")
+            .withEmail("johnd@example.com").withPhone("98765432").withRole("g")
             .withTags("owesMoney", "friends").build();
-    public static final Person CARL = new PersonBuilder().withName("Carl Kurz").withPhone("95352563")
+    public static final Person CARL = new PersonBuilder().withName("Carl Kurz").withPhone("95352563").withRole("p")
             .withEmail("heinz@example.com").withAddress("wall street").withTags("Tag1").build();
     public static final Person DANIEL = new PersonBuilder().withName("Daniel Meier").withPhone("87652533")
-            .withEmail("cornelia@example.com").withAddress("10th street").build();
+            .withEmail("cornelia@example.com").withAddress("10th street").withRole("g").build();
     public static final Person ELLE = new PersonBuilder().withName("Elle Meyer").withPhone("9482224")
-            .withEmail("werner@example.com").withAddress("michegan ave").withTags("Tag1").build();
+            .withEmail("werner@example.com").withAddress("michegan ave").withTags("Tag1").withRole("p").build();
     public static final Person FIONA = new PersonBuilder().withName("Fiona Kunz").withPhone("9482427")
-            .withEmail("lydia@example.com").withAddress("little tokyo").withTags("Tag1").build();
+            .withEmail("lydia@example.com").withAddress("little tokyo").withTags("Tag1").withRole("g").build();
     public static final Person GEORGE = new PersonBuilder().withName("George Best").withPhone("9482442")
-            .withEmail("anna@example.com").withAddress("4th street").build();
+            .withEmail("anna@example.com").withAddress("4th street").withRole("p").build();
 
     // Manually added
     public static final Person HOON = new PersonBuilder().withName("Hoon Meier").withPhone("8482424")
-            .withEmail("stefan@example.com").withAddress("little india").build();
+            .withEmail("stefan@example.com").withAddress("little india").withRole("p").build();
     public static final Person IDA = new PersonBuilder().withName("Ida Mueller").withPhone("8482131")
-            .withEmail("hans@example.com").withAddress("chicago ave").build();
+            .withEmail("hans@example.com").withAddress("chicago ave").withRole("g").build();
 
     // Manually added - Person's details found in {@code CommandTestUtil}
     public static final Person AMY = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
@@ -74,6 +76,9 @@ public class TypicalPersons {
             } catch (DuplicatePersonException e) {
                 throw new AssertionError("not possible");
             }
+        }
+        for (Cell cell: getTypicalCells()) {
+            ab.addCell(cell);
         }
         return ab;
     }
