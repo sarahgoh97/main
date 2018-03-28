@@ -2,8 +2,10 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.List;
 import java.util.Objects;
 
+import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.cell.exceptions.AlreadyInCellException;
@@ -50,7 +52,6 @@ public class AddCellCommand extends UndoableCommand {
     @Override
     public CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(model);
-        prisonerToAdd = model.getFilteredPersonList().get(index.getZeroBased());
         requireNonNull(prisonerToAdd);
         try {
             model.addPrisonerToCell(prisonerToAdd, cellAddress);
@@ -69,6 +70,17 @@ public class AddCellCommand extends UndoableCommand {
             throw new CommandException(String.format(MESSAGE_ALREADY_IN_CELL,
                     prisonerToAdd.getName(), prisonerToAdd.getAddress()));
         }
+    }
+
+    @Override
+    protected void preprocessUndoableCommand() throws CommandException {
+        List<Person> lastShownList = model.getFilteredPersonList();
+
+        if (index.getZeroBased() >= lastShownList.size()) {
+            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        }
+
+        prisonerToAdd = lastShownList.get(index.getZeroBased());
     }
 
     @Override
