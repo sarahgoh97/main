@@ -57,4 +57,41 @@
     </persons>
     <tags>friends</tags>
     <tags>owesMoney</tags>
+    <cells>
+        <cellAddress>1-1</cellAddress>
+    </cells>
+    <cells>
+        <cellAddress>1-2</cellAddress>
+        <prisoners>
+            <name>Alice Pauline</name>
+            <phone>85355255</phone>
+            <email>alice@example.com</email>
+            <address>123, Jurong West Ave 6, #08-111</address>
+            <role>p</role>
+            <tagged>friends</tagged>
+        </prisoners>
+    </cells>
+    <cells>
+        <cellAddress>1-3</cellAddress>
+        <prisoners>
+            <name>Alice Pauline</name>
+            <phone>85355255</phone>
+            <email>alice@example.com</email>
+            <address>123, Jurong West Ave 6, #08-111</address>
+            <role>p</role>
+            <tagged>friends</tagged>
+        </prisoners>
+        <prisoners>
+            <name>Benson Meier</name>
+            <phone>98765432</phone>
+            <email>johnd@example.com</email>
+            <address>311, Clementi Ave 2, #02-25</address>
+            <role>g</role>
+            <tagged>owesMoney</tagged>
+            <tagged>friends</tagged>
+        </prisoners>
+    </cells>
+    <cells>
+        <cellAddress>1-5</cellAddress>
+    </cells>
 </addressbook>
