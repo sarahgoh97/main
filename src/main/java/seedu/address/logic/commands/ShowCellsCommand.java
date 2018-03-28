@@ -10,14 +10,14 @@ public class ShowCellsCommand extends Command {
     public static final String COMMAND_WORD = "map";
     public static final String COMMAND_ALIAS = "m";
 
-    public static final String MESSAGE_SUCCESS = "Shown cells with number of people in them.";
+    public static final String MESSAGE_SUCCESS = "%s\nShown cells with number of people in them.";
 
 
     @Override
     public CommandResult execute() {
         String cells = model.getAddressBook().getCellList().toString();
         String map = getMapString(cells);
-        return new CommandResult(map + "\n" + MESSAGE_SUCCESS);
+        return new CommandResult(String.format(MESSAGE_SUCCESS, map));
     }
 
     public String getMapString(String cells) {
