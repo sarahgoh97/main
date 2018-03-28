@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import seedu.address.model.cell.Cell;
 import seedu.address.model.person.Person;
 
+/**
+ * A utility class to help with building Cell objects.
+ */
 
 public class CellBuilder {
     public static final ArrayList<Person> DEFAULT_PRISONERS = new ArrayList<Person>();
