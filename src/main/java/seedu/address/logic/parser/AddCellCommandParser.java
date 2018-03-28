@@ -29,7 +29,12 @@ public class AddCellCommandParser implements Parser<AddCellCommand> {
             if (removePrefix != null && removePrefix.contains(" ") && unparsedIndex != null) {
                 String cellAddress = removePrefix.substring(removePrefix.indexOf(" ") + 1);
                 Index index = ParserUtil.parseIndex(unparsedIndex);
-                return new AddCellCommand(index, cellAddress);
+                if (cellAddress.matches("\\d+-\\d+")) {
+                    return new AddCellCommand(index, cellAddress);
+                } else {
+                    throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                            AddCellCommand.MESSAGE_USAGE));
+                }
             } else {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCellCommand.MESSAGE_USAGE));
             }
