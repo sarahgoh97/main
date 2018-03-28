@@ -1,8 +1,8 @@
 package seedu.address;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,39 +19,43 @@ import com.google.api.client.util.DateTime;
 import com.google.api.client.util.store.FileDataStoreFactory;
 
 import com.google.api.services.calendar.CalendarScopes;
-import com.google.api.services.calendar.model.*;
+import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.Events;
 
+/** The main Calendar Functionality class
+ * Returns a list of upcoming events and times
+ * */
 public class Quickstart {
     /** Application name. */
-    private static final String APPLICATION_NAME =
+    private static final String application_name =
             "Google Calendar API Java seedu.address.Quickstart";
 
     /** Directory to store user credentials for this application. */
-    private static final java.io.File DATA_STORE_DIR = new java.io.File(
+    private static final java.io.File data_store_dir = new java.io.File(
             System.getProperty("user.home"), ".credentials/calendar-java-quickstart");
 
     /** Global instance of the {@link FileDataStoreFactory}. */
-    private static FileDataStoreFactory DATA_STORE_FACTORY;
+    private static FileDataStoreFactory datastorefactory;
 
     /** Global instance of the JSON factory. */
-    private static final JsonFactory JSON_FACTORY =
+    private static final JsonFactory json_factory =
             JacksonFactory.getDefaultInstance();
 
     /** Global instance of the HTTP transport. */
-    private static HttpTransport HTTP_TRANSPORT;
+    private static HttpTransport httptransport;
 
     /** Global instance of the scopes required by this quickstart.
      *
      * If modifying these scopes, delete your previously saved credentials
      * at ~/.credentials/calendar-java-quickstart
      */
-    private static final List<String> SCOPES =
+    private static final List<String> scopes =
             Arrays.asList(CalendarScopes.CALENDAR_READONLY);
 
     static {
         try {
-            HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-            DATA_STORE_FACTORY = new FileDataStoreFactory(DATA_STORE_DIR);
+            httptransport = GoogleNetHttpTransport.newTrustedTransport();
+            datastorefactory = new FileDataStoreFactory(data_store_dir);
         } catch (Throwable t) {
             t.printStackTrace();
             System.exit(1);
@@ -68,19 +72,19 @@ public class Quickstart {
         InputStream in =
                 Quickstart.class.getResourceAsStream("/client_secret.json");
         GoogleClientSecrets clientSecrets =
-                GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
+                GoogleClientSecrets.load(json_factory, new InputStreamReader(in));
 
         // Build flow and trigger user authorization request.
         GoogleAuthorizationCodeFlow flow =
                 new GoogleAuthorizationCodeFlow.Builder(
-                        HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
-                        .setDataStoreFactory(DATA_STORE_FACTORY)
+                        httptransport, json_factory, clientSecrets, scopes)
+                        .setDataStoreFactory(datastorefactory)
                         .setAccessType("offline")
                         .build();
         Credential credential = new AuthorizationCodeInstalledApp(
                 flow, new LocalServerReceiver()).authorize("user");
         System.out.println(
-                "Credentials saved to " + DATA_STORE_DIR.getAbsolutePath());
+                "Credentials saved to " + data_store_dir.getAbsolutePath());
         return credential;
     }
 
@@ -90,11 +94,11 @@ public class Quickstart {
      * @throws IOException
      */
     public static com.google.api.services.calendar.Calendar
-    getCalendarService() throws IOException {
+        getCalendarService() throws IOException {
         Credential credential = authorize();
         return new com.google.api.services.calendar.Calendar.Builder(
-                HTTP_TRANSPORT, JSON_FACTORY, credential)
-                .setApplicationName(APPLICATION_NAME)
+                httptransport, json_factory, credential)
+                .setApplicationName(application_name)
                 .build();
     }
 
@@ -103,7 +107,7 @@ public class Quickstart {
      * @return a list of upcoming events
      * @throws IOException
      */
-    public static String Quick() throws IOException {
+    public static String quick() throws IOException {
         // Build a new authorized API client service.
         // Note: Do not confuse this class with the
         //   com.google.api.services.calendar.model.Calendar class.
@@ -121,7 +125,6 @@ public class Quickstart {
         List<Event> items = events.getItems();
         StringBuilder result = new StringBuilder();
         if (items.size() == 0) {
-//            System.out.println("No upcoming events found.");
             result.append("No upcoming events found.");
         } else {
             System.out.println("Upcoming events");
@@ -130,7 +133,6 @@ public class Quickstart {
                 if (start == null) {
                     start = event.getStart().getDate();
                 }
-//                System.out.printf("%s (%s)\n", event.getSummary(), start);
                 result.append(String.format("%s (%s)\n", event.getSummary(), start));
             }
         }

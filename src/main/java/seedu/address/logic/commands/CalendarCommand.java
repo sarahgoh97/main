@@ -16,9 +16,9 @@ public class CalendarCommand extends Command {
     @Override
     public CommandResult execute() {
         try {
-            String MESSAGE_SUCCESS = new Quickstart().Quick();
-            return new CommandResult(MESSAGE_SUCCESS);
-        } catch(IOException e) {
+            String messagesuccess = new Quickstart().quick();
+            return new CommandResult(messagesuccess);
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return new CommandResult(ERROR_MESSAGE);
