@@ -9,12 +9,13 @@ import seedu.address.model.person.Person;
  * Guarantees: cell cannot exceed maximum number of people
  */
 public class Cell {
+
     public static final int MAX_SIZE = 2;
     private final ArrayList<Person> prisoners;
     private String cellAddress;
     private boolean isLast;
 
-    /*
+    /**
      * Represents a cell in the Prison.
      */
     public Cell(int row, int column) {
@@ -25,6 +26,15 @@ public class Cell {
         } else {
             isLast = false;
         }
+    }
+
+    /**
+     * A copied cell
+     */
+    public Cell(ArrayList<Person> prisoners, String cellAddress, boolean isLast) {
+        this.prisoners = new ArrayList<Person>(prisoners);
+        this.cellAddress = cellAddress;
+        this.isLast = isLast;
     }
 
     public static int getCol(String cellAddress) {
@@ -49,6 +59,10 @@ public class Cell {
 
     public int getNumberOfPrisoners() {
         return prisoners.size();
+    }
+
+    public boolean getIsLast() {
+        return isLast;
     }
 
     /**

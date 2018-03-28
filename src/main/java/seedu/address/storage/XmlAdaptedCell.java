@@ -10,7 +10,7 @@ import seedu.address.model.cell.Cell;
 import seedu.address.model.person.Person;
 
 /**
- * JAXB-friendly version of the Person.
+ * JAXB-friendly version of the Cell.
  */
 public class XmlAdaptedCell {
 
