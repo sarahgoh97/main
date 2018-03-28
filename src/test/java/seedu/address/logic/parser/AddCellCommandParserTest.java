@@ -9,7 +9,6 @@ import org.junit.Test;
 
 import seedu.address.logic.commands.AddCellCommand;
 
-
 public class AddCellCommandParserTest {
 
     private AddCellCommandParser parser = new AddCellCommandParser();
