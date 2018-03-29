@@ -175,6 +175,14 @@ Returns any person having names `Betsy`, `Tim`, or `John`
 Returns any person having names `Betsy` or are tagged `Friends`
 // end::find[]
 
+// tag::calendar[]
+=== Various commands to interact with Google Calendar
+
+==== View upcoming events in the calendar: `calendar or c`
+Format: `calendar`
+
+// end::calendar[]
+
 === Deleting a person : `delete or d`
 
 Deletes the specified person from the prison book. +
@@ -334,8 +342,9 @@ e.g. `addcell 1 1-1`
 e.g. `delete 3`
 * *Edit* : `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]...` +
 e.g. `edit 2 n/James Lee e/jameslee@example.com`
-* *Find* : `find KEYWORD [MORE_KEYWORDS]` +
-e.g. `find James Jake`
+* *Find* : `find n/NAME_KEYWORD [MORE_NAME_KEYWORDS] t/TAG_KEYWORD [MORE_TAG_KEYWORDS]` +
+e.g. `find n/James Jake t/boys`
+* *Calendar* : `calendar`
 * *List* : `list`
 * *Map* : `map`
 * *Help* : `help`
