@@ -518,23 +518,47 @@ The arguments following each prefix will be made into a list. A mapping is then 
 
 The Guard Scheduling feature can be accessed via entering the command `cal`.
 
-It opens an additional calendar window with its own command input.
+It allows guards/wardens to interact with a Google Calendar account through the current PrisonBook GUI.
 
 Calendar Commands that are supported are:
-add e/eventname t/timestamp
-remove [eventID]
-edit [eventID] e/eventname t/timestamp
+* add e/eventname t/timestamp
+* remove [eventID]
+* edit [eventID] e/eventname t/timestamp
 
-The PrisonBook Calendar will send a HTTPS request to the Google Calendar API and change the Google account calendar.
-Upon confirmation of successful change by the Google Calendar APIR, the change will be reflected in the PrisonBook Calendar window.
+The PrisonBook calendar commands will send HTTPS requests to the REST calendar API and make changes to the Google account calendar.
+Upon confirmation of successful changes by the Google Calendar API, the change will be reflected next time any calendar commands are called.
+
+ ===== Aspect: Choosing Number of Accounts to Work With
+
+ * Alternative 1 (current choice): Using one Google account for all prison staff
+ Pros: Very simple to administrate and fits the needs of the project scope.
+ Cons: No personalization for calendars of Warden/Guards.
+ * Alternative 2: Use one Google account for Warden and one for Guards
+  Pros: Two accounts is still relatively simple to maintain, allows for some separation of events-scheduling.
+  Cons: All guards still share the same schedule, so they cannot have personal schedules.
+ * Alternative 2: Use one Google account for Warden and one for Guards
+  Pros: Two accounts is still relatively simple to maintain, allows for some separation of events-scheduling.
+  Cons: All guards still share the same schedule, so they cannot have personal schedules.
+ * Alternative 2: Use one Google account for Warden and one for Guards
+  Pros: All prison staff have their own calendar to work with, where they can have private individual events.
+  Cons: Hard to maintain because we have to make sure all staff have the master prison schedule of the inmates' activities non-overlapping with personal events. There will also be a lot of calendars to keep track of, depending on how many guards are hired.
+
+===== Aspect: Choosing Number of Calendars per Person
+
+* Alternative 1 (current choice): Only one calendar per person
+Pros: Simple to implement, administrate and satisfies users' daily tasks
+Cons: Events cannot overlap, limited to fit events in separate rigid time slots.
+* Alternative 2: Multiple calendars per person
+ Pros: Users can track multiple events happening at the same time. Different calendars can also be used to organize and group logically-related events.
+ Cons: Complicated on the administration side and oversteps the scope of this enhancement. Not really looking to replace personal Google Calendars, this is just to allow prison staff to work with prison schedules.
 
 ===== Aspect: Implementation of editing calendar
 
 * Alternative 1 (current choice): Using command line to type with prefixes for event names and their timings.
 Pros: Ties in with users who prefer typing over mouse clicking.
-Cons: Not as intuitive as selecting timeslots to edit. Need more prefixes for users to learn.
+Cons: Not as intuitive as selecting time slots to edit. Need more prefixes for users to learn.
 * Alternative 2: Have buttons for users to click to edit.
- Pros: More intutitive as less things to type.
+ Pros: More intuitive as less things to type.
  Cons: No longer command line based.
 
 //end::scheduling
