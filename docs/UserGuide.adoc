@@ -60,6 +60,23 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 
 Format: `help`
 
+=== Logging in: `login` (v1.2)
+
+Logs in to your account on the PrisonBook +
+Format: `login user/USER_NAME pw/PASSWORD`
+
+Examples:
+
+* `login user/prisonwarden99 pw/password1`
+// end::login[]
+
+=== Logging out: `logout` (v1.3)
+
+Logs out of your account +
+Format: `logout`
+
+// end::logout[]
+
 === Adding a person: `add or a`
 
 Adds a person to the prison book +
