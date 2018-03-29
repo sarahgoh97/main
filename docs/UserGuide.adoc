@@ -60,6 +60,7 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 
 Format: `help`
 
+// tag::login[]
 === Logging in: `login` (v1.2)
 
 Logs in to your account on the PrisonBook +
@@ -70,6 +71,7 @@ Examples:
 * `login user/prisonwarden99 pw/password1`
 // end::login[]
 
+// tag::logout[]
 === Logging out: `logout` (v1.3)
 
 Logs out of your account +
