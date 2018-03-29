@@ -378,7 +378,7 @@ The implementation of the logging-in and the security levels is implemented in t
 image::LogicClassDiagramwSession.png[width="800"]
 
 Every user input will first go through the `SessionManager` which will check if the user is currently logged in, as well as retrieve the user's security level. It will then pass the security level to the `AddressBookParser` which will then decide whether or not to create the Command based on the required security level of the entered command.
-//end::loginsecurity
+//end::loginsecurity[]
 
 // tag::cellmap[]
 === Prison Cell Map
