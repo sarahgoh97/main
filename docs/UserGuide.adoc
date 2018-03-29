@@ -152,6 +152,14 @@ Returns any person having names `Betsy`, `Tim`, or `John`
 Returns any person having names `Betsy` or are tagged `Friends`
 // end::find[]
 
+// tag::calendar[]
+=== Various commands to interact with Google Calendar
+
+==== View upcoming events in the calendar: `calendar or c`
+Format: `calendar` 
+
+// end::calendar[]
+
 === Deleting a person : `delete or d`
 
 Deletes the specified person from the prison book. +
