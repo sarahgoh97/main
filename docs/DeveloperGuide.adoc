@@ -485,7 +485,7 @@ _[more to come]_
 //end::cellmap[]
 
 //tag::findbytag[]
-=== Find Command by Tag
+=== Find by Tag Command
 ==== Current Implementation
 When the Find command is called, FindCommandParser will look for the tag and/or name prefixes (t/ and n/ respectively).
 The arguments following each prefix will be made into a list. A mapping is then generated with the prefixes as the keys
