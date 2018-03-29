@@ -27,8 +27,8 @@ PrisonBook is a desktop address book application used for Prison Guards/Inmates 
 ** Project management:
 *** TBD
 ** Enhancements to existing features:
-*** Find by tags command (Pull requests https://github.com/CS2103JAN2018-T11-B2/main/pull/25[#25])
-*** View upcoming events from PrisonBook Google Calendar (Pull requests https://github.com/CS2103JAN2018-T11-B2/main/pull/55[#55])
+*** Find by tags command (Pull request https://github.com/CS2103JAN2018-T11-B2/main/pull/25[#25])
+*** View upcoming events from PrisonBook Google Calendar (Pull request https://github.com/CS2103JAN2018-T11-B2/main/pull/55[#55])
 ** Documentation:
 *** Converted initial documentation into PrisonBook format.
 *** Fix overall typos or missed headers.
@@ -43,6 +43,7 @@ PrisonBook is a desktop address book application used for Prison Guards/Inmates 
 |===
 
 include::../UserGuide.adoc[tag=find]
+
 include::../UserGuide.adoc[tag=calendar]
 
 
@@ -53,7 +54,9 @@ include::../UserGuide.adoc[tag=calendar]
 |===
 
 include::../DeveloperGuide.adoc[tag=FeatureContribution]
+
 include::../DeveloperGuide.adoc[tag=findbytag]
+
 include::../DeveloperGuide.adoc[tag=scheduling]
 
 
