@@ -68,6 +68,14 @@ public class UniquePersonList implements Iterable<Person> {
     }
 
     /**
+     * Replaces the person {@code target} in the list with {@code updatedPrisoner}.
+     */
+    public void setPrisoner(Person target, Person updatedPrisoner) {
+        int index = internalList.indexOf(target);
+        internalList.set(index, updatedPrisoner);
+    }
+
+    /**
      * Removes the equivalent person from the list.
      *
      * @throws PersonNotFoundException if no such person could be found in the list.

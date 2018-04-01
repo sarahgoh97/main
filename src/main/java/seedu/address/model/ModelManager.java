@@ -12,7 +12,10 @@ import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
-import seedu.address.model.cell.CellMap;
+import seedu.address.model.cell.exceptions.AlreadyInCellException;
+import seedu.address.model.cell.exceptions.FullCellException;
+import seedu.address.model.cell.exceptions.NonExistentCellException;
+import seedu.address.model.cell.exceptions.NotPrisonerException;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
@@ -26,7 +29,6 @@ public class ModelManager extends ComponentManager implements Model {
 
     private final AddressBook addressBook;
     private final FilteredList<Person> filteredPersons;
-    private final CellMap cellMap;
     private final Session session;
 
     /**
@@ -42,10 +44,6 @@ public class ModelManager extends ComponentManager implements Model {
         this.addressBook = new AddressBook(addressBook);
         filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
 
-        logger.info("Initialising cellMap");
-        cellMap = new CellMap();
-        logger.info("Initialised cellMap");
-
         logger.info("Initialising session");
         session = new Session();
         logger.info("Initialised session");
@@ -58,18 +56,12 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void resetData(ReadOnlyAddressBook newData) {
         addressBook.resetData(newData);
-        cellMap.resetData();
         indicateAddressBookChanged();
     }
 
     @Override
     public ReadOnlyAddressBook getAddressBook() {
         return addressBook;
-    }
-
-    @Override
-    public CellMap getCellMap() {
-        return cellMap;
     }
 
     @Override
@@ -112,6 +104,15 @@ public class ModelManager extends ComponentManager implements Model {
         requireAllNonNull(target, editedPerson);
 
         addressBook.updatePerson(target, editedPerson);
+        indicateAddressBookChanged();
+    }
+
+    @Override
+    public void addPrisonerToCell(Person prisoner, String cellAddress)
+            throws FullCellException, NonExistentCellException,
+            NotPrisonerException, AlreadyInCellException {
+        requireAllNonNull(prisoner, cellAddress);
+        addressBook.addPrisonerToCell(cellAddress, prisoner);
         indicateAddressBookChanged();
     }
 

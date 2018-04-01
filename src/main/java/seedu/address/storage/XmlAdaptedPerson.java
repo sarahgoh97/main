@@ -34,6 +34,8 @@ public class XmlAdaptedPerson {
     private String address;
     @XmlElement(required = true)
     private String role;
+    @XmlElement(required = true)
+    private boolean isInCell;
 
     @XmlElement
     private List<XmlAdaptedTag> tagged = new ArrayList<>();
@@ -57,6 +59,7 @@ public class XmlAdaptedPerson {
         if (tagged != null) {
             this.tagged = new ArrayList<>(tagged);
         }
+        this.isInCell = false;
     }
 
     /**
@@ -74,6 +77,7 @@ public class XmlAdaptedPerson {
         for (Tag tag : source.getTags()) {
             tagged.add(new XmlAdaptedTag(tag));
         }
+        isInCell = source.getIsInCell();
     }
 
     /**
@@ -128,7 +132,10 @@ public class XmlAdaptedPerson {
         final Role role = new Role(this.role);
 
         final Set<Tag> tags = new HashSet<>(personTags);
-        return new Person(name, phone, email, address, role, tags);
+
+        final boolean isInCell = this.isInCell;
+
+        return new Person(name, phone, email, address, role, tags, isInCell);
     }
 
     @Override
@@ -147,6 +154,7 @@ public class XmlAdaptedPerson {
                 && Objects.equals(email, otherPerson.email)
                 && Objects.equals(address, otherPerson.address)
                 && Objects.equals(role, otherPerson.role)
-                && tagged.equals(otherPerson.tagged);
+                && tagged.equals(otherPerson.tagged)
+                && Objects.equals(isInCell, otherPerson.isInCell);
     }
 }

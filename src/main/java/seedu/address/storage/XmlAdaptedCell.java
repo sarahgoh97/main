@@ -7,11 +7,10 @@ import javax.xml.bind.annotation.XmlElement;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.cell.Cell;
-import seedu.address.model.cell.CellMap;
 import seedu.address.model.person.Person;
 
 /**
- * JAXB-friendly version of the Person.
+ * JAXB-friendly version of the Cell.
  */
 public class XmlAdaptedCell {
 
@@ -29,9 +28,9 @@ public class XmlAdaptedCell {
     public XmlAdaptedCell() {}
 
     /**
-     * Constructs a {@code XmlAdaptedCell} with the given {@code cell}.
+     * Constructs a {@code XmlAdaptedCell} with the given cell.
      */
-    public XmlAdaptedCell(String cell, List<XmlAdaptedPerson> prisoners) {
+    public XmlAdaptedCell(String cellAddress, List<XmlAdaptedPerson> prisoners) {
         this.cellAddress = cellAddress;
         if (prisoners != null) {
             this.prisoners = new ArrayList<>(prisoners);
@@ -53,18 +52,23 @@ public class XmlAdaptedCell {
     /**
      * Converts this jaxb-friendly adapted cell object into the model's Cell object.
      *
-     * @throws IllegalValueException if there were any data constraints violated in the adapted person
+     * @throws IllegalValueException if there were any data constraints violated in the adapted cell
      */
     public Cell toModelType() throws IllegalValueException {
-        final List<Person> cellPrisoners = new ArrayList<>();
-        for (XmlAdaptedPerson person : prisoners) {
-            cellPrisoners.add(person.toModelType());
-        }
-
-        if (this.cellAddress == null || !Cell.isValidCellAddress(this.cellAddress)) {
+        if (this.cellAddress == null) {
             throw new IllegalValueException(INVALID_CELL);
         }
-        return new Cell(CellMap.MAX_ROW - 1, CellMap.MAX_COL - 1);
+        if (!Cell.isValidCellAddress(this.cellAddress)) {
+            throw new IllegalValueException(INVALID_CELL);
+        }
+        int row = Cell.getRow(cellAddress);
+        int col = Cell.getCol(cellAddress);
+        Cell cell = new Cell(row, col);
+
+        for (XmlAdaptedPerson person : prisoners) {
+            cell.addPrisoner(person.toModelType());
+        }
+        return cell;
     }
 
     @Override

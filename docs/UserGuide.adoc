@@ -60,6 +60,25 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 
 Format: `help`
 
+// tag::login[]
+=== Logging in: `login` (v1.2)
+
+Logs in to your account on the PrisonBook +
+Format: `login user/USER_NAME pw/PASSWORD`
+
+Examples:
+
+* `login user/prisonwarden99 pw/password1`
+// end::login[]
+
+// tag::logout[]
+=== Logging out: `logout` (v1.3)
+
+Logs out of your account +
+Format: `logout`
+
+// end::logout[]
+
 === Adding a person: `add or a`
 
 Adds a person to the prison book +
@@ -73,25 +92,28 @@ Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
 
-=== Adding a prisoner to a cell: `addcell or ac` (Partially here in v1.2)
+// tag::addcell[]
+=== Adding a prisoner to a cell: `addcell or ac` (v1.3)
 
 Adds a person to one of the cells in the prison +
 Format: `ac INDEX CELLADDRESS`
 
 [TIP]
-A person must have at least a prisoner tag
+Person added must be a prisoner and not already in a cell within the prison.
+The cell must be in the map and not full.
 
 Examples:
 
 * `addcell 1 1-1`
 * `ac 2 2-1`
-
+// end::addcell[]
 
 === Listing all persons : `list or l`
 
 Shows a list of all persons in the prison book. +
 Format: `list`
 
+//tag::listcell[]
 === Listing prisoners in a cell : `listcell or lc` (coming in V2.0)
 
 Shows a list of all persons in a prison cell in the prison book. +
@@ -100,13 +122,14 @@ Format: `list CELL`
 Examples:
 * `listcell a1`
 * `lc c13`
+//end::listcell[]
 
-=== Showing cells in the map: `map or m` (Here in v1.1)
+//tag::map[]
+=== Showing cells in the map: `map or m` (v1.1)
 
 Shows a table of prison cells like a map. +
 Format: `map`
-
-
+//end::map[]
 
 === Editing a person : `edit or e`
 
@@ -180,6 +203,7 @@ Deletes the 2nd person in the prison book.
 `delete 1` +
 Deletes the 1st person in the results of the `find` command.
 
+//tag::deletecell[]
 === Deleting a person from a cell : `deletecell or dc` (coming in V2.0)
 
 Deletes the specified person from the cell in the PrisonBook. +
@@ -199,6 +223,7 @@ Deletes the 2nd person in the cell in the PrisonBook.
 * `listcell b4` +
 `dc 1`
 Deletes the 1st person in the cell in the PrisonBook.
+//end::deletecell[]
 
 === Selecting a person : `select or s`
 
@@ -311,7 +336,7 @@ _{explain how the user can enable/disable data encryption}_
 * *Add* `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]...` +
 e.g. `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
 * *AddCell* `addcell INDEX CELLADDRESS`
-e.g. `1 1-1`
+e.g. `addcell 1 1-1`
 * *Clear* : `clear`
 * *Delete* : `delete INDEX` +
 e.g. `delete 3`

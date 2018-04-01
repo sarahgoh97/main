@@ -23,6 +23,7 @@ public class Person {
 
     private final UniqueTagList tags;
 
+    private boolean isInCell = false;
     /**
      * Every field must be present and not null.
      */
@@ -54,6 +55,36 @@ public class Person {
         this.tags = new UniqueTagList(tags);
     }
 
+    //for storage purposes
+    public Person(Name name, Phone phone, Email email, Address address, Role role, Set<Tag> tags, boolean isInCell) {
+        requireAllNonNull(name, phone, email, address, tags);
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+        this.role = role;
+        // protect internal tags from changes in the arg list
+        this.tags = new UniqueTagList(tags);
+        this.isInCell = isInCell;
+    }
+
+    /**
+     * Constructor for updatedPrisoner after being added to cell
+     * @param person is prisoner being added to cell
+     * @param isInCell is true if adding to cell
+     * @param cellAddress is cell prisoner is entering
+     */
+    public Person (Person person, boolean isInCell, String cellAddress) {
+        requireAllNonNull(person, isInCell);
+        this.name = person.getName();
+        this.phone = person.getPhone();
+        this.email = person.getEmail();
+        this.address = new Address(cellAddress + " [imprisoned]");
+        this.role = person.getRole();
+        this.tags = new UniqueTagList(person.getTags());
+        this.isInCell = isInCell;
+    }
+
     public Name getName() {
         return name;
     }
@@ -72,6 +103,10 @@ public class Person {
 
     public Role getRole() {
         return role;
+    }
+
+    public boolean getIsInCell() {
+        return isInCell;
     }
 
     /**
@@ -97,7 +132,8 @@ public class Person {
                 && otherPerson.getPhone().equals(this.getPhone())
                 && otherPerson.getEmail().equals(this.getEmail())
                 && otherPerson.getAddress().equals(this.getAddress())
-                && otherPerson.getRole().equals(this.getRole());
+                && otherPerson.getRole().equals(this.getRole())
+                && otherPerson.getIsInCell() == this.getIsInCell();
     }
 
     @Override
@@ -120,6 +156,7 @@ public class Person {
                 .append(getRole())
                 .append(" Tags: ");
         getTags().forEach(builder::append);
+        builder.append(isInCell);
         return builder.toString();
     }
 
