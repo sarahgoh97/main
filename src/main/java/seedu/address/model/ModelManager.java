@@ -116,6 +116,12 @@ public class ModelManager extends ComponentManager implements Model {
         indicateAddressBookChanged();
     }
 
+    @Override
+    public void deletePrisonerFromCell(Person prisoner, String cellAddress) {
+        requireAllNonNull(prisoner, cellAddress);
+        addressBook.deletePrisonerFromCell(prisoner, cellAddress);
+    }
+
     //=========== Filtered Person List Accessors =============================================================
 
     /**

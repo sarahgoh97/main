@@ -46,6 +46,9 @@ public interface Model {
             throws FullCellException, NonExistentCellException,
             NotPrisonerException, AlreadyInCellException;
 
+    /** Deletes given prisoner from a cell */
+    void deletePrisonerFromCell(Person prisoner, String cellAddress);
+
     /**
      * Replaces the given person {@code target} with {@code editedPerson}.
      *

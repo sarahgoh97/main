@@ -6,6 +6,7 @@ import seedu.address.logic.CommandHistory;
 import seedu.address.logic.UndoRedoStack;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.person.Person;
 
 /**
  * Undo the previous {@code UndoableCommand}.
@@ -25,7 +26,13 @@ public class UndoCommand extends Command {
             throw new CommandException(MESSAGE_FAILURE);
         }
 
-        undoRedoStack.popUndo().undo();
+        UndoableCommand command = undoRedoStack.popUndo();
+        if (command instanceof AddCellCommand) {
+            String cellAddress = ((AddCellCommand) command).cellAddress;
+            Person prisoner = ((AddCellCommand) command).prisonerToAdd;
+            model.deletePrisonerFromCell(prisoner, cellAddress);
+        }
+        command.undo();
         return new CommandResult(MESSAGE_SUCCESS);
     }
 

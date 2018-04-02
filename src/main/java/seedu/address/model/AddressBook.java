@@ -185,7 +185,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     /**
-     *
+     * Adds a prisoner to a cell
      * @param cellAddress to get the correct cell
      * @param prisoner to be added into the cell
      * @throws FullCellException if the cell already has the maximum number of prisoners
@@ -206,6 +206,14 @@ public class AddressBook implements ReadOnlyAddressBook {
             updatePrisoner(prisoner, updatedPrisoner);
             cells.addPrisonerToCell(updatedPrisoner, cellAddress);
         }
+    }
+
+    /**
+     * Deletes prisoner from a specified cell
+     */
+    public void deletePrisonerFromCell(Person prisoner, String cellAddress) {
+        Person updatedPrisoner = new Person(prisoner, true, cellAddress);
+        cells.deletePrisonerFromCell(updatedPrisoner, cellAddress);
     }
 
     /**
