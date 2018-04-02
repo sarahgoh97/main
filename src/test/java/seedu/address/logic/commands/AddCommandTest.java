@@ -120,6 +120,11 @@ public class AddCommandTest {
         }
 
         @Override
+        public void deletePrisonerFromCell(Person prisoner, String cellAddress) {
+            fail("This method should not be called.");
+        }
+
+        @Override
         public void resetData(ReadOnlyAddressBook newData) {
             fail("This method should not be called.");
         }
