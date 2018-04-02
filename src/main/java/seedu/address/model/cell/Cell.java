@@ -73,10 +73,14 @@ public class Cell {
      * Returns true if a given string is a valid cell.
      */
     public static boolean isValidCellAddress(String test) {
-        int row = getRow(test);
-        int col = getCol(test);
-        return row <= CellMap.MAX_ROW && row > 0
-                && col <= CellMap.MAX_COL && col > 0;
+        if (test.matches("\\d+-\\d+")) {
+            int row = getRow(test);
+            int col = getCol(test);
+            return row <= CellMap.MAX_ROW && row > 0
+                    && col <= CellMap.MAX_COL && col > 0;
+        } else {
+            return false;
+        }
     }
 
     @Override

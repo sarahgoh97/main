@@ -4,10 +4,7 @@ import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
 import seedu.address.model.cell.Cell;
-import seedu.address.model.cell.exceptions.AlreadyInCellException;
-import seedu.address.model.cell.exceptions.FullCellException;
-import seedu.address.model.cell.exceptions.NonExistentCellException;
-import seedu.address.model.cell.exceptions.NotPrisonerException;
+import seedu.address.model.cell.exceptions.*;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
@@ -46,8 +43,11 @@ public interface Model {
             throws FullCellException, NonExistentCellException,
             NotPrisonerException, AlreadyInCellException;
 
-    /** Deletes given prisoner from a cell */
+    /** Deletes given prisoner from a cell from undo command*/
     void deletePrisonerFromCell(Person prisoner, String cellAddress);
+
+    /**Deletes given prisoner from a cell from DeleteCellCommand */
+    void deletePrisonerFromCell(Person prisoner) throws PersonNotFoundException, NotImprisonedException;
 
     /**
      * Replaces the given person {@code target} with {@code editedPerson}.

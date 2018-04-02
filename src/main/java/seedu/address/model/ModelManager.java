@@ -12,10 +12,8 @@ import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
-import seedu.address.model.cell.exceptions.AlreadyInCellException;
-import seedu.address.model.cell.exceptions.FullCellException;
-import seedu.address.model.cell.exceptions.NonExistentCellException;
-import seedu.address.model.cell.exceptions.NotPrisonerException;
+import seedu.address.model.cell.Cell;
+import seedu.address.model.cell.exceptions.*;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
@@ -116,10 +114,32 @@ public class ModelManager extends ComponentManager implements Model {
         indicateAddressBookChanged();
     }
 
+    /* this is for undo command */
     @Override
     public void deletePrisonerFromCell(Person prisoner, String cellAddress) {
         requireAllNonNull(prisoner, cellAddress);
-        addressBook.deletePrisonerFromCell(prisoner, cellAddress);
+        Person updatedPrisoner = new Person(prisoner, true, cellAddress);
+        addressBook.deletePrisonerFromCell(updatedPrisoner, cellAddress);
+    }
+
+    /* this is for delete cell command */
+    @Override
+    public void deletePrisonerFromCell(Person prisoner) throws PersonNotFoundException, NotImprisonedException {
+        requireNonNull(prisoner);
+        if (!filteredPersons.contains(prisoner)) {
+            throw new PersonNotFoundException();
+        } else {
+            String cellAddress = prisoner.getAddress().toString();
+            if (prisoner.getIsInCell()) {
+                cellAddress = cellAddress.substring(0, cellAddress.indexOf(" "));
+                addressBook.deletePrisonerFromCell(prisoner, cellAddress);
+                Person freedPrisoner = new Person(prisoner, false);
+                addressBook.updatePrisoner(prisoner, freedPrisoner);
+            } else {
+                throw new NotImprisonedException();
+            }
+        }
+        indicateAddressBookChanged();
     }
 
     //=========== Filtered Person List Accessors =============================================================

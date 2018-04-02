@@ -212,8 +212,7 @@ public class AddressBook implements ReadOnlyAddressBook {
      * Deletes prisoner from a specified cell
      */
     public void deletePrisonerFromCell(Person prisoner, String cellAddress) {
-        Person updatedPrisoner = new Person(prisoner, true, cellAddress);
-        cells.deletePrisonerFromCell(updatedPrisoner, cellAddress);
+        cells.deletePrisonerFromCell(prisoner, cellAddress);
     }
 
     /**
