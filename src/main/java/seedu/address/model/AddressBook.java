@@ -52,7 +52,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     public AddressBook() {}
 
     /**
-     * Creates an AddressBook using the Persons and Tags in the {@code toBeCopied}
+     * Creates an AddressBook using the Persons and Tags and Cells in the {@code toBeCopied}
      */
     public AddressBook(ReadOnlyAddressBook toBeCopied) {
         this();
@@ -156,6 +156,11 @@ public class AddressBook implements ReadOnlyAddressBook {
      */
     public boolean removePerson(Person key) throws PersonNotFoundException {
         if (persons.remove(key)) {
+            if (key.getIsInCell() == true) {
+                String cellAddress = key.getAddress().toString();
+                cellAddress = cellAddress.substring(0, cellAddress.length() - 13);
+                cells.deletePrisonerFromCell(key, cellAddress);
+            }
             return true;
         } else {
             throw new PersonNotFoundException();
@@ -199,7 +204,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         } else {
             Person updatedPrisoner = new Person(prisoner, true, cellAddress);
             updatePrisoner(prisoner, updatedPrisoner);
-            cells.addPrisonerToCell(prisoner, cellAddress);
+            cells.addPrisonerToCell(updatedPrisoner, cellAddress);
         }
     }
 
@@ -214,7 +219,7 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     @Override
     public String toString() {
-        return persons.asObservableList().size() + " persons, " + tags.asObservableList().size() +  " tags"
+        return persons.asObservableList().size() + " persons, " + tags.asObservableList().size() +  " tags\n"
                 + cells.getCellList();
         // TODO: refine later
     }

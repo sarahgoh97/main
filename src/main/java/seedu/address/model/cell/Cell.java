@@ -49,6 +49,10 @@ public class Cell {
         prisoners.add(prisoner);
     }
 
+    public void deletePrisoner(Person prisoner) {
+        prisoners.remove(prisoner);
+    }
+
     public ArrayList<Person> getPrisoners() {
         return prisoners;
     }

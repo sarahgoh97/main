@@ -35,8 +35,8 @@ public class AddCellCommand extends UndoableCommand {
 
     public final Index index;
 
-    private Person prisonerToAdd;
-    private String cellAddress;
+    public Person prisonerToAdd;
+    public String cellAddress;
 
     /**
      * @param index of the person in the filtered person list to edit

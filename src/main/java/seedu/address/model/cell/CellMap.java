@@ -72,6 +72,25 @@ public class CellMap {
     }
 
     /**
+     * Removes a prisoner from a specified cell
+     */
+    public void deletePrisonerFromCell(Person prisoner, String cellAddress) {
+        int row = Cell.getRow(cellAddress) - 1;
+        int col = Cell.getCol(cellAddress) - 1;
+        deletePrisonerFromCell(prisoner, row, col);
+    }
+
+    /**
+     * private method called from public method above
+     */
+    private void deletePrisonerFromCell(Person prisoner, int row, int col) {
+        Cell cell = cellMap[row][col];
+        cell.deletePrisoner(prisoner);
+        int index = row * MAX_COL + col;
+        internalList.set(index, cell);
+    }
+
+    /**
      * For storage purposes
      */
     public ObservableList<Cell> getCellList() {
