@@ -72,11 +72,18 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void logout() {
         session.logout();
+        logger.info("User logged out");
     }
 
     @Override
     public void login(String username, int securityLevel) {
         session.login(username, securityLevel);
+        logger.info("User logged in with: u/" + username + " slevel/" + securityLevel);
+    }
+
+    @Override
+    public String getSessionDetails() {
+        return("Username: " + session.getUsername() + " Security Level: " + session.getSecurityLevel());
     }
 
 
