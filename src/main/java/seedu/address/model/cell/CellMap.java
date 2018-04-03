@@ -9,7 +9,7 @@ import seedu.address.model.person.Person;
  * Cells are not allowed to exceed the maximum fixed size of the prison
  */
 public class CellMap {
-    public static final int MAX_ROW = 2;
+    public static final int MAX_ROW = 3;
     public static final int MAX_COL = 5;
     private Cell[][] cellMap;
     private final ObservableList<Cell> internalList = FXCollections.observableArrayList();

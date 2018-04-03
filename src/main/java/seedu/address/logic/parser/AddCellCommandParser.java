@@ -22,9 +22,19 @@ public class AddCellCommandParser implements Parser<AddCellCommand> {
             requireNonNull(args);
             String removePrefix = null;
             String unparsedIndex = null;
-            if (args.contains(" ")) {
+            if (args.contains(" ") && args.length() > args.indexOf(" ")) {
                 removePrefix = args.substring(args.indexOf(" ") + 1);
-                unparsedIndex = removePrefix.substring(0, removePrefix.indexOf(" "));
+                if (removePrefix.contains(" ") && removePrefix.length() > removePrefix.indexOf(" ")) {
+                    unparsedIndex = removePrefix.substring(0, removePrefix.indexOf(" "));
+                }
+                else {
+                    throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                            AddCellCommand.MESSAGE_USAGE));
+                }
+            }
+            else {
+                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                        AddCellCommand.MESSAGE_USAGE));
             }
             if (removePrefix != null && removePrefix.contains(" ") && unparsedIndex != null) {
                 String cellAddress = removePrefix.substring(removePrefix.indexOf(" ") + 1);
