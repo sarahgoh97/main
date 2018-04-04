@@ -25,6 +25,7 @@ import seedu.address.logic.commands.RedoCommand;
 import seedu.address.logic.commands.SelectCommand;
 import seedu.address.logic.commands.ShowCellsCommand;
 import seedu.address.logic.commands.UndoCommand;
+
 import seedu.address.logic.parser.exceptions.ParseException;
 
 /**
@@ -91,6 +92,9 @@ public class AddressBookParser {
 
         case LogoutCommand.COMMAND_WORD:
             return new LogoutCommand();
+
+        case CheckStatusCommand.COMMAND_WORD:
+            return new CheckStatusCommand();
 
         case HistoryCommand.COMMAND_WORD:
         case HistoryCommand.COMMAND_ALIAS:

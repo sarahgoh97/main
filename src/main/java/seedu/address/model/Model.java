@@ -34,6 +34,12 @@ public interface Model {
     /** Logs in verified user and assigns security level to the session */
     void login(String username, int securityLevel);
 
+    /** Returns Session details to caller */
+    public String getSessionDetails();
+
+    /** Returns Session security level to caller */
+    public int getSecurityLevel();
+
     /** Deletes the given person. */
     void deletePerson(Person target) throws PersonNotFoundException;
 
