@@ -3,7 +3,6 @@ package seedu.address.model;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
-import seedu.address.model.cell.Cell;
 import seedu.address.model.cell.exceptions.AlreadyInCellException;
 import seedu.address.model.cell.exceptions.FullCellException;
 import seedu.address.model.cell.exceptions.NonExistentCellException;
@@ -19,7 +18,6 @@ import seedu.address.model.person.exceptions.PersonNotFoundException;
 public interface Model {
     /** {@code Predicate} that always evaluate to true */
     Predicate<Person> PREDICATE_SHOW_ALL_PERSONS = unused -> true;
-    Predicate<Cell> PREDICATE_SHOW_ALL_CELLS = unused -> true;
 
     /** Clears existing backing model and replaces with the provided new data. */
     void resetData(ReadOnlyAddressBook newData);
@@ -42,6 +40,7 @@ public interface Model {
     /** Adds the given person */
     void addPerson(Person person) throws DuplicatePersonException;
 
+    //@@author sarahgoh97
     /** Adds given prisoner into a cell */
     void addPrisonerToCell(Person prisoner, String cellAddress)
             throws FullCellException, NonExistentCellException,
@@ -53,6 +52,7 @@ public interface Model {
     /**Deletes given prisoner from a cell from DeleteCellCommand */
     void deletePrisonerFromCell(Person prisoner) throws PersonNotFoundException, NotImprisonedException;
 
+    //@@author
     /**
      * Replaces the given person {@code target} with {@code editedPerson}.
      *

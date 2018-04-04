@@ -156,11 +156,13 @@ public class AddressBook implements ReadOnlyAddressBook {
      */
     public boolean removePerson(Person key) throws PersonNotFoundException {
         if (persons.remove(key)) {
+            //@@author sarahgoh97
             if (key.getIsInCell() == true) {
                 String cellAddress = key.getAddress().toString();
                 cellAddress = cellAddress.substring(0, cellAddress.length() - 13);
                 cells.deletePrisonerFromCell(key, cellAddress);
             }
+            //@@author
             return true;
         } else {
             throw new PersonNotFoundException();
@@ -173,6 +175,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         tags.add(t);
     }
 
+    //@@author sarahgoh97
     //// cell-level operations
 
     /**
@@ -189,6 +192,8 @@ public class AddressBook implements ReadOnlyAddressBook {
      * @param cellAddress to get the correct cell
      * @param prisoner to be added into the cell
      * @throws FullCellException if the cell already has the maximum number of prisoners
+     * @throws NonExistentCellException if the cell address is invalid
+     * @throws NotPrisonerException is the cell is
      */
     public void addPrisonerToCell(String cellAddress, Person prisoner) throws FullCellException,
             NonExistentCellException, NotPrisonerException, AlreadyInCellException {
@@ -230,6 +235,7 @@ public class AddressBook implements ReadOnlyAddressBook {
                 + cells.getCellList();
         // TODO: refine later
     }
+    //@@author
 
     @Override
     public ObservableList<Person> getPersonList() {
@@ -241,6 +247,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         return tags.asObservableList();
     }
 
+    //@@author sarahgoh97
     @Override
     public ObservableList<Cell> getCellList() {
         return cells.getCellList();

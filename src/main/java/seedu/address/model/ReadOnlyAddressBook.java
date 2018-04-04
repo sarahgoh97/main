@@ -22,6 +22,7 @@ public interface ReadOnlyAddressBook {
      */
     ObservableList<Tag> getTagList();
 
+    //@@author sarahgoh97
     /**
      * Returns an unmodifiable view of the cells list.
      * This list will not contain any duplicate cells.

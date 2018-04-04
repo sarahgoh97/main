@@ -108,6 +108,7 @@ public class ModelManager extends ComponentManager implements Model {
         indicateAddressBookChanged();
     }
 
+    //@@author sarahgoh97
     @Override
     public void addPrisonerToCell(Person prisoner, String cellAddress)
             throws FullCellException, NonExistentCellException,
@@ -144,6 +145,7 @@ public class ModelManager extends ComponentManager implements Model {
         }
         indicateAddressBookChanged();
     }
+    //@@author
 
     //=========== Filtered Person List Accessors =============================================================
 
