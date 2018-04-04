@@ -388,13 +388,11 @@ In a prison, it is necessary to have cells, where prisoners stay in. It is impor
 and whether the `Cell` is full.
 
 This cell system is most clearly represented using a 2-D array. Hence, this was used as the basis of the map system of the prison.
-When implemented, it will take up the right side area of the application (but this has not yet been implemented). Below is
-an idea of what the UI may look like by the end of the project. The current implementation is still shown in the box below the user input.
+This map is shown on the user interface on the right side area, shown in the picture below.
+Since the app is still being tested, the map command will also show in the result display box.
 This basic map shows the basic implementation of the cell system and helps keep track of what is happening in the cells.
 
-image::currentMap.PNG[width="400"]
-
-image::futureMap.PNG[width="400"]
+image::Ui.PNG[width="600"]
 
 With this map system of cells, the cells can be viewed. Not only that, prisoners can also be added and removed from them.
 These changes can be viewed in the bigger map which displays the number of people in them (also shown in the UI mockup above,
@@ -404,21 +402,17 @@ For future implementations, we can also allow only the prison wardens/owners to 
 may grow or shrink in the future. In this scenario, we will strive only to hit our non-functional requirements.
 
 Assuming the user has access to the functions to add prisoners into prison cells, they can use the `addcell` command to do so.
-Below is the sequence diagram.
+Below is the sequence diagram of the logic and model components.
 
-image::AddCellSequenceDiagram.PNG[width="500"]
-
-The cell map will have all the cells and its current occupants.
+image::AddCellSequenceDiagram.PNG[width="400"]
+image::AddCellModelSequenceDiagram.PNG[width="400"]
 
 Besides the cell map system being updated, we will also update the addresses of these prisoners added to the prison, since they now live in the prison, rather than in their own homes.
 
-For future implementations, there will also be a command to remove prisoners, when they are being transferred to another cell,
-or if they can leave prison and go back home to their loved ones. This will be done in a similar manner to addcell.
-
-In much further implementations, guards/prison workers can also be assigned to cells, not as prisoners but as according to their job descriptions.
+Prisoners can also be removed from their cells using the `deletecell` command when they are being transferred to another cell,
+or if they can leave prison and go back home to their loved ones.
 
 ==== Design Considerations
-
 ===== Aspect: Data Structure of Cells in CellMap
 
 * **Alternative 1 (current choice):** Use a 2-D array`
@@ -436,7 +430,6 @@ In much further implementations, guards/prison workers can also be assigned to c
 * **Alternative 2:** Keep the map always on display.
 ** Pros: Easier to see when adding prisoners to cells.
 ** Cons: Risk security as access to map is not limited. Even if it is, anyone walking by can see the information easily.
-
 
 ===== Aspect: Implementation of AddCellCommand (addcell)
 

@@ -11,6 +11,7 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.AddressBookParser;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.Model;
+import seedu.address.model.cell.Cell;
 import seedu.address.model.person.Person;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INSUFFICIENT_SECURITY_CLEARANCE;
@@ -73,5 +74,10 @@ public class LogicManager extends ComponentManager implements Logic {
     @Override
     public ListElementPointer getHistorySnapshot() {
         return new ListElementPointer(history.getHistory());
+    }
+
+    @Override
+    public ObservableList<Cell> getCellList() {
+        return model.getAddressBook().getCellList();
     }
 }

@@ -1,3 +1,4 @@
+//@@author sarahgoh97
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
@@ -64,7 +65,6 @@ public class AddCellCommand extends UndoableCommand {
         requireNonNull(prisonerToAdd);
         try {
             model.addPrisonerToCell(prisonerToAdd, cellAddress);
-            return new CommandResult(String.format(MESSAGE_ADD_CELL_SUCCESS, prisonerToAdd.getName(), cellAddress));
         } catch (FullCellException fce) {
             throw new CommandException(String.format(MESSAGE_FULL_CELL,
                     cellAddress, new ShowCellsCommand().getMapString(
@@ -79,6 +79,7 @@ public class AddCellCommand extends UndoableCommand {
             throw new CommandException(String.format(MESSAGE_ALREADY_IN_CELL,
                     prisonerToAdd.getName(), prisonerToAdd.getAddress()));
         }
+        return new CommandResult(String.format(MESSAGE_ADD_CELL_SUCCESS, prisonerToAdd.getName(), cellAddress));
     }
 
     @Override
@@ -90,6 +91,14 @@ public class AddCellCommand extends UndoableCommand {
         }
 
         prisonerToAdd = lastShownList.get(index.getZeroBased());
+    }
+
+    public Person getPrisonerToAdd() {
+        return prisonerToAdd;
+    }
+
+    public String getCellAddress() {
+        return cellAddress;
     }
 
     @Override
