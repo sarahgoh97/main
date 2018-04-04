@@ -18,7 +18,7 @@ public class DeleteCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "delete";
     public static final String COMMAND_ALIAS = "d";
-    public static final int minSecurityLevel = 2;
+    public static final int MIN_SECURITY_LEVEL = 2;
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Deletes the person identified by the index number used in the last person listing.\n"
@@ -37,10 +37,10 @@ public class DeleteCommand extends UndoableCommand {
 
     @Override
     /**
-     * Returns the minSecurityLevel to caller
+     * Returns the MIN_SECURITY_LEVEL to caller
      */
     public int getMinSecurityLevel() {
-        return minSecurityLevel;
+        return MIN_SECURITY_LEVEL;
     }
 
     @Override

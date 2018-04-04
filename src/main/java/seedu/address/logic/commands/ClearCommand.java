@@ -12,14 +12,14 @@ public class ClearCommand extends UndoableCommand {
     public static final String COMMAND_WORD = "clear";
     public static final String COMMAND_ALIAS = "c";
     public static final String MESSAGE_SUCCESS = "Address book has been cleared!";
-    public static final int minSecurityLevel = 3;
+    public static final int MIN_SECURITY_LEVEL = 3;
 
     @Override
     /**
-     * Returns the minSecurityLevel to caller
+     * Returns the MIN_SECURITY_LEVEL to caller
      */
     public int getMinSecurityLevel() {
-        return minSecurityLevel;
+        return MIN_SECURITY_LEVEL;
     }
 
 

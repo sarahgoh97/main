@@ -10,10 +10,12 @@ import seedu.address.model.Model;
  * Represents a command with hidden internal logic and the ability to be executed.
  */
 public abstract class Command {
+
+    protected static final int MIN_SECURITY_LEVEL = 0;
+
     protected Model model;
     protected CommandHistory history;
     protected UndoRedoStack undoRedoStack;
-    protected int minSecurityLevel = 0;
 
     /**
      * Constructs a feedback message to summarise an operation that displayed a listing of persons.
@@ -54,10 +56,10 @@ public abstract class Command {
     }
 
     /**
-     * Returns the minSecurityLevel to caller
+     * Returns the MIN_SECURITY_LEVEL to caller
      */
     public int getMinSecurityLevel() {
-        return minSecurityLevel;
+        return MIN_SECURITY_LEVEL;
     }
 
 }
