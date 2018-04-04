@@ -13,7 +13,7 @@ public abstract class Command {
     protected Model model;
     protected CommandHistory history;
     protected UndoRedoStack undoRedoStack;
-    protected int minSecurityLevel = 0;
+    protected int MIN_SECURITY_LEVEL = 0;
 
     /**
      * Constructs a feedback message to summarise an operation that displayed a listing of persons.
@@ -54,10 +54,10 @@ public abstract class Command {
     }
 
     /**
-     * Returns the minSecurityLevel to caller
+     * Returns the MIN_SECURITY_LEVEL to caller
      */
     public int getMinSecurityLevel() {
-        return minSecurityLevel;
+        return MIN_SECURITY_LEVEL;
     }
 
 }

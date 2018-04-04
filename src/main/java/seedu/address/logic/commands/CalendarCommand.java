@@ -12,7 +12,7 @@ public class CalendarCommand extends Command {
     public static final String COMMAND_WORD = "calendar";
     public static final String COMMAND_ALIAS = "cal";
     public static final String ERROR_MESSAGE = "calendar execution failed";
-    public static final int minSecurityLevel = 1;
+    public static final int MIN_SECURITY_LEVEL = 1;
 
     @Override
     public CommandResult execute() {
@@ -27,10 +27,10 @@ public class CalendarCommand extends Command {
 
     @Override
     /**
-     * Returns the minSecurityLevel to caller
+     * Returns the MIN_SECURITY_LEVEL to caller
      */
     public int getMinSecurityLevel() {
-        return minSecurityLevel;
+        return MIN_SECURITY_LEVEL;
     }
 
 }

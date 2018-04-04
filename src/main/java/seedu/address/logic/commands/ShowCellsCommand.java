@@ -10,7 +10,7 @@ public class ShowCellsCommand extends Command {
 
     public static final String COMMAND_WORD = "map";
     public static final String COMMAND_ALIAS = "m";
-    public static final int minSecurityLevel = 1;
+    public static final int MIN_SECURITY_LEVEL = 1;
 
     public static final String MESSAGE_SUCCESS = "%s\nShown cells with number of people in them.";
 
@@ -24,10 +24,10 @@ public class ShowCellsCommand extends Command {
 
     @Override
     /**
-     * Returns the minSecurityLevel to caller
+     * Returns the MIN_SECURITY_LEVEL to caller
      */
     public int getMinSecurityLevel() {
-        return minSecurityLevel;
+        return MIN_SECURITY_LEVEL;
     }
 
     public String getMapString(String cells) {

@@ -13,7 +13,7 @@ import seedu.address.model.ReadOnlyAddressBook;
  */
 public abstract class UndoableCommand extends Command {
     private ReadOnlyAddressBook previousAddressBook;
-    protected int minSecurityLevel = 0;
+    protected int MIN_SECURITY_LEVEL = 0;
 
     protected abstract CommandResult executeUndoableCommand() throws CommandException;
 
@@ -43,10 +43,10 @@ public abstract class UndoableCommand extends Command {
     }
 
     /**
-     * Returns the minSecurityLevel to caller
+     * Returns the MIN_SECURITY_LEVEL to caller
      */
     public int getMinSecurityLevel() {
-        return minSecurityLevel;
+        return MIN_SECURITY_LEVEL;
     }
 
     /**

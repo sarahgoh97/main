@@ -1,7 +1,5 @@
 package seedu.address.logic.commands;
 
-import seedu.address.logic.UndoRedoStack;
-
 /**
  * Logs the user out of the current session
  */
@@ -10,7 +8,6 @@ public class LogoutCommand extends Command {
     public static final String COMMAND_WORD = "logout";
 
     public static final String MESSAGE_SUCCESS = "Successfully logged out";
-
 
     @Override
     public CommandResult execute() {

@@ -1,5 +1,7 @@
 package seedu.address.logic;
 
+import static seedu.address.commons.core.Messages.MESSAGE_INSUFFICIENT_SECURITY_CLEARANCE;
+
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
@@ -13,8 +15,6 @@ import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.Model;
 import seedu.address.model.cell.Cell;
 import seedu.address.model.person.Person;
-
-import static seedu.address.commons.core.Messages.MESSAGE_INSUFFICIENT_SECURITY_CLEARANCE;
 
 /**
  * The main LogicManager of the app.
@@ -48,10 +48,10 @@ public class LogicManager extends ComponentManager implements Logic {
     }
 
     /**
-     * Executes the received command if the logged in user's security level meets the minSecurityLevel for the command
+     * Executes the received command if the logged in user's security level meets the MIN_SECURITY_LEVEL for the command
      */
     private CommandResult restrictedExecute (Command command) throws CommandException {
-        logger.info("Command minSecurityLevel: " + command.getMinSecurityLevel());
+        logger.info("Command MIN_SECURITY_LEVEL: " + command.getMinSecurityLevel());
         if (command.getMinSecurityLevel() <= model.getSecurityLevel()) {
             try {
                 CommandResult result = command.execute();
