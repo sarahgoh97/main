@@ -1,5 +1,7 @@
 package seedu.address.logic;
 
+import static seedu.address.commons.core.Messages.MESSAGE_INSUFFICIENT_SECURITY_CLEARANCE;
+
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
@@ -14,7 +16,6 @@ import seedu.address.model.Model;
 import seedu.address.model.cell.Cell;
 import seedu.address.model.person.Person;
 
-import static seedu.address.commons.core.Messages.MESSAGE_INSUFFICIENT_SECURITY_CLEARANCE;
 
 /**
  * The main LogicManager of the app.

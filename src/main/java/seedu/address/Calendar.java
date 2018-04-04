@@ -20,7 +20,6 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
-import com.google.api.services.calendar.model.EventAttendee;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.Events;
 
@@ -146,9 +145,10 @@ public class Calendar {
      * @return success code
      * @throws IOException
      */
-    public static String addEvent(String eventName, String eventLocation, DateTime startDateTime, DateTime endDateTime) throws IOException {
+    public static String addEvent(String eventName, String eventLocation, DateTime startDateTime,
+                                  DateTime endDateTime) throws IOException {
 
-        String successAddedMessage="Event added successfully";
+        String successAddedMessage = "Event added successfully";
 
         // Build a new authorized API client service.
         // Note: Do not confuse this class with the

@@ -1,7 +1,5 @@
 package seedu.address.logic.commands;
 
-import seedu.address.logic.UndoRedoStack;
-
 /**
  * Logs the user out of the current session
  */
