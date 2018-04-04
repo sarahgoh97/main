@@ -1,25 +1,18 @@
 package seedu.address.ui;
 
-import java.net.URL;
-import java.util.Date;
 import java.util.logging.Logger;
 
 import com.google.common.eventbus.Subscribe;
-import javafx.application.Platform;
+
 import javafx.collections.ObservableList;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
-import javafx.scene.web.WebView;
-import org.fxmisc.easybind.EasyBind;
-import seedu.address.MainApp;
+
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
-import seedu.address.commons.events.ui.NewResultAvailableEvent;
-import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
 import seedu.address.model.cell.Cell;
-import seedu.address.model.person.Person;
+
 
 /**
  * The cellMap of the App.

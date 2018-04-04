@@ -26,13 +26,11 @@ public class AddCellCommandParser implements Parser<AddCellCommand> {
                 removePrefix = args.substring(args.indexOf(" ") + 1);
                 if (removePrefix.contains(" ") && removePrefix.length() > removePrefix.indexOf(" ")) {
                     unparsedIndex = removePrefix.substring(0, removePrefix.indexOf(" "));
-                }
-                else {
+                } else {
                     throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                             AddCellCommand.MESSAGE_USAGE));
                 }
-            }
-            else {
+            } else {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                         AddCellCommand.MESSAGE_USAGE));
             }

@@ -28,8 +28,8 @@ public class UndoCommand extends Command {
 
         UndoableCommand command = undoRedoStack.popUndo();
         if (command instanceof AddCellCommand) {
-            String cellAddress = ((AddCellCommand) command).cellAddress;
-            Person prisoner = ((AddCellCommand) command).prisonerToAdd;
+            String cellAddress = ((AddCellCommand) command).getCellAddress();
+            Person prisoner = ((AddCellCommand) command).getPrisonerToAdd();
             model.deletePrisonerFromCell(prisoner, cellAddress);
         }
         command.undo();

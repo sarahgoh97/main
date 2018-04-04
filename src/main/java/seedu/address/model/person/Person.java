@@ -97,7 +97,8 @@ public class Person {
         this.phone = person.getPhone();
         this.email = person.getEmail();
         String addressString = person.getAddress().toString();
-        this.address = new Address(addressString.substring(addressString.indexOf(": ") + 2, addressString.indexOf("]")));
+        this.address = new Address(addressString.substring(
+                addressString.indexOf(": ") + 2, addressString.indexOf("]")));
         this.role = person.getRole();
         this.tags = new UniqueTagList(person.getTags());
         this.isInCell = isInCell;
@@ -174,7 +175,6 @@ public class Person {
                 .append(getRole())
                 .append(" Tags: ");
         getTags().forEach(builder::append);
-        builder.append(isInCell);
         return builder.toString();
     }
 

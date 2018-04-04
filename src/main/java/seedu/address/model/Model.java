@@ -4,7 +4,11 @@ import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
 import seedu.address.model.cell.Cell;
-import seedu.address.model.cell.exceptions.*;
+import seedu.address.model.cell.exceptions.AlreadyInCellException;
+import seedu.address.model.cell.exceptions.FullCellException;
+import seedu.address.model.cell.exceptions.NonExistentCellException;
+import seedu.address.model.cell.exceptions.NotImprisonedException;
+import seedu.address.model.cell.exceptions.NotPrisonerException;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;

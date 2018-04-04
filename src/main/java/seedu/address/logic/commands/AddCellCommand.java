@@ -35,8 +35,8 @@ public class AddCellCommand extends UndoableCommand {
 
     public final Index index;
 
-    public Person prisonerToAdd;
-    public String cellAddress;
+    private Person prisonerToAdd;
+    private String cellAddress;
 
     /**
      * @param index of the person in the filtered person list to edit
@@ -81,6 +81,14 @@ public class AddCellCommand extends UndoableCommand {
         }
 
         prisonerToAdd = lastShownList.get(index.getZeroBased());
+    }
+
+    public Person getPrisonerToAdd() {
+        return prisonerToAdd;
+    }
+
+    public String getCellAddress() {
+        return cellAddress;
     }
 
     @Override

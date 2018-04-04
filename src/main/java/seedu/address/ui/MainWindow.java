@@ -10,7 +10,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import seedu.address.commons.core.Config;
@@ -121,8 +120,6 @@ public class MainWindow extends UiPart<Stage> {
      * Fills up all the placeholders of this window.
      */
     void fillInnerParts() {
-        //browserPanel = new BrowserPanel();
-        //browserPlaceholder.getChildren().add(browserPanel.getRoot());
 
         personListPanel = new PersonListPanel(logic.getFilteredPersonList());
         personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
@@ -193,10 +190,6 @@ public class MainWindow extends UiPart<Stage> {
     public PersonListPanel getPersonListPanel() {
         return this.personListPanel;
     }
-
-    //void releaseResources() {
-        //browserPanel.freeResources();
-    //}
 
     @Subscribe
     private void handleShowHelpEvent(ShowHelpRequestEvent event) {
