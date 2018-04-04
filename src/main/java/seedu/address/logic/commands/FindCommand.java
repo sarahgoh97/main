@@ -11,7 +11,7 @@ public class FindCommand extends Command {
 
     public static final String COMMAND_WORD = "find";
     public static final String COMMAND_ALIAS = "f";
-
+    //@@author philos22
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose names or tags contain any of "
             + "the specified keywords (case-sensitive) and displays them as a list with index numbers.\n"
             + "Parameters: n/NAME_KEYWORDS t/TAG_KEYWORDS...\n"

@@ -20,15 +20,17 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.EventAttendee;
+import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.Events;
 
 /** The main Calendar Functionality class
  * Returns a list of upcoming events and times
  * */
-public class Quickstart {
+public class Calendar {
     /** Application name. */
     private static final String application_name =
-            "Google Calendar API Java seedu.address.Quickstart";
+            "Google Calendar API Java seedu.address.Calendar";
 
     /** Directory to store user credentials for this application. */
     private static final java.io.File data_store_dir = new java.io.File(
@@ -50,7 +52,7 @@ public class Quickstart {
      * at ~/.credentials/calendar-java-quickstart
      */
     private static final List<String> scopes =
-            Arrays.asList(CalendarScopes.CALENDAR_READONLY);
+            Arrays.asList(CalendarScopes.CALENDAR);
 
     static {
         try {
@@ -70,7 +72,7 @@ public class Quickstart {
     public static Credential authorize() throws IOException {
         // Load client secrets.
         InputStream in =
-                Quickstart.class.getResourceAsStream("/client_secret.json");
+                Calendar.class.getResourceAsStream("/client_secret.json");
         GoogleClientSecrets clientSecrets =
                 GoogleClientSecrets.load(json_factory, new InputStreamReader(in));
 
@@ -107,7 +109,7 @@ public class Quickstart {
      * @return a list of upcoming events
      * @throws IOException
      */
-    public static String quick() throws IOException {
+    public static String listEvents() throws IOException {
         // Build a new authorized API client service.
         // Note: Do not confuse this class with the
         //   com.google.api.services.calendar.model.Calendar class.
@@ -137,6 +139,42 @@ public class Quickstart {
             }
         }
         return result.toString();
+    }
+    //@@author philos22
+    /**
+     * Adds event to the calendar - specifying Name, Location, StartTime, EndTime
+     * @return success code
+     * @throws IOException
+     */
+    public static String addEvent(String eventName, String eventLocation, DateTime startDateTime, DateTime endDateTime) throws IOException {
+
+        String successAddedMessage="Event added successfully";
+
+        // Build a new authorized API client service.
+        // Note: Do not confuse this class with the
+        //   com.google.api.services.calendar.model.Calendar class.
+        com.google.api.services.calendar.Calendar service =
+                getCalendarService();
+
+        Event event = new Event()
+                .setSummary(eventName)
+                .setLocation(eventLocation);
+
+        EventDateTime start = new EventDateTime()
+                .setDateTime(startDateTime)
+                .setTimeZone("");
+        event.setStart(start);
+
+        EventDateTime end = new EventDateTime()
+                .setDateTime(endDateTime)
+                .setTimeZone("");
+        event.setEnd(end);
+
+        String calendarId = "primary";
+        event = service.events().insert(calendarId, event).execute();
+        System.out.printf("Event created: %s\n", event.getHtmlLink());
+
+        return successAddedMessage;
     }
 
 }

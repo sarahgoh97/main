@@ -75,6 +75,7 @@ public class FindCommandTest {
     /**
      * Parses {@code userInput} into a {@code FindCommand}.
      */
+    //@@author philos22
     private FindCommand prepareCommand(String userInput, String tagInput) {
         FindCommand command =
                 new FindCommand(new ContainsKeywordsPredicate(Arrays.asList(userInput.split("\\s+")),
@@ -82,7 +83,7 @@ public class FindCommandTest {
         command.setData(model, new CommandHistory(), new UndoRedoStack());
         return command;
     }
-
+    //@@author
     /**
      * Asserts that {@code command} is successfully executed, and<br>
      *     - the command feedback is equal to {@code expectedMessage}<br>

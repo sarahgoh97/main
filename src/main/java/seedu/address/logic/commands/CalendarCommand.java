@@ -1,8 +1,9 @@
+//@@author philos22
 package seedu.address.logic.commands;
 
 import java.io.IOException;
 
-import seedu.address.Quickstart;
+import seedu.address.Calendar;
 
 /**
  * Lists all the commands entered by user from the start of app launch.
@@ -16,7 +17,7 @@ public class CalendarCommand extends Command {
     @Override
     public CommandResult execute() {
         try {
-            String messagesuccess = new Quickstart().quick();
+            String messagesuccess = new Calendar().listEvents();
             return new CommandResult(messagesuccess);
         } catch (IOException e) {
             e.printStackTrace();
