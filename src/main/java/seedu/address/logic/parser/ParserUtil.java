@@ -2,10 +2,15 @@ package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+
+import com.google.api.client.util.DateTime;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.exceptions.IllegalValueException;
@@ -256,5 +261,17 @@ public class ParserUtil {
         return password.isPresent() ? parseSecurityLevel(password.get()) : -1;
     }
 
+    //@@author philos22
+    /**
+     * Parses a {@code Optional<String> DateTime} if present.
+     */
+    public static DateTime parseDateTime(String DateTime) throws IllegalValueException {
+
+        String theDateTime = DateTime.replaceAll("[\\[\\]]", "").replaceAll("Optional", "");
+
+        TemporalAccessor ta = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").parse(theDateTime);
+        String strDateTime = LocalDateTime.from(ta).toString() + ":00";
+        return new DateTime(strDateTime);
+    }
 
 }

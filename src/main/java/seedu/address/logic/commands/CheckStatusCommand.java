@@ -8,8 +8,8 @@ public class CheckStatusCommand extends Command {
     public static final String COMMAND_WORD = "status";
 
     /**
-     * Returns the current session user details
-     * @return
+     * Checks the status of current session
+     * @return details of the status
      */
     public CommandResult execute() {
         String details = (model.getSessionDetails());

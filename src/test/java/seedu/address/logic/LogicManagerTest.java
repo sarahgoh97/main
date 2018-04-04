@@ -25,6 +25,10 @@ public class LogicManagerTest {
     private Model model = new ModelManager();
     private Logic logic = new LogicManager(model);
 
+    public LogicManagerTest() {
+        model.login("maxSecurityLevelUser", 999);
+    }
+
     @Test
     public void execute_invalidCommandFormat_throwsParseException() {
         String invalidCommand = "uicfhmowqewca";
@@ -120,7 +124,4 @@ public class LogicManagerTest {
         }
     }
 
-    public LogicManagerTest() {
-        model.login("maxSecurityLevelUser",999);
-    }
 }

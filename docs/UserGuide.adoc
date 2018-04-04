@@ -181,6 +181,14 @@ Returns any person having names `Betsy` or are tagged `Friends`
 ==== View upcoming events in the calendar: `calendar or c` (v1.3)
 Format: `calendar`
 
+==== View upcoming events in the calendar: `calAdd or calA` (v1.3)
+Format: `calAdd event/EVENTNAME loc/LOCATION start/STARTDATETIME end/ENDDATETIME`
+
+Examples:
+* `calAdd event/Software Meeting loc/NUS Utown Green start/2018-06-06 10:00:00 end/2018-06-06 13:00:00` +
+Adds an event `Software Meeting` at `NUS Utown Green` from `June 6th, 2018 10am` to `June 6th, 2018 1pm`
+
+
 // end::calendar[]
 
 === Deleting a person : `delete or d`
@@ -344,6 +352,8 @@ e.g. `edit 2 n/James Lee e/jameslee@example.com`
 * *Find* : `find n/NAME_KEYWORD [MORE_NAME_KEYWORDS] t/TAG_KEYWORD [MORE_TAG_KEYWORDS]` +
 e.g. `find n/James Jake t/boys`
 * *Calendar* : `calendar`
+* *Calendar Add Event* : `calAdd event/EVENTNAME loc/LOCATION start/STARTDATETIME end/ENDDATETIME`
+e.g. `calAdd event/Software Meeting loc/NUS Utown Green start/2018-06-06 10:00:00 end/2018-06-06 13:00:00`
 * *List* : `list`
 * *Map* : `map`
 * *Help* : `help`
