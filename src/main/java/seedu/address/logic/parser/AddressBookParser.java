@@ -25,6 +25,7 @@ import seedu.address.logic.commands.RedoCommand;
 import seedu.address.logic.commands.SelectCommand;
 import seedu.address.logic.commands.ShowCellsCommand;
 import seedu.address.logic.commands.UndoCommand;
+import seedu.address.logic.commands.CheckStatusCommand;
 
 import seedu.address.logic.parser.exceptions.ParseException;
 
