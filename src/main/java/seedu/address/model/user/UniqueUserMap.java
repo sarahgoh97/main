@@ -1,9 +1,8 @@
 package seedu.address.model.user;
 
+import java.util.HashMap;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
-import java.util.HashMap;
 
 /**
  * Contains the users of the PrisonBook

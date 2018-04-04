@@ -1,13 +1,12 @@
 //@@author zacci
 package seedu.address.logic.commands;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.Objects;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.user.User;
 import seedu.address.model.user.exceptions.UserAlreadyExistsException;
-
-import java.util.Objects;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * Adds a new user to the PrisonBook

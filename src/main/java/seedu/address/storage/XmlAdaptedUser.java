@@ -1,9 +1,8 @@
 //@@author zacci
 package seedu.address.storage;
 
-import seedu.address.model.user.User;
-
 import javax.xml.bind.annotation.XmlElement;
+import seedu.address.model.user.User;
 
 /**
  * JAXB-friendly version of the Person.
