@@ -17,7 +17,7 @@ Prisonbook is a desktop address book application used for Prison Guards/Inmates 
 Allows guards and prison wardens to add prisoners to cells (and in future to remove them and view them in cells)
 ** Justification: This helps to keep track of prisoners.
 
-* *Minor enhancement*: changing theme of prisonBook (not done)
+* *Minor enhancement*: Changing browser panel to show map of prison cells.
 
 * *Code contributed*: [https://github.com[Functional code]] [https://github.com[Test code]] _{give links to collated code files}_
 

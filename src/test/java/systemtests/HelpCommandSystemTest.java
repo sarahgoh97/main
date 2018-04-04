@@ -14,7 +14,6 @@ import guitests.guihandles.HelpWindowHandle;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.SelectCommand;
-import seedu.address.ui.BrowserPanel;
 import seedu.address.ui.StatusBarFooter;
 
 /**
@@ -25,6 +24,11 @@ public class HelpCommandSystemTest extends AddressBookSystemTest {
             + "non-headless mode as FxRobot#clickOn(Node, MouseButton...) clicks on the wrong location. We suspect "
             + "that this is a bug with TestFX library that we are using. If this test fails, you have to run your "
             + "tests on headless mode. See UsingGradle.adoc on how to do so.";
+
+
+
+
+
 
     private final GuiRobot guiRobot = new GuiRobot();
 
@@ -43,9 +47,8 @@ public class HelpCommandSystemTest extends AddressBookSystemTest {
         getMainMenu().openHelpWindowUsingAccelerator();
         assertHelpWindowOpen();
 
-        getBrowserPanel().click();
         getMainMenu().openHelpWindowUsingAccelerator();
-        assertHelpWindowNotOpen();
+        assertHelpWindowOpen();
 
         //use menu button
         getMainMenu().openHelpWindowUsingMenu();
@@ -64,7 +67,6 @@ public class HelpCommandSystemTest extends AddressBookSystemTest {
         assertEquals("", getCommandBox().getInput());
         assertCommandBoxShowsDefaultStyle();
         assertNotEquals(HelpCommand.SHOWING_HELP_MESSAGE, getResultDisplay().getText());
-        assertNotEquals(BrowserPanel.DEFAULT_PAGE, getBrowserPanel().getLoadedUrl());
         assertListMatching(getPersonListPanel(), getModel().getFilteredPersonList());
 
         // assert that the status bar too is updated correctly while the help window is open

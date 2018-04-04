@@ -1,3 +1,4 @@
+//@@author sarahgoh97
 package seedu.address.model.cell;
 
 import javafx.collections.FXCollections;
@@ -9,7 +10,7 @@ import seedu.address.model.person.Person;
  * Cells are not allowed to exceed the maximum fixed size of the prison
  */
 public class CellMap {
-    public static final int MAX_ROW = 2;
+    public static final int MAX_ROW = 3;
     public static final int MAX_COL = 5;
     private Cell[][] cellMap;
     private final ObservableList<Cell> internalList = FXCollections.observableArrayList();
@@ -68,6 +69,25 @@ public class CellMap {
         Cell cell = cellMap[row][col];
         cellMap[row][col].addPrisoner(prisoner);
         int index = (row) * MAX_COL + col;
+        internalList.set(index, cell);
+    }
+
+    /**
+     * Removes a prisoner from a specified cell
+     */
+    public void deletePrisonerFromCell(Person prisoner, String cellAddress) {
+        int row = Cell.getRow(cellAddress) - 1;
+        int col = Cell.getCol(cellAddress) - 1;
+        deletePrisonerFromCell(prisoner, row, col);
+    }
+
+    /**
+     * private method called from public method above
+     */
+    private void deletePrisonerFromCell(Person prisoner, int row, int col) {
+        Cell cell = cellMap[row][col];
+        cell.deletePrisoner(prisoner);
+        int index = row * MAX_COL + col;
         internalList.set(index, cell);
     }
 

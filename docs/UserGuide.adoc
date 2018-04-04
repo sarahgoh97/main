@@ -13,7 +13,7 @@ ifdef::env-github[]
 endif::[]
 :repoURL: https://github.com/CS2103JAN2018-T11-B2/main/
 
-By: `CS2103-B2`      Since: `Jan 2018`      Licence: `MIT`
+By: `CS2103-T11-B2`      Since: `Jan 2018`      Licence: `MIT`
 
 == Introduction
 
@@ -114,7 +114,7 @@ Shows a list of all persons in the prison book. +
 Format: `list`
 
 //tag::listcell[]
-=== Listing prisoners in a cell : `listcell or lc` (coming in V2.0)
+=== Listing prisoners in a cell : `listcell or lc` [coming in V2.0]
 
 Shows a list of all persons in a prison cell in the prison book. +
 Format: `list CELL`
@@ -127,7 +127,7 @@ Examples:
 //tag::map[]
 === Showing cells in the map: `map or m` (v1.1)
 
-Shows a table of prison cells like a map. +
+Shows a table of prison cells like a map in the command display (used for debugging and checking UI). +
 Format: `map`
 //end::map[]
 
@@ -178,7 +178,7 @@ Returns any person having names `Betsy` or are tagged `Friends`
 // tag::calendar[]
 === Various commands to interact with Google Calendar
 
-==== View upcoming events in the calendar: `calendar or c`
+==== View upcoming events in the calendar: `calendar or c` (v1.3)
 Format: `calendar`
 
 // end::calendar[]
@@ -204,25 +204,22 @@ Deletes the 2nd person in the prison book.
 Deletes the 1st person in the results of the `find` command.
 
 //tag::deletecell[]
-=== Deleting a person from a cell : `deletecell or dc` (coming in V2.0)
+=== Deleting a person from a cell : `deletecell or dc` (v1.4)
 
-Deletes the specified person from the cell in the PrisonBook. +
+Deletes the specified person from his/her cell in the PrisonBook. +
 Format: `deletecell INDEX`
 
 ****
 * Deletes the person at the specified `INDEX`.
 * The index refers to the index number shown in the most recent listing.
 * The index *must be a positive integer* 1, 2, 3, ...
+* The person must be imprisoned in the prison already.
 ****
 
 Examples:
 
-* `lc a2` +
-`deletecell 2` +
-Deletes the 2nd person in the cell in the PrisonBook.
-* `listcell b4` +
-`dc 1`
-Deletes the 1st person in the cell in the PrisonBook.
+* `dc 1` +
+Deletes the first person in the prison book if he/she is imprisoned here.
 //end::deletecell[]
 
 === Selecting a person : `select or s`
@@ -340,6 +337,8 @@ e.g. `addcell 1 1-1`
 * *Clear* : `clear`
 * *Delete* : `delete INDEX` +
 e.g. `delete 3`
+* *DeleteCell* `deletecell INDEX`
+e.g. `deletecell 2`
 * *Edit* : `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]...` +
 e.g. `edit 2 n/James Lee e/jameslee@example.com`
 * *Find* : `find n/NAME_KEYWORD [MORE_NAME_KEYWORDS] t/TAG_KEYWORD [MORE_TAG_KEYWORDS]` +
