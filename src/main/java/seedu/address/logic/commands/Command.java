@@ -13,7 +13,7 @@ public abstract class Command {
     protected Model model;
     protected CommandHistory history;
     protected UndoRedoStack undoRedoStack;
-    protected int MIN_SECURITY_LEVEL = 0;
+    protected static int MIN_SECURITY_LEVEL = 0;
 
     /**
      * Constructs a feedback message to summarise an operation that displayed a listing of persons.

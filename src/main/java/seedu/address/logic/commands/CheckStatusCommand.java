@@ -7,6 +7,10 @@ public class CheckStatusCommand extends Command {
 
     public static final String COMMAND_WORD = "status";
 
+    /**
+     * Returns the current session user details
+     * @return
+     */
     public CommandResult execute() {
         String details = (model.getSessionDetails());
         return new CommandResult(details);
