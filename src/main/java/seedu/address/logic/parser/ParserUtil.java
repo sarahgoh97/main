@@ -2,9 +2,7 @@ package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.util.Collection;
@@ -245,10 +243,10 @@ public class ParserUtil {
      */
     public static DateTime parseDateTime(String DateTime) throws IllegalValueException {
 
-        String theDateTime = DateTime.replaceAll("[\\[\\]]","").replaceAll("Optional", "");
+        String theDateTime = DateTime.replaceAll("[\\[\\]]", "").replaceAll("Optional", "");
 
         TemporalAccessor ta = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").parse(theDateTime);
-        String strDateTime = LocalDateTime.from(ta).toString()+":00";
+        String strDateTime = LocalDateTime.from(ta).toString() + ":00";
         return new DateTime(strDateTime);
     }
 

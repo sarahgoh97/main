@@ -53,14 +53,16 @@ public class CalendarAddCommand extends UndoableCommand {
         calEventLocation = eventLocation;
         calStartDateTime = startDateTime;
         calEndDateTime = endDateTime;
-        toAdd = calEventName + " " + calEventLocation + " " + calStartDateTime.toString() + " " + calEndDateTime.toString();
+        toAdd = calEventName + " " + calEventLocation + " " + calStartDateTime.toString() + " "
+                + calEndDateTime.toString();
     }
 
     @Override
     public CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(model);
         try {
-            String successMessage = new Calendar().addEvent(calEventName, calEventLocation, calStartDateTime, calEndDateTime);
+            String successMessage = new Calendar().addEvent(calEventName, calEventLocation, calStartDateTime,
+                    calEndDateTime);
             return new CommandResult(String.format(successMessage, toAdd));
         } catch (IOException e) {
             throw new CommandException(e.toString());

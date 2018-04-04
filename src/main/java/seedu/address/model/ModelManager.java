@@ -84,7 +84,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public String getSessionDetails() {
-        return("Username: " + session.getUsername() + " Security Level: " + session.getSecurityLevel());
+        return ("Username: " + session.getUsername() + " Security Level: " + session.getSecurityLevel());
     }
 
     @Override
