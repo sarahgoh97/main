@@ -26,6 +26,7 @@ import seedu.address.model.cell.exceptions.NotImprisonedException;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
+import seedu.address.model.user.User;
 import seedu.address.testutil.PersonBuilder;
 
 public class AddCommandTest {
@@ -117,9 +118,17 @@ public class AddCommandTest {
         }
 
         @Override
+        public boolean attemptLogin(String username, String password) {
+            return true;
+        }
+
+        @Override
         public int getSecurityLevel() {
             return 5;
         }
+
+        @Override
+        public void addUser (User user) {};
 
         @Override
         public void addPerson(Person person) throws DuplicatePersonException {

@@ -23,6 +23,8 @@ public class XmlSerializableAddressBook {
     private List<XmlAdaptedTag> tags;
     @XmlElement
     private List<XmlAdaptedCell> cells;
+    @XmlElement
+    private List<XmlAdaptedUser> users;
 
     /**
      * Creates an empty XmlSerializableAddressBook.
@@ -32,6 +34,7 @@ public class XmlSerializableAddressBook {
         persons = new ArrayList<>();
         tags = new ArrayList<>();
         cells = new ArrayList<>();
+        users = new ArrayList<>();
     }
 
     /**
@@ -42,6 +45,7 @@ public class XmlSerializableAddressBook {
         persons.addAll(src.getPersonList().stream().map(XmlAdaptedPerson::new).collect(Collectors.toList()));
         tags.addAll(src.getTagList().stream().map(XmlAdaptedTag::new).collect(Collectors.toList()));
         cells.addAll(src.getCellList().stream().map(XmlAdaptedCell::new).collect(Collectors.toList()));
+        users.addAll(src.getUserList().stream().map(XmlAdaptedUser::new).collect(Collectors.toList()));
     }
 
     /**
@@ -61,6 +65,9 @@ public class XmlSerializableAddressBook {
         for (XmlAdaptedCell c: cells) {
             addressBook.addCell(c.toModelType());
         }
+        for (XmlAdaptedUser u: users) {
+            addressBook.addUser(u.toModelType());
+        }
         return addressBook;
     }
 
@@ -75,6 +82,7 @@ public class XmlSerializableAddressBook {
         }
 
         XmlSerializableAddressBook otherAb = (XmlSerializableAddressBook) other;
-        return persons.equals(otherAb.persons) && tags.equals(otherAb.tags) && cells.equals(otherAb.cells);
+        return persons.equals(otherAb.persons) && tags.equals(otherAb.tags) && cells.equals(otherAb.cells)
+                && users.equals(otherAb.users);
     }
 }

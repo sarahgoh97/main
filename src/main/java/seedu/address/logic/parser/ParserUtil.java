@@ -229,8 +229,31 @@ public class ParserUtil {
      * See header comment of this class regarding the use of {@code Optional} parameters.
      */
     public static String parsePassword(Optional<String> password) throws IllegalValueException {
-        //requireNonNull(password); null accepted for now
+        requireNonNull(password);
         return password.isPresent() ? parsePassword(password.get()) : "";
+    }
+
+    /**
+     * Parses a @code String securityLevel
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws IllegalValueException if the given {@code securityLevel} is invalid.
+     */
+    public static int parseSecurityLevel(String securityLevel) throws NumberFormatException {
+        requireNonNull(securityLevel);
+        String trimmedSecurityLevel = securityLevel.trim();
+        int intSecurityLevel = Integer.parseInt(trimmedSecurityLevel);
+        return intSecurityLevel;
+    }
+
+    /**
+     * Parses a {@code Optional<int> securityLevel} into an {@code Optional<securityLevel>}
+     * if {@code securityLevel} is present.
+     * See header comment of this class regarding the use of {@code Optional} parameters.
+     */
+    public static int parseSecurityLevel (Optional<String> password) throws NumberFormatException {
+        requireNonNull(password);
+        return password.isPresent() ? parseSecurityLevel(password.get()) : -1;
     }
 
 

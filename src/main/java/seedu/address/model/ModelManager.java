@@ -20,6 +20,7 @@ import seedu.address.model.cell.exceptions.NotPrisonerException;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
+import seedu.address.model.user.User;
 
 /**
  * Represents the in-memory model of the address book data.
@@ -65,6 +66,7 @@ public class ModelManager extends ComponentManager implements Model {
         return addressBook;
     }
 
+    //@@author zacci
     @Override
     public Session getSession() {
         return session;
@@ -83,6 +85,17 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
+    public boolean attemptLogin(String username,String password) {
+        int securityLevel = addressBook.attemptLogin(username,password);
+        if (securityLevel < 0) {
+            return false;
+        } else {
+            login(username,securityLevel);
+            return true;
+        }
+    }
+
+    @Override
     public String getSessionDetails() {
         return ("Username: " + session.getUsername() + " Security Level: " + session.getSecurityLevel());
     }
@@ -92,6 +105,12 @@ public class ModelManager extends ComponentManager implements Model {
         return session.getSecurityLevel();
     }
 
+    @Override
+    public void addUser(User userToAdd) {
+        addressBook.addUser(userToAdd);
+        indicateAddressBookChanged();
+    }
+    //@@author
 
     /** Raises an event to indicate the model has changed */
     private void indicateAddressBookChanged() {
@@ -192,6 +211,7 @@ public class ModelManager extends ComponentManager implements Model {
         ModelManager other = (ModelManager) obj;
         return addressBook.equals(other.addressBook)
                 && filteredPersons.equals(other.filteredPersons);
+                //&& session.equals(other.session);
     }
 
 }
