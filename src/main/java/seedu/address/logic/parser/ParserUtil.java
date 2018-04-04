@@ -265,9 +265,9 @@ public class ParserUtil {
     /**
      * Parses a {@code Optional<String> DateTime} if present.
      */
-    public static DateTime parseDateTime(String DateTime) throws IllegalValueException {
+    public static DateTime parseDateTime(String dateTime) throws IllegalValueException {
 
-        String theDateTime = DateTime.replaceAll("[\\[\\]]", "").replaceAll("Optional", "");
+        String theDateTime = dateTime.replaceAll("[\\[\\]]", "").replaceAll("Optional", "");
 
         TemporalAccessor ta = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").parse(theDateTime);
         String strDateTime = LocalDateTime.from(ta).toString() + ":00";

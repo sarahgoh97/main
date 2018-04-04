@@ -85,12 +85,12 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public boolean attemptLogin(String username,String password) {
-        int securityLevel = addressBook.attemptLogin(username,password);
+    public boolean attemptLogin(String username, String password) {
+        int securityLevel = addressBook.attemptLogin(username, password);
         if (securityLevel < 0) {
             return false;
         } else {
-            login(username,securityLevel);
+            login(username, securityLevel);
             return true;
         }
     }
@@ -209,9 +209,7 @@ public class ModelManager extends ComponentManager implements Model {
 
         // state check
         ModelManager other = (ModelManager) obj;
-        return addressBook.equals(other.addressBook)
-                && filteredPersons.equals(other.filteredPersons);
-                //&& session.equals(other.session);
+        return addressBook.equals(other.addressBook) && filteredPersons.equals(other.filteredPersons);
     }
 
 }

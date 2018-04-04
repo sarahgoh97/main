@@ -5,17 +5,18 @@ import javafx.collections.ObservableList;
 
 import java.util.HashMap;
 
-import static java.util.Objects.requireNonNull;
-
+/**
+ * Contains the users of the PrisonBook
+ */
 public class UniqueUserMap {
 
     private final ObservableList<User> internalList = FXCollections.observableArrayList();
 
     private HashMap<String, User> userMap;
 
-    private final User defaultUser1 = new User("prisonguard","password1",1);
-    private final User defaultUser2 = new User("prisonleader","password2",2);
-    private final User defaultUser3 = new User("prisonwarden","password3",3);
+    private final User defaultUser1 = new User("prisonguard", "password1", 1);
+    private final User defaultUser2 = new User("prisonleader", "password2", 2);
+    private final User defaultUser3 = new User("prisonwarden", "password3", 3);
 
     public UniqueUserMap() {
         resetData();
@@ -63,7 +64,11 @@ public class UniqueUserMap {
         return FXCollections.unmodifiableObservableList(internalList);
     }
 
-
+    /**
+     * Adds user to the userMap and the internalList
+     * @param user must be valid User
+     * @return true if added successfully and false if failed to add
+     */
     public boolean addUser(User user) {
         if (!contains(user.getUsername())) {
             userMap.put(user.getUsername(), user);
@@ -82,6 +87,11 @@ public class UniqueUserMap {
         internalList.setAll(users);
     }
 
+    /**
+     * Checks if two UniqueUserMaps are equal
+     * @param obj any object
+     * @return return true if the userMap and internalList are equal
+     */
     public boolean equals(Object obj) {
         // short circuit if same object
         if (obj == this) {

@@ -1,7 +1,5 @@
 package seedu.address.model.user;
 
-import java.util.ArrayList;
-
 /**
  * Represents a user of the PrisonBook
  */

@@ -5,7 +5,6 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.user.User;
 import seedu.address.model.user.exceptions.UserAlreadyExistsException;
 
-import java.util.List;
 import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
@@ -41,7 +40,7 @@ public class AddUserCommand extends UndoableCommand {
         this.username = username;
         this.password = password;
         this.securityLevel = securityLevel;
-        userToAdd = new User(username,password,securityLevel);
+        userToAdd = new User(username, password, securityLevel);
     }
 
     @Override
@@ -61,7 +60,7 @@ public class AddUserCommand extends UndoableCommand {
         } catch (UserAlreadyExistsException uaee) {
             throw new CommandException(String.format(MESSAGE_ALREADY_EXISTING_USER, username));
         }
-        return new CommandResult(String.format(MESSAGE_ADD_USER_SUCCESS,username));
+        return new CommandResult(String.format(MESSAGE_ADD_USER_SUCCESS, username));
     }
 
     public User getUserToAdd() {
