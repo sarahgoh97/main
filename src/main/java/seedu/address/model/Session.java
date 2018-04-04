@@ -32,11 +32,11 @@ public class Session {
         securityLevel = 0;
     }
 
-    private String getUsername() {
+    public String getUsername() {
         return username;
     }
 
-    private int getSecurityLevel() {
+    public int getSecurityLevel() {
         return securityLevel;
     }
 

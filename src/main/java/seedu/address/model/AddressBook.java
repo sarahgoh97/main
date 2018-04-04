@@ -52,7 +52,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     public AddressBook() {}
 
     /**
-     * Creates an AddressBook using the Persons and Tags in the {@code toBeCopied}
+     * Creates an AddressBook using the Persons and Tags and Cells in the {@code toBeCopied}
      */
     public AddressBook(ReadOnlyAddressBook toBeCopied) {
         this();
@@ -156,6 +156,13 @@ public class AddressBook implements ReadOnlyAddressBook {
      */
     public boolean removePerson(Person key) throws PersonNotFoundException {
         if (persons.remove(key)) {
+            //@@author sarahgoh97
+            if (key.getIsInCell() == true) {
+                String cellAddress = key.getAddress().toString();
+                cellAddress = cellAddress.substring(0, cellAddress.length() - 13);
+                cells.deletePrisonerFromCell(key, cellAddress);
+            }
+            //@@author
             return true;
         } else {
             throw new PersonNotFoundException();
@@ -168,6 +175,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         tags.add(t);
     }
 
+    //@@author sarahgoh97
     //// cell-level operations
 
     /**
@@ -180,10 +188,12 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     /**
-     *
+     * Adds a prisoner to a cell
      * @param cellAddress to get the correct cell
      * @param prisoner to be added into the cell
      * @throws FullCellException if the cell already has the maximum number of prisoners
+     * @throws NonExistentCellException if the cell address is invalid
+     * @throws NotPrisonerException is the cell is
      */
     public void addPrisonerToCell(String cellAddress, Person prisoner) throws FullCellException,
             NonExistentCellException, NotPrisonerException, AlreadyInCellException {
@@ -199,8 +209,15 @@ public class AddressBook implements ReadOnlyAddressBook {
         } else {
             Person updatedPrisoner = new Person(prisoner, true, cellAddress);
             updatePrisoner(prisoner, updatedPrisoner);
-            cells.addPrisonerToCell(prisoner, cellAddress);
+            cells.addPrisonerToCell(updatedPrisoner, cellAddress);
         }
+    }
+
+    /**
+     * Deletes prisoner from a specified cell
+     */
+    public void deletePrisonerFromCell(Person prisoner, String cellAddress) {
+        cells.deletePrisonerFromCell(prisoner, cellAddress);
     }
 
     /**
@@ -214,10 +231,11 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     @Override
     public String toString() {
-        return persons.asObservableList().size() + " persons, " + tags.asObservableList().size() +  " tags"
+        return persons.asObservableList().size() + " persons, " + tags.asObservableList().size() +  " tags\n"
                 + cells.getCellList();
         // TODO: refine later
     }
+    //@@author
 
     @Override
     public ObservableList<Person> getPersonList() {
@@ -229,6 +247,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         return tags.asObservableList();
     }
 
+    //@@author sarahgoh97
     @Override
     public ObservableList<Cell> getCellList() {
         return cells.getCellList();

@@ -3,10 +3,10 @@ package seedu.address.model;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
-import seedu.address.model.cell.Cell;
 import seedu.address.model.cell.exceptions.AlreadyInCellException;
 import seedu.address.model.cell.exceptions.FullCellException;
 import seedu.address.model.cell.exceptions.NonExistentCellException;
+import seedu.address.model.cell.exceptions.NotImprisonedException;
 import seedu.address.model.cell.exceptions.NotPrisonerException;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
@@ -18,7 +18,6 @@ import seedu.address.model.person.exceptions.PersonNotFoundException;
 public interface Model {
     /** {@code Predicate} that always evaluate to true */
     Predicate<Person> PREDICATE_SHOW_ALL_PERSONS = unused -> true;
-    Predicate<Cell> PREDICATE_SHOW_ALL_CELLS = unused -> true;
 
     /** Clears existing backing model and replaces with the provided new data. */
     void resetData(ReadOnlyAddressBook newData);
@@ -35,17 +34,31 @@ public interface Model {
     /** Logs in verified user and assigns security level to the session */
     void login(String username, int securityLevel);
 
+    /** Returns Session details to caller */
+    public String getSessionDetails();
+
+    /** Returns Session security level to caller */
+    public int getSecurityLevel();
+
     /** Deletes the given person. */
     void deletePerson(Person target) throws PersonNotFoundException;
 
     /** Adds the given person */
     void addPerson(Person person) throws DuplicatePersonException;
 
+    //@@author sarahgoh97
     /** Adds given prisoner into a cell */
     void addPrisonerToCell(Person prisoner, String cellAddress)
             throws FullCellException, NonExistentCellException,
             NotPrisonerException, AlreadyInCellException;
 
+    /** Deletes given prisoner from a cell from undo command*/
+    void deletePrisonerFromCell(Person prisoner, String cellAddress);
+
+    /**Deletes given prisoner from a cell from DeleteCellCommand */
+    void deletePrisonerFromCell(Person prisoner) throws PersonNotFoundException, NotImprisonedException;
+
+    //@@author
     /**
      * Replaces the given person {@code target} with {@code editedPerson}.
      *

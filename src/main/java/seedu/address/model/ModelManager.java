@@ -15,6 +15,7 @@ import seedu.address.commons.events.model.AddressBookChangedEvent;
 import seedu.address.model.cell.exceptions.AlreadyInCellException;
 import seedu.address.model.cell.exceptions.FullCellException;
 import seedu.address.model.cell.exceptions.NonExistentCellException;
+import seedu.address.model.cell.exceptions.NotImprisonedException;
 import seedu.address.model.cell.exceptions.NotPrisonerException;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
@@ -72,11 +73,23 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void logout() {
         session.logout();
+        logger.info("User logged out");
     }
 
     @Override
     public void login(String username, int securityLevel) {
         session.login(username, securityLevel);
+        logger.info("User logged in with: u/" + username + " slevel/" + securityLevel);
+    }
+
+    @Override
+    public String getSessionDetails() {
+        return("Username: " + session.getUsername() + " Security Level: " + session.getSecurityLevel());
+    }
+
+    @Override
+    public int getSecurityLevel() {
+        return session.getSecurityLevel();
     }
 
 
@@ -107,6 +120,7 @@ public class ModelManager extends ComponentManager implements Model {
         indicateAddressBookChanged();
     }
 
+    //@@author sarahgoh97
     @Override
     public void addPrisonerToCell(Person prisoner, String cellAddress)
             throws FullCellException, NonExistentCellException,
@@ -115,6 +129,35 @@ public class ModelManager extends ComponentManager implements Model {
         addressBook.addPrisonerToCell(cellAddress, prisoner);
         indicateAddressBookChanged();
     }
+
+    /* this is for undo command */
+    @Override
+    public void deletePrisonerFromCell(Person prisoner, String cellAddress) {
+        requireAllNonNull(prisoner, cellAddress);
+        Person updatedPrisoner = new Person(prisoner, true, cellAddress);
+        addressBook.deletePrisonerFromCell(updatedPrisoner, cellAddress);
+    }
+
+    /* this is for delete cell command */
+    @Override
+    public void deletePrisonerFromCell(Person prisoner) throws PersonNotFoundException, NotImprisonedException {
+        requireNonNull(prisoner);
+        if (!filteredPersons.contains(prisoner)) {
+            throw new PersonNotFoundException();
+        } else {
+            String cellAddress = prisoner.getAddress().toString();
+            if (prisoner.getIsInCell()) {
+                cellAddress = cellAddress.substring(0, cellAddress.indexOf(" "));
+                addressBook.deletePrisonerFromCell(prisoner, cellAddress);
+                Person freedPrisoner = new Person(prisoner, false);
+                addressBook.updatePrisoner(prisoner, freedPrisoner);
+            } else {
+                throw new NotImprisonedException();
+            }
+        }
+        indicateAddressBookChanged();
+    }
+    //@@author
 
     //=========== Filtered Person List Accessors =============================================================
 

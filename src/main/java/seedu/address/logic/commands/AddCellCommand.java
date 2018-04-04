@@ -1,3 +1,4 @@
+//@@author sarahgoh97
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
@@ -20,6 +21,7 @@ import seedu.address.model.person.Person;
 public class AddCellCommand extends UndoableCommand {
     public static final String COMMAND_WORD = "addcell";
     public static final String COMMAND_ALIAS = "ac";
+    public static final int minSecurityLevel = 2;
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a prisoner to the specified cell."
             + "by the index number used in the last person listing.\n"
@@ -50,12 +52,19 @@ public class AddCellCommand extends UndoableCommand {
     }
 
     @Override
+    /**
+     * Returns the minSecurityLevel to caller
+     */
+    public int getMinSecurityLevel() {
+        return minSecurityLevel;
+    }
+
+    @Override
     public CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(model);
         requireNonNull(prisonerToAdd);
         try {
             model.addPrisonerToCell(prisonerToAdd, cellAddress);
-            return new CommandResult(String.format(MESSAGE_ADD_CELL_SUCCESS, prisonerToAdd.getName(), cellAddress));
         } catch (FullCellException fce) {
             throw new CommandException(String.format(MESSAGE_FULL_CELL,
                     cellAddress, new ShowCellsCommand().getMapString(
@@ -70,6 +79,7 @@ public class AddCellCommand extends UndoableCommand {
             throw new CommandException(String.format(MESSAGE_ALREADY_IN_CELL,
                     prisonerToAdd.getName(), prisonerToAdd.getAddress()));
         }
+        return new CommandResult(String.format(MESSAGE_ADD_CELL_SUCCESS, prisonerToAdd.getName(), cellAddress));
     }
 
     @Override
@@ -81,6 +91,14 @@ public class AddCellCommand extends UndoableCommand {
         }
 
         prisonerToAdd = lastShownList.get(index.getZeroBased());
+    }
+
+    public Person getPrisonerToAdd() {
+        return prisonerToAdd;
+    }
+
+    public String getCellAddress() {
+        return cellAddress;
     }
 
     @Override

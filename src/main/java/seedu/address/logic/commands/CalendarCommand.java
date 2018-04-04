@@ -13,6 +13,7 @@ public class CalendarCommand extends Command {
     public static final String COMMAND_WORD = "calendar";
     public static final String COMMAND_ALIAS = "cal";
     public static final String ERROR_MESSAGE = "calendar execution failed";
+    public static final int minSecurityLevel = 1;
 
     @Override
     public CommandResult execute() {
@@ -23,6 +24,14 @@ public class CalendarCommand extends Command {
             e.printStackTrace();
         }
         return new CommandResult(ERROR_MESSAGE);
+    }
+
+    @Override
+    /**
+     * Returns the minSecurityLevel to caller
+     */
+    public int getMinSecurityLevel() {
+        return minSecurityLevel;
     }
 
 }
