@@ -11,7 +11,7 @@ import seedu.address.model.Model;
  */
 public abstract class Command {
 
-    protected final static int MIN_SECURITY_LEVEL = 0;
+    protected static final int MIN_SECURITY_LEVEL = 0;
 
     protected Model model;
     protected CommandHistory history;
