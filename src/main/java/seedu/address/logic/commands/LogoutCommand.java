@@ -1,5 +1,7 @@
 package seedu.address.logic.commands;
 
+import seedu.address.logic.UndoRedoStack;
+
 /**
  * Logs the user out of the current session
  */
@@ -12,6 +14,7 @@ public class LogoutCommand extends Command {
 
     @Override
     public CommandResult execute() {
+        undoRedoStack.clearStack();
         model.logout();
         return new CommandResult(MESSAGE_SUCCESS);
     }

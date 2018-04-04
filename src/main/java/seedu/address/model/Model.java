@@ -38,6 +38,9 @@ public interface Model {
     /** Returns Session details to caller */
     public String getSessionDetails();
 
+    /** Returns Session security level to caller */
+    public int getSecurityLevel();
+
     /** Deletes the given person. */
     void deletePerson(Person target) throws PersonNotFoundException;
 

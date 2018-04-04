@@ -13,6 +13,7 @@ public abstract class Command {
     protected Model model;
     protected CommandHistory history;
     protected UndoRedoStack undoRedoStack;
+    protected int minSecurityLevel = 0;
 
     /**
      * Constructs a feedback message to summarise an operation that displayed a listing of persons.
@@ -49,5 +50,14 @@ public abstract class Command {
      */
     public void setData(Model model, CommandHistory history, UndoRedoStack undoRedoStack) {
         this.model = model;
+        this.undoRedoStack = undoRedoStack;
     }
+
+    /**
+     * Returns the minSecurityLevel to caller
+     */
+    public int getMinSecurityLevel() {
+        return minSecurityLevel;
+    }
+
 }

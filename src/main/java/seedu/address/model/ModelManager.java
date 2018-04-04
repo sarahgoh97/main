@@ -86,6 +86,11 @@ public class ModelManager extends ComponentManager implements Model {
         return("Username: " + session.getUsername() + " Security Level: " + session.getSecurityLevel());
     }
 
+    @Override
+    public int getSecurityLevel() {
+        return session.getSecurityLevel();
+    }
+
 
     /** Raises an event to indicate the model has changed */
     private void indicateAddressBookChanged() {

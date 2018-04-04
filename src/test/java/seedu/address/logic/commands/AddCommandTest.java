@@ -96,6 +96,7 @@ public class AddCommandTest {
     /**
      * A default model stub that have all of the methods failing.
      */
+
     private class ModelStub implements Model {
 
         @Override
@@ -108,6 +109,16 @@ public class AddCommandTest {
         public Session getSession() {
             return new Session();
         };
+
+        @Override
+        public String getSessionDetails() {
+            return "";
+        }
+
+        @Override
+        public int getSecurityLevel() {
+            return 5;
+        }
 
         @Override
         public void addPerson(Person person) throws DuplicatePersonException {

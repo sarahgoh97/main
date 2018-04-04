@@ -9,6 +9,7 @@ public class ShowCellsCommand extends Command {
 
     public static final String COMMAND_WORD = "map";
     public static final String COMMAND_ALIAS = "m";
+    public static final int minSecurityLevel = 1;
 
     public static final String MESSAGE_SUCCESS = "%s\nShown cells with number of people in them.";
 
@@ -18,6 +19,14 @@ public class ShowCellsCommand extends Command {
         String cells = model.getAddressBook().getCellList().toString();
         String map = getMapString(cells);
         return new CommandResult(String.format(MESSAGE_SUCCESS, map));
+    }
+
+    @Override
+    /**
+     * Returns the minSecurityLevel to caller
+     */
+    public int getMinSecurityLevel() {
+        return minSecurityLevel;
     }
 
     public String getMapString(String cells) {
