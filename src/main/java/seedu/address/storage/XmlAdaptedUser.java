@@ -2,6 +2,7 @@
 package seedu.address.storage;
 
 import javax.xml.bind.annotation.XmlElement;
+
 import seedu.address.model.user.User;
 
 /**
