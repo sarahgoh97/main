@@ -25,6 +25,8 @@ import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
+import seedu.address.model.user.UniqueUserMap;
+import seedu.address.model.user.User;
 
 /**
  * Wraps all data at the address-book level
@@ -35,6 +37,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     private final UniquePersonList persons;
     private final UniqueTagList tags;
     private final CellMap cells;
+    private final UniqueUserMap users;
 
     /*
      * The 'unusual' code block below is an non-static initialization block, sometimes used to avoid duplication
@@ -47,12 +50,13 @@ public class AddressBook implements ReadOnlyAddressBook {
         persons = new UniquePersonList();
         tags = new UniqueTagList();
         cells = new CellMap();
+        users = new UniqueUserMap();
     }
 
     public AddressBook() {}
 
     /**
-     * Creates an AddressBook using the Persons and Tags in the {@code toBeCopied}
+     * Creates an AddressBook using the Persons and Tags and Cells in the {@code toBeCopied}
      */
     public AddressBook(ReadOnlyAddressBook toBeCopied) {
         this();
@@ -88,6 +92,7 @@ public class AddressBook implements ReadOnlyAddressBook {
             throw new AssertionError("AddressBooks should not have duplicate persons");
         }
         setCells(newData.getCellList());
+        setUsers(newData.getUserList());
     }
 
     //// person-level operations
@@ -156,6 +161,13 @@ public class AddressBook implements ReadOnlyAddressBook {
      */
     public boolean removePerson(Person key) throws PersonNotFoundException {
         if (persons.remove(key)) {
+            //@@author sarahgoh97
+            if (key.getIsInCell() == true) {
+                String cellAddress = key.getAddress().toString();
+                cellAddress = cellAddress.substring(0, cellAddress.length() - 13);
+                cells.deletePrisonerFromCell(key, cellAddress);
+            }
+            //@@author
             return true;
         } else {
             throw new PersonNotFoundException();
@@ -168,6 +180,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         tags.add(t);
     }
 
+    //@@author sarahgoh97
     //// cell-level operations
 
     /**
@@ -180,10 +193,12 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     /**
-     *
+     * Adds a prisoner to a cell
      * @param cellAddress to get the correct cell
      * @param prisoner to be added into the cell
      * @throws FullCellException if the cell already has the maximum number of prisoners
+     * @throws NonExistentCellException if the cell address is invalid
+     * @throws NotPrisonerException is the cell is
      */
     public void addPrisonerToCell(String cellAddress, Person prisoner) throws FullCellException,
             NonExistentCellException, NotPrisonerException, AlreadyInCellException {
@@ -199,8 +214,15 @@ public class AddressBook implements ReadOnlyAddressBook {
         } else {
             Person updatedPrisoner = new Person(prisoner, true, cellAddress);
             updatePrisoner(prisoner, updatedPrisoner);
-            cells.addPrisonerToCell(prisoner, cellAddress);
+            cells.addPrisonerToCell(updatedPrisoner, cellAddress);
         }
+    }
+
+    /**
+     * Deletes prisoner from a specified cell
+     */
+    public void deletePrisonerFromCell(Person prisoner, String cellAddress) {
+        cells.deletePrisonerFromCell(prisoner, cellAddress);
     }
 
     /**
@@ -214,10 +236,40 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     @Override
     public String toString() {
-        return persons.asObservableList().size() + " persons, " + tags.asObservableList().size() +  " tags"
-                + cells.getCellList();
+        return persons.asObservableList().size() + " persons, " + tags.asObservableList().size() +  " tags\n"
+                + cells.getCellList() + users.getUserList();
         // TODO: refine later
     }
+    //@@author
+
+    //@@author zacci
+    //// user-level operations
+
+    /**
+     *
+     * @param u is the user to add to the HashMap
+     */
+    public void addUser(User u) {
+        users.addUser(u);
+    }
+
+    /**
+     * Attempt to log in with the entered username and password
+     */
+    public int attemptLogin(String username, String password) {
+        return users.verify(username, password);
+    }
+
+    @Override
+    public ObservableList<User> getUserList() {
+        return users.getUserList();
+    }
+
+    public void setUsers(ObservableList<User> users) {
+        this.users.setUsers(users);
+    }
+
+    //@@author
 
     @Override
     public ObservableList<Person> getPersonList() {
@@ -229,10 +281,12 @@ public class AddressBook implements ReadOnlyAddressBook {
         return tags.asObservableList();
     }
 
+    //@@author sarahgoh97
     @Override
     public ObservableList<Cell> getCellList() {
         return cells.getCellList();
     }
+    //@@author
 
     @Override
     public boolean equals(Object other) {
@@ -240,7 +294,8 @@ public class AddressBook implements ReadOnlyAddressBook {
                 || (other instanceof AddressBook // instanceof handles nulls
                 && this.persons.equals(((AddressBook) other).persons)
                 && this.tags.equalsOrderInsensitive(((AddressBook) other).tags)
-                && this.cells.equals(((AddressBook) other).cells));
+                && this.cells.equals(((AddressBook) other).cells)
+                && this.users.equals(((AddressBook) other).users));
     }
 
     @Override

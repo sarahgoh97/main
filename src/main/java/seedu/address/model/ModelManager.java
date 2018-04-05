@@ -15,10 +15,12 @@ import seedu.address.commons.events.model.AddressBookChangedEvent;
 import seedu.address.model.cell.exceptions.AlreadyInCellException;
 import seedu.address.model.cell.exceptions.FullCellException;
 import seedu.address.model.cell.exceptions.NonExistentCellException;
+import seedu.address.model.cell.exceptions.NotImprisonedException;
 import seedu.address.model.cell.exceptions.NotPrisonerException;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
+import seedu.address.model.user.User;
 
 /**
  * Represents the in-memory model of the address book data.
@@ -64,6 +66,7 @@ public class ModelManager extends ComponentManager implements Model {
         return addressBook;
     }
 
+    //@@author zacci
     @Override
     public Session getSession() {
         return session;
@@ -72,13 +75,42 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void logout() {
         session.logout();
+        logger.info("User logged out");
     }
 
     @Override
     public void login(String username, int securityLevel) {
         session.login(username, securityLevel);
+        logger.info("User logged in with: u/" + username + " slevel/" + securityLevel);
     }
 
+    @Override
+    public boolean attemptLogin(String username, String password) {
+        int securityLevel = addressBook.attemptLogin(username, password);
+        if (securityLevel < 0) {
+            return false;
+        } else {
+            login(username, securityLevel);
+            return true;
+        }
+    }
+
+    @Override
+    public String getSessionDetails() {
+        return ("Username: " + session.getUsername() + " Security Level: " + session.getSecurityLevel());
+    }
+
+    @Override
+    public int getSecurityLevel() {
+        return session.getSecurityLevel();
+    }
+
+    @Override
+    public void addUser(User userToAdd) {
+        addressBook.addUser(userToAdd);
+        indicateAddressBookChanged();
+    }
+    //@@author
 
     /** Raises an event to indicate the model has changed */
     private void indicateAddressBookChanged() {
@@ -107,6 +139,7 @@ public class ModelManager extends ComponentManager implements Model {
         indicateAddressBookChanged();
     }
 
+    //@@author sarahgoh97
     @Override
     public void addPrisonerToCell(Person prisoner, String cellAddress)
             throws FullCellException, NonExistentCellException,
@@ -115,6 +148,35 @@ public class ModelManager extends ComponentManager implements Model {
         addressBook.addPrisonerToCell(cellAddress, prisoner);
         indicateAddressBookChanged();
     }
+
+    /* this is for undo command */
+    @Override
+    public void deletePrisonerFromCell(Person prisoner, String cellAddress) {
+        requireAllNonNull(prisoner, cellAddress);
+        Person updatedPrisoner = new Person(prisoner, true, cellAddress);
+        addressBook.deletePrisonerFromCell(updatedPrisoner, cellAddress);
+    }
+
+    /* this is for delete cell command */
+    @Override
+    public void deletePrisonerFromCell(Person prisoner) throws PersonNotFoundException, NotImprisonedException {
+        requireNonNull(prisoner);
+        if (!filteredPersons.contains(prisoner)) {
+            throw new PersonNotFoundException();
+        } else {
+            String cellAddress = prisoner.getAddress().toString();
+            if (prisoner.getIsInCell()) {
+                cellAddress = cellAddress.substring(0, cellAddress.indexOf(" "));
+                addressBook.deletePrisonerFromCell(prisoner, cellAddress);
+                Person freedPrisoner = new Person(prisoner, false);
+                addressBook.updatePrisoner(prisoner, freedPrisoner);
+            } else {
+                throw new NotImprisonedException();
+            }
+        }
+        indicateAddressBookChanged();
+    }
+    //@@author
 
     //=========== Filtered Person List Accessors =============================================================
 
@@ -147,8 +209,7 @@ public class ModelManager extends ComponentManager implements Model {
 
         // state check
         ModelManager other = (ModelManager) obj;
-        return addressBook.equals(other.addressBook)
-                && filteredPersons.equals(other.filteredPersons);
+        return addressBook.equals(other.addressBook) && filteredPersons.equals(other.filteredPersons);
     }
 
 }

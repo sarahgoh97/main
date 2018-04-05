@@ -13,7 +13,7 @@ ifdef::env-github[]
 endif::[]
 :repoURL: https://github.com/CS2103JAN2018-T11-B2/main/
 
-By: `CS2103-B2`      Since: `Jan 2018`      Licence: `MIT`
+By: `CS2103-T11-B2`      Since: `Jan 2018`      Licence: `MIT`
 
 == Introduction
 
@@ -54,6 +54,12 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 * Items in square brackets are optional e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/friend` or as `n/John Doe`.
 * Items with `…`​ after them can be used multiple times including zero times e.g. `[t/TAG]...` can be used as `{nbsp}` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
 * Parameters can be in any order e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
+* For security reasons, users need to log in before having access to certain commands. Users have a `Security Level` assigned to them. All commands have a minimum `Security Level` required before the user is able to access it.
+** Security Level 0: Most basic commands such as Login and Status.
+** Security Level 1: Most commands that only require read access.
+** Security Level 2: Most commands that require write access.
+** Security Level 3: Complete access to all commands.
+* The minimum `Security Level` to access each command is listed beside each command below in square brackets [].
 ====
 
 === Viewing help : `help`
@@ -61,7 +67,7 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 Format: `help`
 
 // tag::login[]
-=== Logging in: `login` (v1.2)
+=== Logging in: `login` [0] (v1.2)
 
 Logs in to your account on the PrisonBook +
 Format: `login user/USER_NAME pw/PASSWORD`
@@ -72,14 +78,41 @@ Examples:
 // end::login[]
 
 // tag::logout[]
-=== Logging out: `logout` (v1.3)
+=== Logging out: `logout` [0] (v1.3)
 
 Logs out of your account +
+After logging out, you will not be able to undo actions that were completed before logging out.
+
 Format: `logout`
 
 // end::logout[]
 
-=== Adding a person: `add or a`
+// tag::status[]
+=== Check Log-in Status: `status` [0] (v1.4)
+
+Checks your current log-in status +
+Format: `status`
+// end::status[]
+
+// tag::adduser[]
+=== Add new user: `adduser` [3] (v1.4)
+
+Adds new user to have access to the PrisonBook +
+Format: `adduser user/NEW_USERNAME pw/NEW_PASSWORD sl/SECURITY_LEVEL`
+
+Higher security levels allow users to access a greater range of commands:
+
+* Security Level 0: Most basic commands such as Login and Status.
+* Security Level 1: Most commands that only require read access.
+* Security Level 2: Most commands that require write access.
+* Security Level 3: Complete access to all commands.
+
+Examples:
+
+* `adduser user/newuser pw/newpassword sl/1`
+// end::adduser[]
+
+=== Adding a person: `add or a` [2]
 
 Adds a person to the prison book +
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]...`
@@ -93,7 +126,7 @@ Examples:
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
 
 // tag::addcell[]
-=== Adding a prisoner to a cell: `addcell or ac` (v1.3)
+=== Adding a prisoner to a cell: `addcell or ac` [2] (v1.3)
 
 Adds a person to one of the cells in the prison +
 Format: `ac INDEX CELLADDRESS`
@@ -108,13 +141,13 @@ Examples:
 * `ac 2 2-1`
 // end::addcell[]
 
-=== Listing all persons : `list or l`
+=== Listing all persons : `list or l` [1]
 
 Shows a list of all persons in the prison book. +
 Format: `list`
 
 //tag::listcell[]
-=== Listing prisoners in a cell : `listcell or lc` (coming in V2.0)
+=== Listing prisoners in a cell : `listcell or lc` [coming in V2.0]
 
 Shows a list of all persons in a prison cell in the prison book. +
 Format: `list CELL`
@@ -125,13 +158,13 @@ Examples:
 //end::listcell[]
 
 //tag::map[]
-=== Showing cells in the map: `map or m` (v1.1)
+=== Showing cells in the map: `map or m` [1] (v1.1)
 
-Shows a table of prison cells like a map. +
+Shows a table of prison cells like a map in the command display (used for debugging and checking UI). +
 Format: `map`
 //end::map[]
 
-=== Editing a person : `edit or e`
+=== Editing a person : `edit or e` [2]
 
 Edits an existing person in the prison book. +
 Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]...`
@@ -152,7 +185,7 @@ Edits the phone number and email address of the 1st person to be `91234567` and 
 Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
 
 // tag::find[]
-=== Locating persons by name or tags: `find or f`
+=== Locating persons by name or tags: `find or f` [1]
 
 Finds persons whose names/tags contain any of the given keywords. +
 Format: `find n/NAME_KEYWORD [MORE_KEYWORDS] t/TAG_KEYWORD [MORE_KEYWORDS]`
@@ -178,12 +211,20 @@ Returns any person having names `Betsy` or are tagged `Friends`
 // tag::calendar[]
 === Various commands to interact with Google Calendar
 
-==== View upcoming events in the calendar: `calendar or c`
+==== View upcoming events in the calendar: `calendar or c` [1] (v1.3)
 Format: `calendar`
+
+==== View upcoming events in the calendar: `calAdd or calA` [1] (v1.3)
+Format: `calAdd event/EVENTNAME loc/LOCATION start/STARTDATETIME end/ENDDATETIME`
+
+Examples:
+* `calAdd event/Software Meeting loc/NUS Utown Green start/2018-06-06 10:00:00 end/2018-06-06 13:00:00` +
+Adds an event `Software Meeting` at `NUS Utown Green` from `June 6th, 2018 10am` to `June 6th, 2018 1pm`
+
 
 // end::calendar[]
 
-=== Deleting a person : `delete or d`
+=== Deleting a person : `delete or d` [2]
 
 Deletes the specified person from the prison book. +
 Format: `delete INDEX`
@@ -204,28 +245,25 @@ Deletes the 2nd person in the prison book.
 Deletes the 1st person in the results of the `find` command.
 
 //tag::deletecell[]
-=== Deleting a person from a cell : `deletecell or dc` (coming in V2.0)
+=== Deleting a person from a cell : `deletecell or dc` [2] (v1.4)
 
-Deletes the specified person from the cell in the PrisonBook. +
+Deletes the specified person from his/her cell in the PrisonBook. +
 Format: `deletecell INDEX`
 
 ****
 * Deletes the person at the specified `INDEX`.
 * The index refers to the index number shown in the most recent listing.
 * The index *must be a positive integer* 1, 2, 3, ...
+* The person must be imprisoned in the prison already.
 ****
 
 Examples:
 
-* `lc a2` +
-`deletecell 2` +
-Deletes the 2nd person in the cell in the PrisonBook.
-* `listcell b4` +
-`dc 1`
-Deletes the 1st person in the cell in the PrisonBook.
+* `dc 1` +
+Deletes the first person in the prison book if he/she is imprisoned here.
 //end::deletecell[]
 
-=== Selecting a person : `select or s`
+=== Selecting a person : `select or s` [0]
 
 Selects the person identified by the index number used in the last person listing. +
 Format: `select INDEX`
@@ -245,7 +283,7 @@ Selects the 2nd person in the prison book.
 `select 1` +
 Selects the 1st person in the results of the `find` command.
 
-=== Listing entered commands : `history or h`
+=== Listing entered commands : `history or h` [0]
 
 Lists all the commands that you have entered in reverse chronological order. +
 Format: `history`
@@ -256,7 +294,7 @@ Pressing the kbd:[&uarr;] and kbd:[&darr;] arrows will display the previous and 
 ====
 
 // tag::undoredo[]
-=== Undoing previous command : `undo or u`
+=== Undoing previous command : `undo or u` [0]
 
 Restores the prison book to the state before the previous _undoable_ command was executed. +
 Format: `undo`
@@ -282,7 +320,7 @@ The `undo` command fails as there are no undoable commands executed previously.
 `undo` (reverses the `clear` command) +
 `undo` (reverses the `delete 1` command) +
 
-=== Redoing the previously undone command : `redo or r`
+=== Redoing the previously undone command : `redo or r` [0]
 
 Reverses the most recent `undo` command. +
 Format: `redo`
@@ -305,12 +343,12 @@ The `redo` command fails as there are no `undo` commands executed previously.
 `redo` (reapplies the `clear` command) +
 // end::undoredo[]
 
-=== Clearing all entries : `clear or c`
+=== Clearing all entries : `clear or c` [3]
 
 Clears all entries from the prison book. Clears all prison cells. +
 Format: `clear`
 
-=== Exiting the program : `exit`
+=== Exiting the program : `exit` [0]
 
 Exits the program. +
 Format: `exit`
@@ -340,11 +378,15 @@ e.g. `addcell 1 1-1`
 * *Clear* : `clear`
 * *Delete* : `delete INDEX` +
 e.g. `delete 3`
+* *DeleteCell* `deletecell INDEX`
+e.g. `deletecell 2`
 * *Edit* : `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]...` +
 e.g. `edit 2 n/James Lee e/jameslee@example.com`
 * *Find* : `find n/NAME_KEYWORD [MORE_NAME_KEYWORDS] t/TAG_KEYWORD [MORE_TAG_KEYWORDS]` +
 e.g. `find n/James Jake t/boys`
 * *Calendar* : `calendar`
+* *Calendar Add Event* : `calAdd event/EVENTNAME loc/LOCATION start/STARTDATETIME end/ENDDATETIME`
+e.g. `calAdd event/Software Meeting loc/NUS Utown Green start/2018-06-06 10:00:00 end/2018-06-06 13:00:00`
 * *List* : `list`
 * *Map* : `map`
 * *Help* : `help`

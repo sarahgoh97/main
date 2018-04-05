@@ -5,7 +5,6 @@ package seedu.address.model;
  */
 public class Session {
 
-    private boolean isLoggedIn;
     private String username;
     private int securityLevel;
 
@@ -17,7 +16,6 @@ public class Session {
      * Sets session details for user upon successful login
      */
     public void login(String username, int securityLevel) {
-        this.isLoggedIn = true;
         this.username = username;
         this.securityLevel = securityLevel;
     }
@@ -27,17 +25,33 @@ public class Session {
     }
 
     private void resetSession() {
-        isLoggedIn = false;
         username = "";
         securityLevel = 0;
     }
 
-    private String getUsername() {
+    public String getUsername() {
         return username;
     }
 
-    private int getSecurityLevel() {
+    public int getSecurityLevel() {
         return securityLevel;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        // short circuit if same object
+        if (obj == this) {
+            return true;
+        }
+
+        // instanceof handles nulls
+        if (!(obj instanceof Session)) {
+            return false;
+        }
+
+        // state check
+        Session other = (Session) obj;
+        return username.equals(other.username)
+                && securityLevel == other.securityLevel;
+    }
 }

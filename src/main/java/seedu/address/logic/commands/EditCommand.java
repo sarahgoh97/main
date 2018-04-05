@@ -36,6 +36,7 @@ public class EditCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "edit";
     public static final String COMMAND_ALIAS = "e";
+    public static final int MIN_SECURITY_LEVEL = 2;
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the details of the person identified "
             + "by the index number used in the last person listing. "
@@ -112,6 +113,14 @@ public class EditCommand extends UndoableCommand {
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
         return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedRole, updatedTags);
+    }
+
+    @Override
+    /**
+     * Returns the MIN_SECURITY_LEVEL to caller
+     */
+    public int getMinSecurityLevel() {
+        return MIN_SECURITY_LEVEL;
     }
 
     @Override

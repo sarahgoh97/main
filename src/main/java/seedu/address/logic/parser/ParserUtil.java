@@ -2,10 +2,15 @@ package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+
+import com.google.api.client.util.DateTime;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.exceptions.IllegalValueException;
@@ -229,9 +234,44 @@ public class ParserUtil {
      * See header comment of this class regarding the use of {@code Optional} parameters.
      */
     public static String parsePassword(Optional<String> password) throws IllegalValueException {
-        //requireNonNull(password); null accepted for now
+        requireNonNull(password);
         return password.isPresent() ? parsePassword(password.get()) : "";
     }
 
+    /**
+     * Parses a @code String securityLevel
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws IllegalValueException if the given {@code securityLevel} is invalid.
+     */
+    public static int parseSecurityLevel(String securityLevel) throws NumberFormatException {
+        requireNonNull(securityLevel);
+        String trimmedSecurityLevel = securityLevel.trim();
+        int intSecurityLevel = Integer.parseInt(trimmedSecurityLevel);
+        return intSecurityLevel;
+    }
+
+    /**
+     * Parses a {@code Optional<int> securityLevel} into an {@code Optional<securityLevel>}
+     * if {@code securityLevel} is present.
+     * See header comment of this class regarding the use of {@code Optional} parameters.
+     */
+    public static int parseSecurityLevel (Optional<String> password) throws NumberFormatException {
+        requireNonNull(password);
+        return password.isPresent() ? parseSecurityLevel(password.get()) : -1;
+    }
+
+    //@@author philos22
+    /**
+     * Parses a {@code Optional<String> DateTime} if present.
+     */
+    public static DateTime parseDateTime(String dateTime) throws IllegalValueException {
+
+        String theDateTime = dateTime.replaceAll("[\\[\\]]", "").replaceAll("Optional", "");
+
+        TemporalAccessor ta = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").parse(theDateTime);
+        String strDateTime = LocalDateTime.from(ta).toString() + ":00";
+        return new DateTime(strDateTime);
+    }
 
 }

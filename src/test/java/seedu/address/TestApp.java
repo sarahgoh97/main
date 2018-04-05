@@ -95,6 +95,7 @@ public class TestApp extends MainApp {
      */
     public Model getModel() {
         Model copy = new ModelManager((model.getAddressBook()), new UserPrefs());
+        model.login("maxSecurityLevelUser", 999);
         ModelHelper.setFilteredList(copy, model.getFilteredPersonList());
         return copy;
     }

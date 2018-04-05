@@ -12,6 +12,9 @@ import seedu.address.model.ReadOnlyAddressBook;
  * Represents a command which can be undone and redone.
  */
 public abstract class UndoableCommand extends Command {
+
+    protected static final int MIN_SECURITY_LEVEL = 0;
+
     private ReadOnlyAddressBook previousAddressBook;
 
     protected abstract CommandResult executeUndoableCommand() throws CommandException;
@@ -39,6 +42,13 @@ public abstract class UndoableCommand extends Command {
         requireAllNonNull(model, previousAddressBook);
         model.resetData(previousAddressBook);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+    }
+
+    /**
+     * Returns the MIN_SECURITY_LEVEL to caller
+     */
+    public int getMinSecurityLevel() {
+        return MIN_SECURITY_LEVEL;
     }
 
     /**

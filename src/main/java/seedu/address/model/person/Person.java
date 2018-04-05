@@ -1,5 +1,6 @@
 package seedu.address.model.person;
 
+import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Collections;
@@ -79,7 +80,25 @@ public class Person {
         this.name = person.getName();
         this.phone = person.getPhone();
         this.email = person.getEmail();
-        this.address = new Address(cellAddress + " [imprisoned]");
+        this.address = new Address(cellAddress + " [Old address: " + person.getAddress().toString() + "]");
+        this.role = person.getRole();
+        this.tags = new UniqueTagList(person.getTags());
+        this.isInCell = isInCell;
+    }
+
+    /**
+     * Constructor for freedPrisoner after being deleted from cell
+     * @param person deleted from cell
+     * @param isInCell is false because deleting from cell
+     */
+    public Person (Person person, boolean isInCell) {
+        requireNonNull(person);
+        this.name = person.getName();
+        this.phone = person.getPhone();
+        this.email = person.getEmail();
+        String addressString = person.getAddress().toString();
+        this.address = new Address(addressString.substring(
+                addressString.indexOf(": ") + 2, addressString.indexOf("]")));
         this.role = person.getRole();
         this.tags = new UniqueTagList(person.getTags());
         this.isInCell = isInCell;
@@ -156,7 +175,6 @@ public class Person {
                 .append(getRole())
                 .append(" Tags: ");
         getTags().forEach(builder::append);
-        builder.append(isInCell);
         return builder.toString();
     }
 

@@ -8,9 +8,13 @@ import java.util.regex.Pattern;
 
 import seedu.address.logic.commands.AddCellCommand;
 import seedu.address.logic.commands.AddCommand;
+import seedu.address.logic.commands.AddUserCommand;
+import seedu.address.logic.commands.CalendarAddCommand;
 import seedu.address.logic.commands.CalendarCommand;
+import seedu.address.logic.commands.CheckStatusCommand;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.Command;
+import seedu.address.logic.commands.DeleteCellCommand;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.ExitCommand;
@@ -23,7 +27,9 @@ import seedu.address.logic.commands.LogoutCommand;
 import seedu.address.logic.commands.RedoCommand;
 import seedu.address.logic.commands.SelectCommand;
 import seedu.address.logic.commands.ShowCellsCommand;
+import seedu.address.logic.commands.ShowUsersCommand;
 import seedu.address.logic.commands.UndoCommand;
+
 import seedu.address.logic.parser.exceptions.ParseException;
 
 /**
@@ -80,16 +86,32 @@ public class AddressBookParser {
         case ListCommand.COMMAND_WORD:
         case ListCommand.COMMAND_ALIAS:
             return new ListCommand();
-
+        //@@author philos22
         case CalendarCommand.COMMAND_WORD:
         case CalendarCommand.COMMAND_ALIAS:
             return new CalendarCommand();
 
+        case CalendarAddCommand.COMMAND_WORD:
+        case CalendarAddCommand.COMMAND_ALIAS:
+            return new CalendarAddCommandParser().parse(arguments);
+        //@@author
+
+        //@@author zacci
         case LoginCommand.COMMAND_WORD:
             return new LoginCommandParser().parse(arguments);
 
         case LogoutCommand.COMMAND_WORD:
             return new LogoutCommand();
+
+        case CheckStatusCommand.COMMAND_WORD:
+            return new CheckStatusCommand();
+
+        case ShowUsersCommand.COMMAND_WORD:
+            return new ShowUsersCommand();
+
+        case AddUserCommand.COMMAND_WORD:
+            return new AddUserCommandParser().parse(arguments);
+        //@@author
 
         case HistoryCommand.COMMAND_WORD:
         case HistoryCommand.COMMAND_ALIAS:
@@ -109,6 +131,7 @@ public class AddressBookParser {
         case RedoCommand.COMMAND_ALIAS:
             return new RedoCommand();
 
+        //@@author sarahgoh97
         case ShowCellsCommand.COMMAND_WORD:
         case ShowCellsCommand.COMMAND_ALIAS:
             return new ShowCellsCommand();
@@ -116,6 +139,11 @@ public class AddressBookParser {
         case AddCellCommand.COMMAND_WORD:
         case AddCellCommand.COMMAND_ALIAS:
             return new AddCellCommandParser().parse(arguments);
+
+        case DeleteCellCommand.COMMAND_WORD:
+        case DeleteCellCommand.COMMAND_ALIAS:
+            return new DeleteCellCommandParser().parse(arguments);
+        //@@author
 
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);

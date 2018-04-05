@@ -19,6 +19,7 @@ public class AddCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "add";
     public static final String COMMAND_ALIAS = "a";
+    public static final int MIN_SECURITY_LEVEL = 2;
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a person to the address book. "
             + "Parameters: "
@@ -48,6 +49,14 @@ public class AddCommand extends UndoableCommand {
     public AddCommand(Person person) {
         requireNonNull(person);
         toAdd = person;
+    }
+
+    @Override
+    /**
+     * Returns the MIN_SECURITY_LEVEL to caller
+     */
+    public int getMinSecurityLevel() {
+        return MIN_SECURITY_LEVEL;
     }
 
     @Override
