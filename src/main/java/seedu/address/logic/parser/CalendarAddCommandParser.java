@@ -13,13 +13,12 @@ import java.util.stream.Stream;
 import com.google.api.client.util.DateTime;
 
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.CalendarAddCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
 
 /**
- * Parses input arguments and creates a new AddCommand object
+ * Parses input arguments and creates a new CalendarAddCommandParser object
  */
 public class CalendarAddCommandParser implements Parser<CalendarAddCommand> {
 
@@ -34,7 +33,7 @@ public class CalendarAddCommandParser implements Parser<CalendarAddCommand> {
 
         if (!arePrefixesPresent(argMultimap, PREFIX_EVENT, PREFIX_LOCATION, PREFIX_START, PREFIX_END)
                 || !argMultimap.getPreamble().isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, CalendarAddCommand.MESSAGE_USAGE));
         }
 
 
