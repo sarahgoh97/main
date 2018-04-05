@@ -6,6 +6,7 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.cell.Cell;
 import seedu.address.model.person.Person;
+import seedu.address.model.user.User;
 
 /**
  * API of the Logic component
@@ -28,4 +29,7 @@ public interface Logic {
 
     /** Returns an unmodifiable view of the celllist */
     ObservableList<Cell> getCellList();
+
+    /** Returns an unmodifiable view of the userList */
+    ObservableList<User> getUserList();
 }
