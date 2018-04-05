@@ -93,12 +93,14 @@ public class TestApp extends MainApp {
     /**
      * Returns a defensive copy of the model.
      */
+    //@@author zacci
     public Model getModel() {
         Model copy = new ModelManager((model.getAddressBook()), new UserPrefs());
         model.login("maxSecurityLevelUser", 999);
         ModelHelper.setFilteredList(copy, model.getFilteredPersonList());
         return copy;
     }
+    //@author
 
     @Override
     public void start(Stage primaryStage) {
