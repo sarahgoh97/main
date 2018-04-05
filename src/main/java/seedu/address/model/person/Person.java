@@ -87,7 +87,7 @@ public class Person {
     }
 
     /**
-     * Constructor for freedPrisoner after beind deleted from cell
+     * Constructor for freedPrisoner after being deleted from cell
      * @param person deleted from cell
      * @param isInCell is false because deleting from cell
      */

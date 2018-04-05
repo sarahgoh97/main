@@ -11,6 +11,8 @@ import seedu.address.model.cell.exceptions.NotPrisonerException;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
+import seedu.address.model.user.User;
+import seedu.address.model.user.exceptions.UserAlreadyExistsException;
 
 /**
  * The API of the Model component.
@@ -25,6 +27,7 @@ public interface Model {
     /** Returns the AddressBook */
     ReadOnlyAddressBook getAddressBook();
 
+    //@@author zacci
     /** Returns the session */
     Session getSession();
 
@@ -34,11 +37,18 @@ public interface Model {
     /** Logs in verified user and assigns security level to the session */
     void login(String username, int securityLevel);
 
+    /** Attempts to login user with entered username and password */
+    boolean attemptLogin(String username, String password);
+
     /** Returns Session details to caller */
-    public String getSessionDetails();
+    String getSessionDetails();
 
     /** Returns Session security level to caller */
-    public int getSecurityLevel();
+    int getSecurityLevel();
+
+    /** Adds given user to the PrisonBook */
+    void addUser(User user) throws UserAlreadyExistsException;
+    //@@author
 
     /** Deletes the given person. */
     void deletePerson(Person target) throws PersonNotFoundException;

@@ -15,6 +15,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.Model;
 import seedu.address.model.cell.Cell;
 import seedu.address.model.person.Person;
+import seedu.address.model.user.User;
 
 /**
  * The main LogicManager of the app.
@@ -79,5 +80,10 @@ public class LogicManager extends ComponentManager implements Logic {
     @Override
     public ObservableList<Cell> getCellList() {
         return model.getAddressBook().getCellList();
+    }
+
+    @Override
+    public ObservableList<User> getUserList() {
+        return model.getAddressBook().getUserList();
     }
 }
