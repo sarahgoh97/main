@@ -25,6 +25,8 @@ import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
+import seedu.address.model.user.UniqueUserMap;
+import seedu.address.model.user.User;
 
 /**
  * Wraps all data at the address-book level
@@ -35,6 +37,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     private final UniquePersonList persons;
     private final UniqueTagList tags;
     private final CellMap cells;
+    private final UniqueUserMap users;
 
     /*
      * The 'unusual' code block below is an non-static initialization block, sometimes used to avoid duplication
@@ -47,6 +50,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         persons = new UniquePersonList();
         tags = new UniqueTagList();
         cells = new CellMap();
+        users = new UniqueUserMap();
     }
 
     public AddressBook() {}
@@ -88,6 +92,7 @@ public class AddressBook implements ReadOnlyAddressBook {
             throw new AssertionError("AddressBooks should not have duplicate persons");
         }
         setCells(newData.getCellList());
+        setUsers(newData.getUserList());
     }
 
     //// person-level operations
@@ -232,9 +237,38 @@ public class AddressBook implements ReadOnlyAddressBook {
     @Override
     public String toString() {
         return persons.asObservableList().size() + " persons, " + tags.asObservableList().size() +  " tags\n"
-                + cells.getCellList();
+                + cells.getCellList() + users.getUserList();
         // TODO: refine later
     }
+    //@@author
+
+    //@@author zacci
+    //// user-level operations
+
+    /**
+     *
+     * @param u is the user to add to the HashMap
+     */
+    public void addUser(User u) {
+        users.addUser(u);
+    }
+
+    /**
+     * Attempt to log in with the entered username and password
+     */
+    public int attemptLogin(String username, String password) {
+        return users.verify(username, password);
+    }
+
+    @Override
+    public ObservableList<User> getUserList() {
+        return users.getUserList();
+    }
+
+    public void setUsers(ObservableList<User> users) {
+        this.users.setUsers(users);
+    }
+
     //@@author
 
     @Override
@@ -252,6 +286,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     public ObservableList<Cell> getCellList() {
         return cells.getCellList();
     }
+    //@@author
 
     @Override
     public boolean equals(Object other) {
@@ -259,7 +294,8 @@ public class AddressBook implements ReadOnlyAddressBook {
                 || (other instanceof AddressBook // instanceof handles nulls
                 && this.persons.equals(((AddressBook) other).persons)
                 && this.tags.equalsOrderInsensitive(((AddressBook) other).tags)
-                && this.cells.equals(((AddressBook) other).cells));
+                && this.cells.equals(((AddressBook) other).cells)
+                && this.users.equals(((AddressBook) other).users));
     }
 
     @Override

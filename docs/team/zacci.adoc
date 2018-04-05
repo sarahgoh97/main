@@ -44,6 +44,10 @@ include::../UserGuide.adoc[tag=login]
 
 include::../UserGuide.adoc[tag=logout]
 
+include::../UserGuide.adoc[tag=status]
+
+include::../UserGuide.adoc[tag=adduser]
+
 == Contributions to the Developer Guide
 
 |===
@@ -51,9 +55,6 @@ include::../UserGuide.adoc[tag=logout]
 |===
 
 include::../DeveloperGuide.adoc[tag=loginsecurity]
-
-
-== PROJECT: PowerPointLabs
 
 ---
 

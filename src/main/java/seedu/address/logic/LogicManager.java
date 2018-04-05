@@ -15,7 +15,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.Model;
 import seedu.address.model.cell.Cell;
 import seedu.address.model.person.Person;
-
+import seedu.address.model.user.User;
 
 /**
  * The main LogicManager of the app.
@@ -49,10 +49,10 @@ public class LogicManager extends ComponentManager implements Logic {
     }
 
     /**
-     * Executes the received command if the logged in user's security level meets the minSecurityLevel for the command
+     * Executes the received command if the logged in user's security level meets the MIN_SECURITY_LEVEL for the command
      */
     private CommandResult restrictedExecute (Command command) throws CommandException {
-        logger.info("Command minSecurityLevel: " + command.getMinSecurityLevel());
+        logger.info("Command MIN_SECURITY_LEVEL: " + command.getMinSecurityLevel());
         if (command.getMinSecurityLevel() <= model.getSecurityLevel()) {
             try {
                 CommandResult result = command.execute();
@@ -80,5 +80,10 @@ public class LogicManager extends ComponentManager implements Logic {
     @Override
     public ObservableList<Cell> getCellList() {
         return model.getAddressBook().getCellList();
+    }
+
+    @Override
+    public ObservableList<User> getUserList() {
+        return model.getAddressBook().getUserList();
     }
 }

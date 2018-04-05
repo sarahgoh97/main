@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import seedu.address.logic.commands.AddCellCommand;
 import seedu.address.logic.commands.AddCommand;
+import seedu.address.logic.commands.AddUserCommand;
 import seedu.address.logic.commands.CalendarAddCommand;
 import seedu.address.logic.commands.CalendarCommand;
 import seedu.address.logic.commands.CheckStatusCommand;
@@ -26,6 +27,7 @@ import seedu.address.logic.commands.LogoutCommand;
 import seedu.address.logic.commands.RedoCommand;
 import seedu.address.logic.commands.SelectCommand;
 import seedu.address.logic.commands.ShowCellsCommand;
+import seedu.address.logic.commands.ShowUsersCommand;
 import seedu.address.logic.commands.UndoCommand;
 
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -93,6 +95,8 @@ public class AddressBookParser {
         case CalendarAddCommand.COMMAND_ALIAS:
             return new CalendarAddCommandParser().parse(arguments);
         //@@author
+
+        //@@author zacci
         case LoginCommand.COMMAND_WORD:
             return new LoginCommandParser().parse(arguments);
 
@@ -101,6 +105,13 @@ public class AddressBookParser {
 
         case CheckStatusCommand.COMMAND_WORD:
             return new CheckStatusCommand();
+
+        case ShowUsersCommand.COMMAND_WORD:
+            return new ShowUsersCommand();
+
+        case AddUserCommand.COMMAND_WORD:
+            return new AddUserCommandParser().parse(arguments);
+        //@@author
 
         case HistoryCommand.COMMAND_WORD:
         case HistoryCommand.COMMAND_ALIAS:
