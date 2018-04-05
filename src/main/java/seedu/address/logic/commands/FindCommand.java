@@ -12,7 +12,7 @@ public class FindCommand extends Command {
     public static final String COMMAND_WORD = "find";
     public static final String COMMAND_ALIAS = "f";
 
-    public static final int minSecurityLevel = 1;
+    public static final int MIN_SECURITY_LEVEL = 1;
 
     //@@author philos22
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose names or tags contain any of "
@@ -34,10 +34,10 @@ public class FindCommand extends Command {
 
     @Override
     /**
-     * Returns the minSecurityLevel to caller
+     * Returns the MIN_SECURITY_LEVEL to caller
      */
     public int getMinSecurityLevel() {
-        return minSecurityLevel;
+        return MIN_SECURITY_LEVEL;
     }
 
     @Override

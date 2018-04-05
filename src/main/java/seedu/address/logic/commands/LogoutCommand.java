@@ -9,7 +9,6 @@ public class LogoutCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "Successfully logged out";
 
-
     @Override
     public CommandResult execute() {
         undoRedoStack.clearStack();

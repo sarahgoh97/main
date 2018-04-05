@@ -21,7 +21,7 @@ import seedu.address.model.person.Person;
 public class AddCellCommand extends UndoableCommand {
     public static final String COMMAND_WORD = "addcell";
     public static final String COMMAND_ALIAS = "ac";
-    public static final int minSecurityLevel = 2;
+    public static final int MIN_SECURITY_LEVEL = 2;
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a prisoner to the specified cell."
             + "by the index number used in the last person listing.\n"
@@ -53,10 +53,10 @@ public class AddCellCommand extends UndoableCommand {
 
     @Override
     /**
-     * Returns the minSecurityLevel to caller
+     * Returns the MIN_SECURITY_LEVEL to caller
      */
     public int getMinSecurityLevel() {
-        return minSecurityLevel;
+        return MIN_SECURITY_LEVEL;
     }
 
     @Override
