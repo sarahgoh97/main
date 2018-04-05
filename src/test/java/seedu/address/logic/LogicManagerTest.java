@@ -25,9 +25,11 @@ public class LogicManagerTest {
     private Model model = new ModelManager();
     private Logic logic = new LogicManager(model);
 
+    //@@author zacci
     public LogicManagerTest() {
         model.login("maxSecurityLevelUser", 999);
     }
+    //@@author
 
     @Test
     public void execute_invalidCommandFormat_throwsParseException() {
