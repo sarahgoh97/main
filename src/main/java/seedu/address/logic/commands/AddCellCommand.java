@@ -77,7 +77,7 @@ public class AddCellCommand extends UndoableCommand {
             throw new CommandException(String.format(MESSAGE_NOT_PRISONER, prisonerToAdd.getName()));
         } catch (AlreadyInCellException aice) {
             throw new CommandException(String.format(MESSAGE_ALREADY_IN_CELL,
-                    prisonerToAdd.getName(), prisonerToAdd.getAddress()));
+                    prisonerToAdd.getName(), prisonerToAdd.getCellAddress()));
         }
         return new CommandResult(String.format(MESSAGE_ADD_CELL_SUCCESS, prisonerToAdd.getName(), cellAddress));
     }
