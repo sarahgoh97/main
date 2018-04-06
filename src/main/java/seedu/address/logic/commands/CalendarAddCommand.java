@@ -22,17 +22,17 @@ public class CalendarAddCommand extends UndoableCommand {
     public static final String COMMAND_WORD = "calAdd";
     public static final String COMMAND_ALIAS = "calA";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds an event to the calendar. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds an event to the calendar. \n"
             + "Parameters: "
             + PREFIX_EVENT + "EVENT NAME "
             + PREFIX_LOCATION + "EVENT LOCATION "
-            + PREFIX_START + "EVENT START TIME "
-            + PREFIX_END + "EVENT END TIME \n"
-            + "Example: " + COMMAND_WORD + " "
+            + PREFIX_START + "EVENT_START_TIME "
+            + PREFIX_END + "EVENT_END_TIME \n"
+            + "Example: \n" + COMMAND_WORD + " "
             + PREFIX_EVENT + "Finish Software Engineering Milestone "
-            + PREFIX_LOCATION + "NUS UTown Residence"
-            + PREFIX_START + "2018-04-01T15:00:00"
-            + PREFIX_END + "2018-04-01T17:00:00";
+            + PREFIX_LOCATION + "NUS UTown Residence "
+            + PREFIX_START + "2020-04-01 15:00:00 "
+            + PREFIX_END + "2020-04-01 17:00:00";
 
     private final String calEventName;
     private final String calEventLocation;
