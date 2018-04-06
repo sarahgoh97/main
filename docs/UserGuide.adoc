@@ -216,12 +216,14 @@ Returns any person having names `Betsy` or are tagged `Friends`
 // end::find[]
 
 // tag::calendar[]
-=== Various commands to interact with Google Calendar
-
-==== View upcoming events in the calendar: `calendar or c` [1] (v1.3)
+=== View upcoming events in the calendar: `calendar or c` [1] (v1.3)
 Format: `calendar`
 
-==== View upcoming events in the calendar: `calAdd or calA` [1] (v1.3)
+For the first time that you open the calendar, you will be prompted to login to the PrisonBook Google account. The PrisonBook app will attempt to open the browser for you, alternatively you can copy the link and login with the following details:
+
+* Google Username: prisonbooksystem | Password: prisonbook2018
+
+=== Add upcoming events in the calendar: `calAdd or calA` [1] (v1.3)
 Format: `calAdd event/EVENTNAME loc/LOCATION start/STARTDATETIME end/ENDDATETIME`
 
 Examples:
