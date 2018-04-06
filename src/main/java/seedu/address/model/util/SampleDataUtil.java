@@ -13,6 +13,8 @@ import seedu.address.model.person.Phone;
 import seedu.address.model.person.Role;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.user.User;
+import seedu.address.model.user.exceptions.UserAlreadyExistsException;
 
 /**
  * Contains utility methods for populating {@code AddressBook} with sample data.
@@ -41,15 +43,28 @@ public class SampleDataUtil {
         };
     }
 
+    public static User[] getSampleUsers() {
+        return new User[] {
+                new User("prisonguard", "password1", 1),
+                new User("prisonleader", "password2", 2),
+                new User("prisonwarden", "password3", 3)
+        };
+    }
+
     public static ReadOnlyAddressBook getSampleAddressBook() {
         try {
             AddressBook sampleAb = new AddressBook();
             for (Person samplePerson : getSamplePersons()) {
                 sampleAb.addPerson(samplePerson);
             }
+            for (User sampleUser : getSampleUsers()){
+                sampleAb.addUser(sampleUser);
+            }
             return sampleAb;
         } catch (DuplicatePersonException e) {
             throw new AssertionError("sample data cannot contain duplicate persons", e);
+        } catch (UserAlreadyExistsException uaee) {
+            throw new AssertionError("sample data cannot contain duplicate users", uaee);
         }
     }
 

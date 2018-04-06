@@ -205,6 +205,9 @@ public class ParserUtil {
     public static String parseUsername(String username) throws IllegalValueException {
         requireNonNull(username);
         String trimmedUsername = username.trim();
+        if (!trimmedUsername.matches("[\\p{Alnum}]*")) {
+            throw new IllegalValueException("Username can only consist of alphanumeric characters");
+        }
         return trimmedUsername;
     }
 
@@ -226,6 +229,10 @@ public class ParserUtil {
     public static String parsePassword(String password) throws IllegalValueException {
         requireNonNull(password);
         String trimmedPassword = password.trim();
+
+        if (!trimmedPassword.matches("[\\p{Alnum}]*")) {
+            throw new IllegalValueException("Password can only consist of alphanumeric characters");
+        }
         return trimmedPassword;
     }
 
@@ -244,9 +251,14 @@ public class ParserUtil {
      *
      * @throws IllegalValueException if the given {@code securityLevel} is invalid.
      */
-    public static int parseSecurityLevel(String securityLevel) throws NumberFormatException {
+    public static int parseSecurityLevel(String securityLevel) throws NumberFormatException, IllegalValueException {
         requireNonNull(securityLevel);
         String trimmedSecurityLevel = securityLevel.trim();
+
+        if (!trimmedSecurityLevel.matches("[123]")) {
+            throw new IllegalValueException("Security Level can only take integer values 1, 2 or 3");
+        }
+
         int intSecurityLevel = Integer.parseInt(trimmedSecurityLevel);
         return intSecurityLevel;
     }
@@ -256,7 +268,7 @@ public class ParserUtil {
      * if {@code securityLevel} is present.
      * See header comment of this class regarding the use of {@code Optional} parameters.
      */
-    public static int parseSecurityLevel (Optional<String> password) throws NumberFormatException {
+    public static int parseSecurityLevel (Optional<String> password) throws NumberFormatException, IllegalValueException {
         requireNonNull(password);
         return password.isPresent() ? parseSecurityLevel(password.get()) : -1;
     }
