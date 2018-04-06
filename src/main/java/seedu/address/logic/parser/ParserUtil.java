@@ -268,7 +268,8 @@ public class ParserUtil {
      * if {@code securityLevel} is present.
      * See header comment of this class regarding the use of {@code Optional} parameters.
      */
-    public static int parseSecurityLevel (Optional<String> password) throws NumberFormatException, IllegalValueException {
+    public static int parseSecurityLevel (Optional<String> password)
+            throws NumberFormatException, IllegalValueException {
         requireNonNull(password);
         return password.isPresent() ? parseSecurityLevel(password.get()) : -1;
     }

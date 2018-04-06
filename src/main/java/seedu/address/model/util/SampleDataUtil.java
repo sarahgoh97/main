@@ -45,9 +45,9 @@ public class SampleDataUtil {
 
     public static User[] getSampleUsers() {
         return new User[] {
-                new User("prisonguard", "password1", 1),
-                new User("prisonleader", "password2", 2),
-                new User("prisonwarden", "password3", 3)
+            new User("prisonguard", "password1", 1),
+            new User("prisonleader", "password2", 2),
+            new User("prisonwarden", "password3", 3)
         };
     }
 
@@ -57,7 +57,7 @@ public class SampleDataUtil {
             for (Person samplePerson : getSamplePersons()) {
                 sampleAb.addPerson(samplePerson);
             }
-            for (User sampleUser : getSampleUsers()){
+            for (User sampleUser : getSampleUsers()) {
                 sampleAb.addUser(sampleUser);
             }
             return sampleAb;

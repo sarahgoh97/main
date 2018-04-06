@@ -67,7 +67,7 @@ public class UniqueUserMap {
      * @param user must be valid User
      * @return true if added successfully and false if failed to add
      */
-    public boolean addUser(User user) throws UserAlreadyExistsException{
+    public boolean addUser(User user) throws UserAlreadyExistsException {
         if (contains(user.getUsername())) {
             throw new UserAlreadyExistsException();
         } else {
@@ -82,6 +82,7 @@ public class UniqueUserMap {
             try {
                 addUser(u);
             } catch (UserAlreadyExistsException e) {
+                int dummy = 0;
             }
         }
         internalList.clear();
