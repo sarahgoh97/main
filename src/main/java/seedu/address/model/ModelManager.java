@@ -21,6 +21,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.user.User;
+import seedu.address.model.user.exceptions.UserAlreadyExistsException;
 
 /**
  * Represents the in-memory model of the address book data.
@@ -106,7 +107,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void addUser(User userToAdd) {
+    public void addUser(User userToAdd) throws UserAlreadyExistsException {
         addressBook.addUser(userToAdd);
         indicateAddressBookChanged();
     }
