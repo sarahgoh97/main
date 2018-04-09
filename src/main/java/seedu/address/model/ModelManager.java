@@ -150,14 +150,6 @@ public class ModelManager extends ComponentManager implements Model {
         indicateAddressBookChanged();
     }
 
-    /* this is for undo command */
-    @Override
-    public void deletePrisonerFromCell(Person prisoner, String cellAddress) {
-        requireAllNonNull(prisoner, cellAddress);
-        Person updatedPrisoner = new Person(prisoner, true, cellAddress);
-        addressBook.deletePrisonerFromCell(updatedPrisoner, cellAddress);
-    }
-
     /* this is for delete cell command */
     @Override
     public void deletePrisonerFromCell(Person prisoner) throws PersonNotFoundException, NotImprisonedException {
@@ -175,6 +167,23 @@ public class ModelManager extends ComponentManager implements Model {
                 throw new NotImprisonedException();
             }
         }
+        indicateAddressBookChanged();
+    }
+
+    /* this is to undo add prisoner to cell */
+    @Override
+    public void deletePrisonerFromCellFromUndo(Person prisoner, String cellAddress) {
+        requireAllNonNull(prisoner, cellAddress);
+        Person updatedPrisoner = new Person(prisoner, true, cellAddress);
+        addressBook.deletePrisonerFromCell(updatedPrisoner, cellAddress);
+        indicateAddressBookChanged();
+    }
+
+    /* this is to undo deleting a person from prison */
+    @Override
+    public void addPrisonerToCellFromUndo(Person prisoner, String cellAddress) {
+        requireAllNonNull(prisoner, cellAddress);
+        addressBook.addPrisonerToCellPermitted(prisoner, cellAddress);
         indicateAddressBookChanged();
     }
     //@@author
