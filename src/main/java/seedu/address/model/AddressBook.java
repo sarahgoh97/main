@@ -27,6 +27,7 @@ import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 import seedu.address.model.user.UniqueUserMap;
 import seedu.address.model.user.User;
+import seedu.address.model.user.exceptions.UserAlreadyExistsException;
 
 /**
  * Wraps all data at the address-book level
@@ -249,7 +250,7 @@ public class AddressBook implements ReadOnlyAddressBook {
      *
      * @param u is the user to add to the HashMap
      */
-    public void addUser(User u) {
+    public void addUser(User u) throws UserAlreadyExistsException {
         users.addUser(u);
     }
 
