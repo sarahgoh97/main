@@ -249,7 +249,6 @@ public class AddressBook implements ReadOnlyAddressBook {
                 + cells.getCellList() + users.getUserList();
         // TODO: refine later
     }
-    //@@author
 
     //@@author zacci
     //// user-level operations

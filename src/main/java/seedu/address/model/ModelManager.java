@@ -3,6 +3,7 @@ package seedu.address.model;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.util.ArrayList;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
@@ -17,6 +18,7 @@ import seedu.address.model.cell.exceptions.FullCellException;
 import seedu.address.model.cell.exceptions.NonExistentCellException;
 import seedu.address.model.cell.exceptions.NotImprisonedException;
 import seedu.address.model.cell.exceptions.NotPrisonerException;
+import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
@@ -46,6 +48,7 @@ public class ModelManager extends ComponentManager implements Model {
 
         this.addressBook = new AddressBook(addressBook);
         filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
+        updateFilteredPersonList(new NameContainsKeywordsPredicate(new ArrayList<String>()));
 
         logger.info("Initialising session");
         session = new Session();
@@ -92,6 +95,7 @@ public class ModelManager extends ComponentManager implements Model {
             return false;
         } else {
             login(username, securityLevel);
+            indicateAddressBookChanged();
             return true;
         }
     }
@@ -220,6 +224,11 @@ public class ModelManager extends ComponentManager implements Model {
         // state check
         ModelManager other = (ModelManager) obj;
         return addressBook.equals(other.addressBook) && filteredPersons.equals(other.filteredPersons);
+    }
+
+    @Override
+    public String toString() {
+        return filteredPersons.toString();
     }
 
 }
