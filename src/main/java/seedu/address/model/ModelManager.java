@@ -13,6 +13,7 @@ import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
+import seedu.address.model.cell.Cell;
 import seedu.address.model.cell.exceptions.AlreadyInCellException;
 import seedu.address.model.cell.exceptions.FullCellException;
 import seedu.address.model.cell.exceptions.NonExistentCellException;
@@ -227,6 +228,18 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     //@@author sarahgoh97
+    @Override
+    public void updateFilteredPersonListForCell(Predicate<Person> predicate, String cellAddress)
+            throws NonExistentCellException {
+        requireNonNull(predicate);
+        requireNonNull(cellAddress);
+        if (Cell.isValidCellAddress(cellAddress)) {
+            filteredPersons.setPredicate(predicate);
+        } else {
+            throw new NonExistentCellException();
+        }
+    }
+
     @Override
     public String toString() {
         return filteredPersons.toString();

@@ -90,4 +90,10 @@ public interface Model {
      */
     void updateFilteredPersonList(Predicate<Person> predicate);
 
+    /**
+     * Updates the filter of the filtered person list to show only people in the cell.
+     */
+    void updateFilteredPersonListForCell(Predicate<Person> predicate, String cellAddress)
+            throws NonExistentCellException;
+
 }

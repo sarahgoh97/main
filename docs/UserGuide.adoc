@@ -155,14 +155,14 @@ Shows a list of all persons in the prison book. +
 Format: `list`
 
 //tag::listcell[]
-=== Listing prisoners in a cell : `listcell or lc` [coming in V2.0]
+=== Listing prisoners in a cell : `listcell or lc` (v1.5rc)
 
 Shows a list of all persons in a prison cell in the prison book. +
-Format: `list CELL`
+Format: `listcell CELL`
 
 Examples:
-* `listcell a1`
-* `lc c13`
+* `listcell 1-1` 
+* `lc 3-3`
 //end::listcell[]
 
 //tag::map[]
