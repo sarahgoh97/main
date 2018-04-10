@@ -135,12 +135,13 @@ Examples:
 // tag::addcell[]
 === Adding a prisoner to a cell: `addcell or ac` [2] (v1.3)
 
-Adds a person to one of the cells in the prison +
+Adds a person to one of the cells in the prison. +
 Format: `ac INDEX CELLADDRESS`
 
 [TIP]
-Person added must be a prisoner and not already in a cell within the prison.
-The cell must be in the map and not full.
+Person added must be a prisoner and not already in a cell within the prison. +
+The cell must be in the map and not full. +
+The maximum number of people in a cell is 2 people.
 
 Examples:
 
