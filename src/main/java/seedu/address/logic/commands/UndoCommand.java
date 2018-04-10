@@ -26,6 +26,7 @@ public class UndoCommand extends Command {
             throw new CommandException(MESSAGE_FAILURE);
         }
 
+        //@author sarahgoh97
         UndoableCommand command = undoRedoStack.popUndo();
         if (command instanceof AddCellCommand) {
             String cellAddress = ((AddCellCommand) command).getCellAddress();
@@ -45,6 +46,7 @@ public class UndoCommand extends Command {
             model.addPrisonerToCellFromUndo(prisoner, cellAddress);
         }
         command.undo();
+        //@author
         return new CommandResult(MESSAGE_SUCCESS);
     }
 

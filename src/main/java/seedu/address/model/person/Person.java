@@ -120,12 +120,14 @@ public class Person {
         return address;
     }
 
+    //@@author sarahgoh97
     //only called if prisoner isInCell
     public Address getCellAddress() {
         assert(isInCell);
         String cellAddress = address.value.substring(0, address.value.indexOf("[") - 1);
         return new Address(cellAddress);
     }
+    //@@author
 
     public Role getRole() {
         return role;
