@@ -9,6 +9,7 @@ import static seedu.address.testutil.TypicalPersons.DANIEL;
 import static seedu.address.testutil.TypicalPersons.KEYWORD_MATCHING_MEIER;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
@@ -19,6 +20,7 @@ import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.RedoCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.model.Model;
+import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.tag.Tag;
 
 public class FindCommandSystemTest extends AddressBookSystemTest {
@@ -85,6 +87,8 @@ public class FindCommandSystemTest extends AddressBookSystemTest {
         assertFalse(getModel().getAddressBook().getPersonList().contains(BENSON));
         command = FindCommand.COMMAND_WORD + " n/" + KEYWORD_MATCHING_MEIER;
         expectedModel = getModel();
+        expectedModel.updateFilteredPersonList(new NameContainsKeywordsPredicate(
+                Arrays.asList(KEYWORD_MATCHING_MEIER)));
         ModelHelper.setFilteredList(expectedModel, DANIEL);
         assertCommandSuccess(command, expectedModel);
         assertSelectedCardUnchanged();

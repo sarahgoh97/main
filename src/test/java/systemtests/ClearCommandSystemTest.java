@@ -1,6 +1,7 @@
 package systemtests;
 
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
+import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import static seedu.address.testutil.TypicalPersons.KEYWORD_MATCHING_MEIER;
 
 import org.junit.Test;
@@ -17,6 +18,7 @@ public class ClearCommandSystemTest extends AddressBookSystemTest {
     @Test
     public void clear() {
         final Model defaultModel = getModel();
+        defaultModel.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
         /* Case: clear non-empty address book, command with leading spaces and trailing alphanumeric characters and
          * spaces -> cleared

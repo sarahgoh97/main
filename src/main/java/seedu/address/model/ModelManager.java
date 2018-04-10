@@ -226,6 +226,7 @@ public class ModelManager extends ComponentManager implements Model {
         return addressBook.equals(other.addressBook) && filteredPersons.equals(other.filteredPersons);
     }
 
+    //@@author sarahgoh97
     @Override
     public String toString() {
         return filteredPersons.toString();

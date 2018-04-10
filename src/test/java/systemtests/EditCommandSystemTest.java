@@ -59,7 +59,7 @@ public class EditCommandSystemTest extends AddressBookSystemTest {
 
     @Test
     public void edit() throws Exception {
-        Model model = getModel();
+        Model model = getNewModel();
 
         /* ----------------- Performing edit operation while an unfiltered list is being shown ---------------------- */
 
@@ -73,6 +73,7 @@ public class EditCommandSystemTest extends AddressBookSystemTest {
         Person editedPerson = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
                 .withEmail(VALID_EMAIL_BOB).withAddress(VALID_ADDRESS_BOB).withRole(VALID_ROLE_BOB)
                 .withTags(VALID_TAG_HUSBAND).build();
+
         assertCommandSuccess(command, index, editedPerson);
 
         /* Case: undo editing the last person in the list -> last person restored */
@@ -95,7 +96,7 @@ public class EditCommandSystemTest extends AddressBookSystemTest {
         /* Case: edit some fields -> edited */
         index = INDEX_FIRST_PERSON;
         command = EditCommand.COMMAND_WORD + " " + index.getOneBased() + TAG_DESC_FRIEND;
-        Person personToEdit = getModel().getFilteredPersonList().get(index.getZeroBased());
+        Person personToEdit = model.getFilteredPersonList().get(index.getZeroBased());
         editedPerson = new PersonBuilder(personToEdit).withTags(VALID_TAG_FRIEND).build();
         assertCommandSuccess(command, index, editedPerson);
 
@@ -262,7 +263,7 @@ public class EditCommandSystemTest extends AddressBookSystemTest {
         expectedModel.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         assertApplicationDisplaysExpected("", expectedResultMessage, expectedModel);
         assertCommandBoxShowsDefaultStyle();
-        assertStatusBarUnchangedExceptSyncStatus();
+        assertStatusBarChangedExceptSaveLocation(expectedModel.getAddressBook().getPersonList().size());
     }
 
     /**
