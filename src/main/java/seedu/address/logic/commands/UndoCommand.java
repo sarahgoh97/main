@@ -39,6 +39,11 @@ public class UndoCommand extends Command {
                 model.addPrisonerToCellFromUndo(prisoner, cellAddress);
             }
         }
+        if (command instanceof DeleteCellCommand) {
+            Person prisoner = ((DeleteCellCommand) command).getPrisonerToDelete();
+            String cellAddress = ((DeleteCellCommand) command).getCellAddress();
+            model.addPrisonerToCellFromUndo(prisoner, cellAddress);
+        }
         command.undo();
         return new CommandResult(MESSAGE_SUCCESS);
     }
