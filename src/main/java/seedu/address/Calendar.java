@@ -46,6 +46,12 @@ public class Calendar {
     /** Global instance of the HTTP transport. */
     private static HttpTransport httptransport;
 
+    private static ArrayList<String> EventIDs = new ArrayList<>();
+
+    public static void addEventIDs(String event) {
+        EventIDs.add(event);
+    }
+
     /** Global instance of the scopes required by this quickstart.
      *
      * If modifying these scopes, delete your previously saved credentials
@@ -62,14 +68,6 @@ public class Calendar {
             t.printStackTrace();
             System.exit(1);
         }
-    }
-
-    public static ArrayList<String> EventIDs = new ArrayList<String>();
-    public static ArrayList getEventIDs() {
-        return EventIDs;
-    }
-    public static void addEventIDs(String event) {
-        EventIDs.add(event);
     }
 
     /**
@@ -139,15 +137,16 @@ public class Calendar {
             result.append("No upcoming events found.");
         } else {
             System.out.println("Upcoming events");
-            Integer eventNumber=1;
+            Integer eventNumber = 1;
             for (Event event : items) {
                 DateTime start = event.getStart().getDateTime();
                 if (start == null) {
                     start = event.getStart().getDate();
                 }
-                String EventID = event.getId();
-                addEventIDs(EventID);
-                result.append(String.format("[Event %s] \t %s \t (%s) \t (%s)\n", eventNumber, event.getSummary(), start, EventID));
+                String EventId = event.getId();
+                addEventIDs(EventId);
+                result.append(String.format("[Event %s] \t %s \t (%s) \t (%s)\n",
+                        eventNumber, event.getSummary(), start, EventId));
                 eventNumber++;
             }
         }
@@ -196,13 +195,13 @@ public class Calendar {
      * @return success code
      * @throws IOException
      */
-    public static String delEvent(String eventArrayID) throws IOException {
+    public static String delEvent(String eventArrayId) throws IOException {
 
         String reList = listEvents(); // to regenerate the EventIDs array
         String successDeletedMessage = "Event successfully deleted.";
 
-        int eventArrayIDInt = Integer.parseInt(eventArrayID)-1;
-        String eventID = EventIDs.get(eventArrayIDInt);
+        int eventArrayIdInt = Integer.parseInt(eventArrayId) - 1;
+        String eventID = EventIDs.get(eventArrayIdInt);
 
         // Build a new authorized API client service.
         com.google.api.services.calendar.Calendar service = getCalendarService();

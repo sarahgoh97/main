@@ -2,14 +2,8 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_END;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_EVENT;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_LOCATION;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_START;
 
 import java.io.IOException;
-
-import com.google.api.client.util.DateTime;
 
 import seedu.address.Calendar;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -32,9 +26,9 @@ public class CalendarDeleteCommand extends UndoableCommand {
     /**
      * Creates an CalendarAddCommand to add the specified {@code Event}
      */
-    public CalendarDeleteCommand(String eventID) {
-        requireNonNull(eventID);
-        toDel = eventID;
+    public CalendarDeleteCommand(String eventId) {
+        requireNonNull(eventId);
+        toDel = eventId;
     }
 
     @Override

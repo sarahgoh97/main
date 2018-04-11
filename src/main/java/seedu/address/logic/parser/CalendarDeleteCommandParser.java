@@ -1,8 +1,6 @@
 //@@author philos22
 package seedu.address.logic.parser;
 
-import java.io.IOException;
-
 import seedu.address.logic.commands.CalendarDeleteCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
