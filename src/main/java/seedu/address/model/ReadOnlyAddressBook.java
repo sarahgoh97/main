@@ -29,7 +29,6 @@ public interface ReadOnlyAddressBook {
      * This list will not contain any duplicate cells.
      */
     ObservableList<Cell> getCellList();
-    //@@author
 
     //@@author zacci
     /**

@@ -55,9 +55,8 @@ public class MapPanel extends UiPart<Region> {
     @FXML
     private Label cellAddress35;
 
-    public MapPanel(ObservableList<Cell> cellList) {
+    public MapPanel() {
         super(FXML);
-        setConnections(cellList);
         registerAsAnEventHandler(this);
     }
 
