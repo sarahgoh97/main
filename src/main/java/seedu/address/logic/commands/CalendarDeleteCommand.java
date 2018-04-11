@@ -13,8 +13,6 @@ import seedu.address.logic.commands.exceptions.CommandException;
  */
 public class CalendarDeleteCommand extends UndoableCommand {
 
-    private final String toDel;
-
     public static final String COMMAND_WORD = "calDel";
     public static final String COMMAND_ALIAS = "calD";
 
@@ -23,6 +21,7 @@ public class CalendarDeleteCommand extends UndoableCommand {
             + "Example: \n" + COMMAND_WORD + " 12\n"
             + "Deletes the 12th event listed in cal command";
 
+    private final String toDel;
 
     /**
      * Creates an CalendarAddCommand to add the specified {@code Event}
