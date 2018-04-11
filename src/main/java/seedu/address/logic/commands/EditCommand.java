@@ -54,6 +54,7 @@ public class EditCommand extends UndoableCommand {
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book.";
+    public static final String MESSAGE_CANNOT_CHANGE_ROLE = "Roles cannot be changed.";
 
     private final Index index;
     private final EditPersonDescriptor editPersonDescriptor;
@@ -108,11 +109,27 @@ public class EditCommand extends UndoableCommand {
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
         Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
-        Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
+        Address updatedAddress = getUpdatedAddress(personToEdit, editPersonDescriptor);
         Role updatedRole = editPersonDescriptor.getRole().orElse(personToEdit.getRole());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedRole, updatedTags);
+        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedRole,
+                updatedTags, personToEdit.getIsInCell());
+    }
+
+    private static Address getUpdatedAddress(Person personToEdit, EditPersonDescriptor editPersonDescriptor) {
+        Address updatedAddress = personToEdit.getAddress(); //no change
+        if (!personToEdit.getIsInCell()) { //not imprisoned
+            updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
+        } else {
+            String newAddress = editPersonDescriptor.getAddress().orElse(updatedAddress).toString();
+            if (!new Address(newAddress).equals(updatedAddress)) { //address changed
+                updatedAddress = new Address(updatedAddress.toString()
+                        .substring(0, updatedAddress.toString().indexOf("s: ") + 3)
+                        + newAddress.substring(newAddress.indexOf("[") + 1, newAddress.indexOf("]") + 1));
+            }
+        }
+        return updatedAddress;
     }
 
     @Override
@@ -121,6 +138,14 @@ public class EditCommand extends UndoableCommand {
      */
     public int getMinSecurityLevel() {
         return MIN_SECURITY_LEVEL;
+    }
+
+    public Person getPersonToEdit() {
+        return personToEdit;
+    }
+
+    public Person getEditedPerson() {
+        return editedPerson;
     }
 
     @Override

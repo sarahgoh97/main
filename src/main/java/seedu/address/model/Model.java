@@ -70,6 +70,9 @@ public interface Model {
 
     /** Deletes given prisoner from a cell from undo command*/
     void deletePrisonerFromCellFromUndo(Person prisoner, String cellAddress);
+
+    /** Updates given prisoner who changed from undo command*/
+    void updatePrisonerFromUndo(Person changed, Person original);
     //@@author
     /**
      * Replaces the given person {@code target} with {@code editedPerson}.
