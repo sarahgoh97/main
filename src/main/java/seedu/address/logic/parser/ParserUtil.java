@@ -196,6 +196,7 @@ public class ParserUtil {
         return tagSet;
     }
 
+    //@@author zacci
     /**
      * Parses a @code String username
      * Leading and trailing whitespaces will be trimmed.
@@ -273,6 +274,7 @@ public class ParserUtil {
         requireNonNull(password);
         return password.isPresent() ? parseSecurityLevel(password.get()) : -1;
     }
+    //@@author
 
     //@@author philos22
     /**

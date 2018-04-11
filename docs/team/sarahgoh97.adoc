@@ -12,21 +12,22 @@ Prisonbook is a desktop address book application used for Prison Guards/Inmates 
 
 == Summary of contributions
 
-* *Major enhancement*: Allowing guards and prison wardens to manage the prison cells.
+* *Major enhancement*: Allowing users to manage the prison cells.
 ** What it does: There is a cell map that has a fixed size and certain number of cells.
-Allows guards and prison wardens to add prisoners to cells (and in future to remove them and view them in cells)
-** Justification: This helps to keep track of prisoners.
+Allows guards and prison wardens to add prisoners to cells and to remove them and view them in cells.
+** Justification: This helps to keep track of prisoners and their locations.
 
-* *Minor enhancement*: Changing browser panel to show map of prison cells.
+* *Minor enhancement*: Changing browser panel to show map of prison cells and initial GUI of application.
 
-* *Code contributed*: [https://github.com[Functional code]] [https://github.com[Test code]] _{give links to collated code files}_
+* *Code contributed*: [https://github.com/CS2103JAN2018-T11-B2/main/blob/master/collated/functional/sarahgoh97.md[Functional code]] [https://github.com/CS2103JAN2018-T11-B2/main/blob/master/collated/test/sarahgoh97.md[Test code]]
 
 * *Other contributions*:
 
 ** Project management:
 *** Managed release `v1.3` on GitHub
+*** Assigned issues to different team members
 ** Enhancements to existing features:
-*** Status bar shows number of people in th PrisonBook
+*** Status bar shows number of people in the PrisonBook
 ** Documentation:
 *** Did slight revisions to existing contents of the User Guide
 
@@ -50,9 +51,5 @@ include::../UserGuide.adoc[tag=deletecell]
 
 include::../DeveloperGuide.adoc[tag=cellmap]
 
-include::../DeveloperGuide.adoc[tag=FeatureContribution]
-
-include::../DeveloperGuide.adoc[tag=UserStories]
-
-include::../DeveloperGuide.adoc[tag=UseCases]
+include::../DeveloperGuide.adoc[tag=FeatureContributionSarah]
 

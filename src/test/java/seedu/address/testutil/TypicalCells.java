@@ -1,6 +1,7 @@
+//@@author sarahgoh97
 package seedu.address.testutil;
 
-import static seedu.address.testutil.TypicalPersons.ALICE;
+import static seedu.address.testutil.TypicalPersons.CARL;
 import static seedu.address.testutil.TypicalPersons.ELLE;
 import static seedu.address.testutil.TypicalPersons.GEORGE;
 
@@ -15,7 +16,7 @@ import seedu.address.model.cell.Cell;
  */
 public class TypicalCells {
     public static final Cell EMPTY_CELL = new CellBuilder().build();
-    public static final Cell CELL_WITH_PRISONER = new CellBuilder().withCellAddress("1-2").withPrisoner(ALICE).build();
+    public static final Cell CELL_WITH_PRISONER = new CellBuilder().withCellAddress("1-2").withPrisoner(CARL).build();
     public static final Cell FULL_CELL = new CellBuilder().withCellAddress("1-3").withPrisoner(ELLE)
             .withPrisoner(GEORGE).build();
     public static final Cell LAST_CELL_OF_ROW = new CellBuilder().withCellAddress("1-5").withIsLast(true).build();

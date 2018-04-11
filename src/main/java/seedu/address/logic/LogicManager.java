@@ -48,6 +48,7 @@ public class LogicManager extends ComponentManager implements Logic {
         }
     }
 
+    //@@author zacci
     /**
      * Executes the received command if the logged in user's security level meets the MIN_SECURITY_LEVEL for the command
      */
@@ -65,7 +66,7 @@ public class LogicManager extends ComponentManager implements Logic {
             return result;
         }
     }
-
+    //@@author
 
     @Override
     public ObservableList<Person> getFilteredPersonList() {
@@ -82,6 +83,7 @@ public class LogicManager extends ComponentManager implements Logic {
         return model.getAddressBook().getCellList();
     }
 
+    //@@author zacci
     @Override
     public ObservableList<User> getUserList() {
         return model.getAddressBook().getUserList();
