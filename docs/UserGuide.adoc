@@ -119,6 +119,21 @@ Examples:
 * `adduser user/newuser pw/newpassword sl/1`
 // end::adduser[]
 
+// tag::deleteuser[]
+=== Delete a user: `deleteuser` [1] (v1.5rc)
+
+Deletes a user from the PrisonBook +
+Format: `deleteuser user/NEW_USERNAME`
+
+You can only delete users which have a lower security level than yourself.
+
+Only a user with Security Level 3 is able to delete any user that is of same or lower security level.
+
+Examples:
+
+* `deleteuser user/prisonguard`
+// end::deleteuser[]
+
 === Adding a person: `add or a` [2]
 
 Adds a person to the prison book +
@@ -332,11 +347,6 @@ The `redo` command fails as there are no `undo` commands executed previously.
 `redo` (reapplies the `delete 1` command) +
 `redo` (reapplies the `clear` command) +
 // end::undoredo[]
-
-=== Clearing all entries : `clear or c` [3]
-
-Clears all entries from the prison book. Clears all prison cells. +
-Format: `clear`
 
 === Exiting the program : `exit` [0]
 
