@@ -149,12 +149,17 @@ public class AddCommandTest {
         }
 
         @Override
-        public void deletePrisonerFromCell(Person prisoner, String cellAddress) {
+        public void deletePrisonerFromCell(Person prisoner) throws PersonNotFoundException, NotImprisonedException {
             fail("This method should not be called.");
         }
 
         @Override
-        public void deletePrisonerFromCell(Person prisoner) throws PersonNotFoundException, NotImprisonedException {
+        public void deletePrisonerFromCellFromUndo(Person prisoner, String cellAddress) {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void addPrisonerToCellFromUndo(Person prisoner, String cellAddress) {
             fail("This method should not be called.");
         }
 
@@ -188,6 +193,11 @@ public class AddCommandTest {
 
         @Override
         public void updateFilteredPersonList(Predicate<Person> predicate) {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void updateFilteredPersonListForCell(Predicate <Person> predicate, String cellAddress) {
             fail("This method should not be called.");
         }
     }
