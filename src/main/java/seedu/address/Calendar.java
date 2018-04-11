@@ -48,10 +48,6 @@ public class Calendar {
 
     private static ArrayList<String> EventIDs = new ArrayList<>();
 
-    public static void addEventIDs(String event) {
-        EventIDs.add(event);
-    }
-
     /** Global instance of the scopes required by this quickstart.
      *
      * If modifying these scopes, delete your previously saved credentials
@@ -68,6 +64,10 @@ public class Calendar {
             t.printStackTrace();
             System.exit(1);
         }
+    }
+
+    public static void addEventIDs(String event) {
+        EventIDs.add(event);
     }
 
     /**
@@ -201,12 +201,12 @@ public class Calendar {
         String successDeletedMessage = "Event successfully deleted.";
 
         int eventArrayIdInt = Integer.parseInt(eventArrayId) - 1;
-        String eventID = EventIDs.get(eventArrayIdInt);
+        String eventId = EventIDs.get(eventArrayIdInt);
 
         // Build a new authorized API client service.
         com.google.api.services.calendar.Calendar service = getCalendarService();
 
-        service.events().delete("primary", eventID).execute();
+        service.events().delete("primary", eventId).execute();
 
         return successDeletedMessage;
     }
