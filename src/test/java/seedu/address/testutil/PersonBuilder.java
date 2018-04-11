@@ -23,6 +23,7 @@ public class PersonBuilder {
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
     public static final String DEFAULT_ROLE = "p";
     public static final String DEFAULT_TAGS = "friends";
+    public static final boolean DEFAULT_ISINCELL = false;
 
     private Name name;
     private Phone phone;
@@ -30,6 +31,7 @@ public class PersonBuilder {
     private Address address;
     private Role role;
     private Set<Tag> tags;
+    private boolean isInCell;
 
     public PersonBuilder() {
         name = new Name(DEFAULT_NAME);
@@ -38,6 +40,7 @@ public class PersonBuilder {
         address = new Address(DEFAULT_ADDRESS);
         role = new Role(DEFAULT_ROLE);
         tags = SampleDataUtil.getTagSet(DEFAULT_TAGS);
+        isInCell = DEFAULT_ISINCELL;
     }
 
     /**
@@ -50,6 +53,7 @@ public class PersonBuilder {
         address = personToCopy.getAddress();
         role = personToCopy.getRole();
         tags = new HashSet<>(personToCopy.getTags());
+        isInCell = personToCopy.getIsInCell();
     }
 
     /**
@@ -100,8 +104,16 @@ public class PersonBuilder {
         return this;
     }
 
+    /**
+     * Sets the {@code isInCell} of the {@Code Person} that we are building.
+     */
+    public PersonBuilder withIsInCell(boolean isInCell) {
+        this.isInCell = isInCell;
+        return this;
+    }
+
     public Person build() {
-        return new Person(name, phone, email, address, role, tags);
+        return new Person(name, phone, email, address, role, tags, isInCell);
     }
 
 }

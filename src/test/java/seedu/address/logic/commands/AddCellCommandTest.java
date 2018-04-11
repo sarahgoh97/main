@@ -7,8 +7,8 @@ import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import static seedu.address.testutil.TypicalCells.FULL_CELL;
+import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
-import static seedu.address.testutil.TypicalIndexes.INDEX_THIRD_PERSON;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import org.junit.Rule;
@@ -37,9 +37,9 @@ public class AddCellCommandTest {
 
     @Test
     public void execute_validIndexUnfilteredListValidCellAddress_success() throws Exception {
-        Person prisonerToAdd = model.getFilteredPersonList().get(INDEX_THIRD_PERSON.getZeroBased());
+        Person prisonerToAdd = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         String cellAddress = "2-5";
-        AddCellCommand addCellCommand = prepareCommand(INDEX_THIRD_PERSON, cellAddress);
+        AddCellCommand addCellCommand = prepareCommand(INDEX_FIRST_PERSON, cellAddress);
 
         String expectedMessage = String.format(AddCellCommand.MESSAGE_ADD_CELL_SUCCESS,
                 prisonerToAdd.getName().toString(), cellAddress);
@@ -63,9 +63,9 @@ public class AddCellCommandTest {
 
     @Test
     public void execute_validIndexUnfilteredListInvalidCellAddress_success() {
-        Person prisonerToAdd = model.getFilteredPersonList().get(INDEX_THIRD_PERSON.getZeroBased());
+        Person prisonerToAdd = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         String cellAddress = "0-0";
-        AddCellCommand addCellCommand = prepareCommand(INDEX_THIRD_PERSON, cellAddress);
+        AddCellCommand addCellCommand = prepareCommand(INDEX_FIRST_PERSON, cellAddress);
 
         assertCommandFailure(addCellCommand, model, String.format(AddCellCommand.MESSAGE_NON_EXISTENT_CELL,
                 cellAddress, getMapString()));
@@ -74,9 +74,9 @@ public class AddCellCommandTest {
 
     @Test
     public void execute_fullCell_failure() {
-        Person prisonerToAdd = model.getFilteredPersonList().get(INDEX_THIRD_PERSON.getZeroBased());
+        Person prisonerToAdd = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         String cellAddress = FULL_CELL.getCellAddress();
-        AddCellCommand addCellCommand = prepareCommand(INDEX_THIRD_PERSON, cellAddress);
+        AddCellCommand addCellCommand = prepareCommand(INDEX_FIRST_PERSON, cellAddress);
 
         assertCommandFailure(addCellCommand, model,
                 String.format(MESSAGE_FULL_CELL, cellAddress, getMapString()));
