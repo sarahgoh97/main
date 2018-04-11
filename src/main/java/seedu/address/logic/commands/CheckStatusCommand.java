@@ -14,7 +14,7 @@ public class CheckStatusCommand extends Command {
      * @return details of the status
      */
     public CommandResult execute() {
-        if (!model.checkIsLoggedIn()){
+        if (!model.checkIsLoggedIn()) {
             return new CommandResult(MESSAGE_USER_NOT_LOGGED_IN);
         }
         String details = (model.getSessionDetails());

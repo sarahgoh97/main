@@ -13,7 +13,7 @@ public class LogoutCommand extends Command {
     @Override
     public CommandResult execute() {
         undoRedoStack.clearStack();
-        if(!model.checkIsLoggedIn()){
+        if (!model.checkIsLoggedIn()) {
             return new CommandResult(MESSAGE_USER_NOT_LOGGED_IN);
         }
         model.logout();

@@ -12,10 +12,10 @@ import seedu.address.logic.commands.AddUserCommand;
 import seedu.address.logic.commands.CalendarAddCommand;
 import seedu.address.logic.commands.CalendarCommand;
 import seedu.address.logic.commands.CheckStatusCommand;
-import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.DeleteCellCommand;
 import seedu.address.logic.commands.DeleteCommand;
+import seedu.address.logic.commands.DeleteUserCommand;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindCommand;
@@ -107,6 +107,9 @@ public class AddressBookParser {
 
         case AddUserCommand.COMMAND_WORD:
             return new AddUserCommandParser().parse(arguments);
+
+        case DeleteUserCommand.COMMAND_WORD:
+            return new DeleteUserCommandParser().parse(arguments);
         //@@author
 
         case HistoryCommand.COMMAND_WORD:
