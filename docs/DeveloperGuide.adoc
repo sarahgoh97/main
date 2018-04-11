@@ -474,20 +474,15 @@ The arguments following each prefix will be made into a list. A mapping is then 
 //end::findbytag[]
 
 //tag::scheduling[]
-=== Scheduling Feature
+=== Scheduling with Google Calendar
 ==== Current Implementation
-
-The Scheduling feature can be accessed via entering the command `cal`.
-
-It allows guards/wardens to interact with a Google Calendar account through the current PrisonBook GUI.
+The PrisonBook calendar commands will send HTTPS requests to the REST Calendar API, whether it is calling the listEvents, addEvents or delEvents API command.
+Upon receiving a success confirmation from the API, the change will be reflected next time any calendar commands are called.
 
 Calendar Commands that are supported are:
-* add e/eventname t/timestamp
-* remove [eventID]
-* edit [eventID] e/eventname t/timestamp
-
-The PrisonBook calendar commands will send HTTPS requests to the REST calendar API and make changes to the Google account calendar.
-Upon confirmation of successful changes by the Google Calendar API, the change will be reflected next time any calendar commands are called.
+* listing upcoming events
+* adding an event
+* removing an event
 
 ===== Aspect: Choosing Number of Accounts to Work With
 
@@ -513,14 +508,51 @@ Upon confirmation of successful changes by the Google Calendar API, the change w
 ** Pros: Users can track multiple events happening at the same time. Different calendars can also be used to organize and group logically-related events.
 ** Cons: Complicated on the administration side and oversteps the scope of this enhancement. Not really looking to replace personal Google Calendars, this is just to allow prison staff to work with prison schedules.
 
-===== Aspect: Implementation of editing calendar
+=== View Calendar Feature
+==== Current Implementation
+The View Schedule feature can be accessed via entering the command `cal`.
+It allows guards/wardens to see upcoming events and their start times.
 
-* **Alternative 1 (current choice):** Using command line to type with prefixes for event names and their timings.
-** Pros: Ties in with users who prefer typing over mouse clicking.
-** Cons: Not as intuitive as selecting time slots to edit. Need more prefixes for users to learn.
-* **Alternative 2:** Have buttons for users to click to edit.
-** Pros: More intuitive as less things to type.
-** Cons: No longer command line based.
+===== Aspect: Event Listing UI
+
+* **Alternative 1 (current choice):** List events as a list format
+** Pros: Simple to implement, shows more details than calendar UI
+** Cons: Not as visually pleasing, users cannot use mouse to edit calendar intuitively
+* **Alternative 2:** List events in the calendar UI display
+** Pros: More intuitive with an actual interactive calendar, allows users to click and drag using mouse
+** Cons: No longer command line based, takes up more space than console
+
+=== Add Event to Calendar Feature
+==== Current Implementation
+The Add Event feature can be accessed via entering the command `calAdd event/EVENTNAME loc/LOCATION start/STARTDATETIME end/ENDDATETIME`.
+It allows guards/wardens to add an event, specifying the event name, location, starting and ending times.
+
+===== Aspect: Relevancy of Event Attendee List
+
+* **Alternative 1 (current choice):** Excluding Attendee List
+** Pros: Less content for user to input when creating events, does not restrict any functionality in a prison setting
+** Cons: Slightly less customization when adding events
+* **Alternative 2:** Including Attendee List
+** Pros: Can invite specific individuals for smaller scale events
+** Cons: Typing each user can become tedious and extra work for the users, also not suitable for prison setting because prisoners are not "invited" for meals or to get back into their cells
+
+=== Delete Event from Calendar Feature
+==== Current Implementation
+The Delete Event feature can be accessed via entering the command `calDel EVENTNUMBER`.
+It allows guards/wardens to remove events from the upcoming events list.
+
+===== Aspect: Specification of Which Event to Delete
+
+* **Alternative 1 (current choice):** Enumerating the event list and storing it in an array
+** Pros: Easy interface for users, they just pick a simple integer from the list
+** Cons: Have to map these enumerations to the actual IDs
+* **Alternative 2:** Displaying the actual event IDs from the API
+** Pros: No additional parsing or eventID storing is needed
+** Cons: Users have to type the event IDs manually, which are seemingly random alphanumeric strings (prone to human error)
+* **Alternative 3:** No change to list
+** Pros: No additional clutter to existing list
+** Cons: Users have to specify event name and start/end times, which is quite tedious
+
 
 //end::scheduling
 
@@ -962,13 +994,13 @@ See this https://github.com/se-edu/addressbook-level4/pull/599[PR] for the step-
 // tag::FeatureContribution[]
 
 *Feature Contributions*:
-
+// tag::FeatureContributionPhilos[]
 * Chung-Yen (Philos) Tsai (philos22)
   1. Major enhancement: +
   Scheduling: Keeps track of schedule of prisoners and guards.
   2. Minor enhancement: +
   Find by tag: This function will allow admins to filter user list by tags. Tags may include classification of Prisoner vs. Guards, Prisoner cell blocks and cell numbers, Guards' current teams and assignments, etc...
-
+// end::FeatureContributionPhilos[]
 * Isaac Gideon Tan (zacci)
   1. Major enhancement: +
   Login and Authorization Levels: Enable creation of account for guards, logging in, and authorization levels for commands that may compromise the security of the Prison data.

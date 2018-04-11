@@ -3,6 +3,7 @@ package seedu.address;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -61,6 +62,14 @@ public class Calendar {
             t.printStackTrace();
             System.exit(1);
         }
+    }
+
+    public static ArrayList<String> EventIDs = new ArrayList<String>();
+    public static ArrayList getEventIDs() {
+        return EventIDs;
+    }
+    public static void addEventIDs(String event) {
+        EventIDs.add(event);
     }
 
     /**
@@ -125,16 +134,21 @@ public class Calendar {
                 .execute();
         List<Event> items = events.getItems();
         StringBuilder result = new StringBuilder();
+
         if (items.size() == 0) {
             result.append("No upcoming events found.");
         } else {
             System.out.println("Upcoming events");
+            Integer eventNumber=1;
             for (Event event : items) {
                 DateTime start = event.getStart().getDateTime();
                 if (start == null) {
                     start = event.getStart().getDate();
                 }
-                result.append(String.format("%s (%s)\n", event.getSummary(), start));
+                String EventID = event.getId();
+                addEventIDs(EventID);
+                result.append(String.format("[Event %s] \t %s \t (%s) \t (%s)\n", eventNumber, event.getSummary(), start, EventID));
+                eventNumber++;
             }
         }
         return result.toString();
@@ -175,6 +189,27 @@ public class Calendar {
         System.out.printf("Event created: %s\n", event.getHtmlLink());
 
         return successAddedMessage;
+    }
+
+    /**
+     * Delete event from the calendar - specifying EventID
+     * @return success code
+     * @throws IOException
+     */
+    public static String delEvent(String eventArrayID) throws IOException {
+
+        String reList = listEvents(); // to regenerate the EventIDs array
+        String successDeletedMessage = "Event successfully deleted.";
+
+        int eventArrayIDInt = Integer.parseInt(eventArrayID)-1;
+        String eventID = EventIDs.get(eventArrayIDInt);
+
+        // Build a new authorized API client service.
+        com.google.api.services.calendar.Calendar service = getCalendarService();
+
+        service.events().delete("primary", eventID).execute();
+
+        return successDeletedMessage;
     }
 
 }
