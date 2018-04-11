@@ -404,8 +404,8 @@ may grow or shrink in the future. In this scenario, we will strive only to hit o
 Assuming the user has access to the functions to add prisoners into prison cells, they can use the `addcell` command to do so.
 Below is the sequence diagram of the logic and model components.
 
-image::AddCellSequenceDiagram.PNG[width="400"]
-image::AddCellModelSequenceDiagram.PNG[width="400"]
+image::AddCellSequenceDiagram.PNG[width="800"]
+image::AddCellModelSequenceDiagram.PNG[width="800"]
 
 Besides the cell map system being updated, we will also update the addresses of these prisoners added to the prison, since they now live in the prison, rather than in their own homes.
 
@@ -417,25 +417,28 @@ or if they can leave prison and go back home to their loved ones.
 
 * **Alternative 1 (current choice):** Use a 2-D array`
 ** Pros: Easy to visualise the system.
-** Cons: Harder to do more functions that the Java API has provided. Does not fit in with the other models of Person and Tag with their UniquePersonList and UniqueTagList
+** Cons: Harder to do more functions that the Java API has provided. Does not fit in with the other models of Person and Tag and their internalList.
+It also makes it harder to implement undo and redo functions for actions below.
 * **Alternative 2:** Use a 2-level ArrayList`
 ** Pros: Can use Java functions meant for Lists, can have different number of units for each block
 ** Cons: Not uniform number of units for each block will be harder to take into consideration when using the individual cells.
 
 ===== Aspect: Implementation of ShowCellsCommand (map)
 
-* **Alternative 1 (current choice):** Create a new Command to show the map.
+* **Alternative 1 (current choice):** Keep the map always on display.
+** Pros: Easier to see when adding prisoners to cells and removing prisoners from cells.
+** Cons: Anyone walking by from behind can see the information easily.
+* **Alternative 2:** Create a new Command to show the map.
 ** Pros: Easy to implement, similar to listing. Extending the current list of commands. Only when function is called can the map be seen.
 ** Cons: Easy to forget which cell in the map can add prisoners but the map is not permanently there.
-* **Alternative 2:** Keep the map always on display.
-** Pros: Easier to see when adding prisoners to cells.
-** Cons: Risk security as access to map is not limited. Even if it is, anyone walking by can see the information easily.
+
 
 ===== Aspect: Implementation of AddCellCommand (addcell)
 
-* **Alternative 1 (current choice):** Prisoners are added into cells in a cellMap.
+* **Alternative 1 (current choice):** Prisoners are added into cells in a cellMap and their addresses will be updated.
 ** Pros: Cells are always there and can hold prisoners. Since these groups are still Persons with a guard role or prisoner role, not all persons may have a cell.
-** Cons: More difficult to see the individual's cell. (have not implemented updating addresses)
+Easier to delete prisoners from cells and update their addresses accordingly.
+** Cons: Need to have extra implementation to ensure undo and redo commands work properly when deleting a prisoner who is imprisoned.
 * **Alternative 2:** Not have a cell map but to add cells to prisoners.
 ** Pros: Might be more intuitive for the user, to check a prisoner's cell location.
 ** Cons: Harder to manage a system of cells. Easy to accidentally overcrowd a cell.
@@ -443,6 +446,26 @@ or if they can leave prison and go back home to their loved ones.
 ** Pros: Removes the burden of choosing a cell for user. Fewer commands required as prisoners are automatically added.
 ** Cons: More complex in automatically choosing cells for prisoners. User might want to have control on which prisoners should be in which cell.
 
+
+===== Aspect: Implementation of ListCellCommand (listcell)
+
+* **Alternative 1 (current choice):** Users to give cell address to show prisoners in them.
+** Pros: Easy to implement, similar in structure to `Find` Command and its listing of persons.
+** Cons: Need to find address of cell first that is required.
+* **Alternative 2:** Clicking on a cell to show prisoners in them
+** Pros: Might be more intuitive for the user to click on a cell.
+** Cons: Not ideal for users who prefer CLI.
+
+
+===== Aspect: Implementation of DeleteCellCommand (deletecell)
+
+* **Alternative 1 (current choice):** Removes a prisoner from a cell by choosing the prisoner and updates his/her address back accordingly.
+** Pros: Faster way to remove since only the index of the prisoner is required.
+** Cons: Since cells have a size limit of 2, it is easier to delete a person after selecting a cell.
+* **Alternative 2:** Choosing a cell and the person to delete from the cell after seeing the list.
+** Pros: Easier to choose a cell when there are many people in the PrisonBook and is difficult to see who the prisoners are.
+** Cons: Requires more steps to delete a person from the cell, by having to first list then delete.
+Current implementation can work in a similar way that makes it easier to delete a prisoner from a cell.
 // end::cellmap[]
 
 //tag::findbytag[]
@@ -522,7 +545,7 @@ Upon confirmation of successful changes by the Google Calendar API, the change w
 ** Pros: More intuitive as less things to type.
 ** Cons: No longer command line based.
 
-//end::scheduling
+//end::scheduling[]
 
 // tag::dataencryption[]
 === [Proposed] Data Encryption

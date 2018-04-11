@@ -275,6 +275,9 @@ Examples:
 
 * `dc 1` +
 Deletes the first person in the prison book if he/she is imprisoned here.
+* `listcell 1-1` +
+`deletecell 1` +
+Deletes the first person in the cell 1-1 if there are any prisoners inside it.
 //end::deletecell[]
 
 === Listing entered commands : `history or h` [0]
