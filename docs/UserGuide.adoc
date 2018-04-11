@@ -195,7 +195,7 @@ Edits the name of the 2nd person to be `Betsy Crower` and clears all existing ta
 // tag::find[]
 === Locating persons by name or tags: `find or f` [1]
 
-Finds persons whose names/tags contain any of the given keywords. +
+Finds persons whose names/tags contain all of the given keywords. +
 Format: `find n/NAME_KEYWORD [MORE_KEYWORDS] t/TAG_KEYWORD [MORE_KEYWORDS]`
 
 ****
@@ -203,7 +203,7 @@ Format: `find n/NAME_KEYWORD [MORE_KEYWORDS] t/TAG_KEYWORD [MORE_KEYWORDS]`
 * The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
 * Only the name and tags are searched.
 * Only full words will be matched e.g. `Han` will not match `Hans`
-* Persons matching at least one keyword will be returned (i.e. `OR` search). e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+* Persons matching all keywords will be returned (i.e. `AND` search). e.g. `n/Hans t/family` will return `n/Hans t/family`, not `n/Hans t/enemy` or `n/Gret t/family`
 ****
 
 Examples:
@@ -213,11 +213,14 @@ Returns `john` and `John Doe`
 * `find n/Betsy Tim John` +
 Returns any person having names `Betsy`, `Tim`, or `John`
 * `find n/Betsy t/Friends` +
-Returns any person having names `Betsy` or are tagged `Friends`
+Returns any person having names `Betsy` and are tagged `Friends`
 // end::find[]
 
 // tag::calendar[]
-=== View upcoming events in the calendar: `calendar or cal` [1] (v1.3)
+=== Various commands to interact with Google Calendar
+
+==== View upcoming events in the calendar: `calendar or cal` [1] (v1.3)
+
 Format: `calendar`
 
 For the first time that you open the calendar, you will be prompted to login to the PrisonBook Google account. The PrisonBook app will attempt to open the browser for you, alternatively you can copy the link and login with the following details:

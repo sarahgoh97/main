@@ -43,13 +43,14 @@ public abstract class UndoableCommand extends Command {
         model.resetData(previousAddressBook);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
     }
-
+    //@@author zacci
     /**
      * Returns the MIN_SECURITY_LEVEL to caller
      */
     public int getMinSecurityLevel() {
         return MIN_SECURITY_LEVEL;
     }
+    //@@author
 
     /**
      * Executes the command and updates the filtered person

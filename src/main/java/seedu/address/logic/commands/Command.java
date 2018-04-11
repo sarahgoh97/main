@@ -55,11 +55,12 @@ public abstract class Command {
         this.undoRedoStack = undoRedoStack;
     }
 
+    //@@author zacci
     /**
      * Returns the MIN_SECURITY_LEVEL to caller
      */
     public int getMinSecurityLevel() {
         return MIN_SECURITY_LEVEL;
     }
-
+    //@@author
 }

@@ -11,6 +11,7 @@ import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.AddUserCommand;
 import seedu.address.logic.commands.CalendarAddCommand;
 import seedu.address.logic.commands.CalendarCommand;
+import seedu.address.logic.commands.CalendarDeleteCommand;
 import seedu.address.logic.commands.CheckStatusCommand;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.Command;
@@ -90,6 +91,10 @@ public class AddressBookParser {
         case CalendarAddCommand.COMMAND_WORD:
         case CalendarAddCommand.COMMAND_ALIAS:
             return new CalendarAddCommandParser().parse(arguments);
+
+        case CalendarDeleteCommand.COMMAND_WORD:
+        case CalendarDeleteCommand.COMMAND_ALIAS:
+            return new CalendarDeleteCommandParser().parse(arguments);
         //@@author
 
         //@@author zacci
