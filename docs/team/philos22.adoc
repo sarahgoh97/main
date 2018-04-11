@@ -15,7 +15,6 @@ PrisonBook is a desktop address book application used for Prison Guards/Inmates 
 * *Major enhancement*: Calendar Scheduling Feature
 ** What it does: Allows user to interact with Google Calendar through PrisonBook CLI
 ** Justification: Prisons need to follow a strict schedule and guards need to know where inmates are at all times.
-** Highlights: TBD as I go along
 ** Credits: Google API Guide
 
 * *Minor enhancement*: Enhanced the find command to be able to search by Tags in addition to Name-search

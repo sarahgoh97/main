@@ -554,7 +554,7 @@ It allows guards/wardens to remove events from the upcoming events list.
 ** Cons: Users have to specify event name and start/end times, which is quite tedious
 
 
-//end::scheduling
+//end::scheduling[]
 
 // tag::dataencryption[]
 === [Proposed] Data Encryption
