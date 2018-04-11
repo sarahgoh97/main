@@ -45,6 +45,13 @@ public class UndoCommand extends Command {
             String cellAddress = ((DeleteCellCommand) command).getCellAddress();
             model.addPrisonerToCellFromUndo(prisoner, cellAddress);
         }
+        if (command instanceof EditCommand) {
+            Person original = ((EditCommand) command).getPersonToEdit();
+            Person changed = ((EditCommand) command).getEditedPerson();
+            if (original.getIsInCell()) {
+                model.updatePrisonerFromUndo(changed, original);
+            }
+        }
         command.undo();
         //@author
         return new CommandResult(MESSAGE_SUCCESS);

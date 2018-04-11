@@ -123,7 +123,7 @@ Examples:
 === Delete a user: `deleteuser` [1] (v1.5rc)
 
 Deletes a user from the PrisonBook +
-Format: `deleteuser user/NEW_USERNAME`
+Format: `deleteuser user/USERNAME`
 
 You can only delete users which have a lower security level than yourself.
 
@@ -393,6 +393,8 @@ _{explain how the user can enable/disable data encryption}_
 
 * Security Level 1: +
 *Calendar* : `calendar` or `cal` +
+*Delete user* : `deleteuser user/NEW_USERNAME` +
+e.g. `deleteuser user/prisonguard` +
 *Find* : `find n/NAME_KEYWORD [MORE_KEYWORDS] t/TAG_KEYWORD [MORE_KEYWORDS]` +
 e.g. `find n/Meier` +
 *List* : `list` or `l` +

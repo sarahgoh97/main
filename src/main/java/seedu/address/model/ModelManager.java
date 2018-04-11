@@ -164,6 +164,12 @@ public class ModelManager extends ComponentManager implements Model {
 
     //@@author sarahgoh97
     @Override
+    public void updatePrisonerFromUndo(Person changed, Person original) {
+        addressBook.updatePrisonerFromUndo(changed, original);
+        indicateAddressBookChanged();
+    }
+
+    @Override
     public void addPrisonerToCell(Person prisoner, String cellAddress)
             throws FullCellException, NonExistentCellException,
             NotPrisonerException, AlreadyInCellException {
