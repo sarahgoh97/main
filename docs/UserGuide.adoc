@@ -54,7 +54,7 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 * Items in square brackets are optional e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/friend` or as `n/John Doe`.
 * Items with `…`​ after them can be used multiple times including zero times e.g. `[t/TAG]...` can be used as `{nbsp}` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
 * Parameters can be in any order e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
-* For security reasons, users need to log in before having access to certain commands. Users have a `Security Level` assigned to them. All commands have a minimum `Security Level` required before the user is able to access it.
+* For security reasons, users need to log in before having access to certain commands and will only see an empty PrisonBook. Users have a `Security Level` assigned to them. All commands have a minimum `Security Level` required before the user is able to access it.
 ** Security Level 0: Most basic commands such as Login and Status.
 ** Security Level 1: Most commands that only require read access.
 ** Security Level 2: Most commands that require write access.
@@ -75,6 +75,13 @@ Format: `login user/USER_NAME pw/PASSWORD`
 Examples:
 
 * `login user/prisonwarden99 pw/password1`
+
+FOR USER ACCEPTANCE TESTING PURPOSES:
+The following user accounts have been pre-added
+
+* Username: prisonguard | Password: password1 | Security Level: 1
+* Username: prisonleader | Password: password2 | Security Level: 2
+* Username: prisonwarden | Password: password3 | Security Level: 3
 // end::login[]
 
 // tag::logout[]
@@ -128,12 +135,13 @@ Examples:
 // tag::addcell[]
 === Adding a prisoner to a cell: `addcell or ac` [2] (v1.3)
 
-Adds a person to one of the cells in the prison +
+Adds a person to one of the cells in the prison. +
 Format: `ac INDEX CELLADDRESS`
 
 [TIP]
-Person added must be a prisoner and not already in a cell within the prison.
-The cell must be in the map and not full.
+Person added must be a prisoner and not already in a cell within the prison. +
+The cell must be in the map and not full. +
+The maximum number of people in a cell is 2 people.
 
 Examples:
 
@@ -147,14 +155,14 @@ Shows a list of all persons in the prison book. +
 Format: `list`
 
 //tag::listcell[]
-=== Listing prisoners in a cell : `listcell or lc` [coming in V2.0]
+=== Listing prisoners in a cell : `listcell or lc` (v1.5rc)
 
 Shows a list of all persons in a prison cell in the prison book. +
-Format: `list CELL`
+Format: `listcell CELL`
 
 Examples:
-* `listcell a1`
-* `lc c13`
+* `listcell 1-1`
+* `lc 3-3`
 //end::listcell[]
 
 //tag::map[]
@@ -210,6 +218,8 @@ Returns any person having names `Betsy` and are tagged `Friends`
 
 // tag::calendar[]
 === Various commands to interact with Google Calendar
+For the first time that you open the calendar, you will be prompted to login to the PrisonBook Google account. The PrisonBook app will attempt to open the browser for you, alternatively you can copy the link and login with the following details:
+* Google Username: prisonbooksystem | Password: prisonbook2018
 
 ==== View upcoming events in the calendar: `calendar or cal` [1] (v1.3)
 Format: `calendar`
@@ -268,26 +278,6 @@ Examples:
 * `dc 1` +
 Deletes the first person in the prison book if he/she is imprisoned here.
 //end::deletecell[]
-
-=== Selecting a person : `select or s` [0]
-
-Selects the person identified by the index number used in the last person listing. +
-Format: `select INDEX`
-
-****
-* Selects the person and loads the Google search page the person at the specified `INDEX`.
-* The index refers to the index number shown in the most recent listing.
-* The index *must be a positive integer* `1, 2, 3, ...`
-****
-
-Examples:
-
-* `list` +
-`select 2` +
-Selects the 2nd person in the prison book.
-* `find Betsy` +
-`select 1` +
-Selects the 1st person in the results of the `find` command.
 
 === Listing entered commands : `history or h` [0]
 
@@ -379,27 +369,25 @@ _{explain how the user can enable/disable data encryption}_
 
 * *Add* `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]...` +
 e.g. `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
-* *AddCell* `addcell INDEX CELLADDRESS`
+* *AddCell* `addcell INDEX CELLADDRESS` +
 e.g. `addcell 1 1-1`
 * *Clear* : `clear`
 * *Delete* : `delete INDEX` +
 e.g. `delete 3`
-* *DeleteCell* `deletecell INDEX`
+* *DeleteCell* `deletecell INDEX` +
 e.g. `deletecell 2`
 * *Edit* : `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]...` +
 e.g. `edit 2 n/James Lee e/jameslee@example.com`
 * *Find* : `find n/NAME_KEYWORD [MORE_NAME_KEYWORDS] t/TAG_KEYWORD [MORE_TAG_KEYWORDS]` +
 e.g. `find n/James Jake t/boys`
 * *Calendar* : `calendar`
-* *Calendar Add Event* : `calAdd event/EVENTNAME loc/LOCATION start/STARTDATETIME end/ENDDATETIME`
+* *Calendar Add Event* : `calAdd event/EVENTNAME loc/LOCATION start/STARTDATETIME end/ENDDATETIME` +
 e.g. `calAdd event/Software Meeting loc/NUS Utown Green start/2018-06-06 10:00:00 end/2018-06-06 13:00:00`
 * *Calendar Delete Event* : `calDel EVENTNUMBER`
 e.g. `calDel 7`
 * *List* : `list`
 * *Map* : `map`
 * *Help* : `help`
-* *Select* : `select INDEX` +
-e.g.`select 2`
 * *History* : `history`
 * *Undo* : `undo`
 * *Redo* : `redo`

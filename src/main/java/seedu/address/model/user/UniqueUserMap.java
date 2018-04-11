@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import seedu.address.model.user.exceptions.UserAlreadyExistsException;
 
 /**
  * Contains the users of the PrisonBook
@@ -28,9 +29,6 @@ public class UniqueUserMap {
      */
     public void resetData() {
         userMap = new HashMap<String, User>();
-        addUser(defaultUser1);
-        addUser(defaultUser2);
-        addUser(defaultUser3);
     }
 
     /**
@@ -70,19 +68,23 @@ public class UniqueUserMap {
      * @param user must be valid User
      * @return true if added successfully and false if failed to add
      */
-    public boolean addUser(User user) {
-        if (!contains(user.getUsername())) {
+    public boolean addUser(User user) throws UserAlreadyExistsException {
+        if (contains(user.getUsername())) {
+            throw new UserAlreadyExistsException();
+        } else {
             userMap.put(user.getUsername(), user);
             internalList.add(user);
             return true;
-        } else {
-            return false;
         }
     }
 
     public void setUsers(ObservableList<User> users) {
         for (User u: users) {
-            addUser(u);
+            try {
+                addUser(u);
+            } catch (UserAlreadyExistsException e) {
+                int dummy = 0;
+            }
         }
         internalList.clear();
         internalList.setAll(users);

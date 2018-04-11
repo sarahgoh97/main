@@ -27,6 +27,7 @@ import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 import seedu.address.model.user.UniqueUserMap;
 import seedu.address.model.user.User;
+import seedu.address.model.user.exceptions.UserAlreadyExistsException;
 
 /**
  * Wraps all data at the address-book level
@@ -163,8 +164,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         if (persons.remove(key)) {
             //@@author sarahgoh97
             if (key.getIsInCell() == true) {
-                String cellAddress = key.getAddress().toString();
-                cellAddress = cellAddress.substring(0, cellAddress.length() - 13);
+                String cellAddress = key.getCellAddress().toString();
                 cells.deletePrisonerFromCell(key, cellAddress);
             }
             //@@author
@@ -214,8 +214,17 @@ public class AddressBook implements ReadOnlyAddressBook {
         } else {
             Person updatedPrisoner = new Person(prisoner, true, cellAddress);
             updatePrisoner(prisoner, updatedPrisoner);
-            cells.addPrisonerToCell(updatedPrisoner, cellAddress);
+            addPrisonerToCellPermitted(updatedPrisoner, cellAddress);
         }
+    }
+
+    /**
+     * Adding prisoner to cellmap once exceptions cleared
+     * @param prisoner is the correct person without requiring editting
+     * @param cellAddress is the String corresponding to the cell shown on map
+     */
+    public void addPrisonerToCellPermitted(Person prisoner, String cellAddress) {
+        cells.addPrisonerToCell(prisoner, cellAddress);
     }
 
     /**
@@ -240,7 +249,6 @@ public class AddressBook implements ReadOnlyAddressBook {
                 + cells.getCellList() + users.getUserList();
         // TODO: refine later
     }
-    //@@author
 
     //@@author zacci
     //// user-level operations
@@ -249,7 +257,7 @@ public class AddressBook implements ReadOnlyAddressBook {
      *
      * @param u is the user to add to the HashMap
      */
-    public void addUser(User u) {
+    public void addUser(User u) throws UserAlreadyExistsException {
         users.addUser(u);
     }
 

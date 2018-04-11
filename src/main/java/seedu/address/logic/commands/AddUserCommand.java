@@ -12,7 +12,7 @@ import seedu.address.model.user.exceptions.UserAlreadyExistsException;
 /**
  * Adds a new user to the PrisonBook
  */
-public class AddUserCommand extends UndoableCommand {
+public class AddUserCommand extends Command {
     public static final String COMMAND_WORD = "adduser";
     public static final String COMMAND_ALIAS = "au";
     public static final int MIN_SECURITY_LEVEL = 3;
@@ -52,7 +52,7 @@ public class AddUserCommand extends UndoableCommand {
     }
 
     @Override
-    public CommandResult executeUndoableCommand() throws CommandException {
+    public CommandResult execute() throws CommandException {
         requireNonNull(model);
         requireNonNull(userToAdd);
         try {

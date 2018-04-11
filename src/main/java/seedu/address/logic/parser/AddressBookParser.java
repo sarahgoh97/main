@@ -22,11 +22,11 @@ import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.HistoryCommand;
+import seedu.address.logic.commands.ListCellCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.LoginCommand;
 import seedu.address.logic.commands.LogoutCommand;
 import seedu.address.logic.commands.RedoCommand;
-import seedu.address.logic.commands.SelectCommand;
 import seedu.address.logic.commands.ShowCellsCommand;
 import seedu.address.logic.commands.ShowUsersCommand;
 import seedu.address.logic.commands.UndoCommand;
@@ -67,10 +67,6 @@ public class AddressBookParser {
         case EditCommand.COMMAND_WORD:
         case EditCommand.COMMAND_ALIAS:
             return new EditCommandParser().parse(arguments);
-
-        case SelectCommand.COMMAND_WORD:
-        case SelectCommand.COMMAND_ALIAS:
-            return new SelectCommandParser().parse(arguments);
 
         case DeleteCommand.COMMAND_WORD:
         case DeleteCommand.COMMAND_ALIAS:
@@ -148,6 +144,10 @@ public class AddressBookParser {
         case DeleteCellCommand.COMMAND_WORD:
         case DeleteCellCommand.COMMAND_ALIAS:
             return new DeleteCellCommandParser().parse(arguments);
+
+        case ListCellCommand.COMMAND_WORD:
+        case ListCellCommand.COMMAND_ALIAS:
+            return new ListCellCommandParser().parse(arguments);
         //@@author
 
         default:
