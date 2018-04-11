@@ -4,7 +4,6 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import seedu.address.logic.commands.exceptions.CommandException;
-import seedu.address.model.cell.exceptions.NotImprisonedException;
 import seedu.address.model.user.exceptions.CannotDeleteSelfException;
 import seedu.address.model.user.exceptions.MustHaveAtLeastOneSecurityLevelThreeUserException;
 import seedu.address.model.user.exceptions.NotEnoughAuthorityToDeleteException;

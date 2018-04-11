@@ -3,6 +3,7 @@ package seedu.address.model.user;
 import java.util.HashMap;
 
 import java.util.Iterator;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.model.user.exceptions.CannotDeleteSelfException;
@@ -80,7 +81,7 @@ public class UniqueUserMap {
         } else {
             userMap.put(user.getUsername(), user);
             internalList.add(user);
-            if (user.getSecurityLevel() == 3){
+            if (user.getSecurityLevel() == 3) {
                 numberOfSecurityLevelThree++;
             }
             return true;
