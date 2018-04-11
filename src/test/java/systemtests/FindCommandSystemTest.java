@@ -9,16 +9,17 @@ import static seedu.address.testutil.TypicalPersons.DANIEL;
 import static seedu.address.testutil.TypicalPersons.KEYWORD_MATCHING_MEIER;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
 
-import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.RedoCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.model.Model;
+import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.tag.Tag;
 
 public class FindCommandSystemTest extends AddressBookSystemTest {
@@ -85,6 +86,8 @@ public class FindCommandSystemTest extends AddressBookSystemTest {
         assertFalse(getModel().getAddressBook().getPersonList().contains(BENSON));
         command = FindCommand.COMMAND_WORD + " n/" + KEYWORD_MATCHING_MEIER;
         expectedModel = getModel();
+        expectedModel.updateFilteredPersonList(new NameContainsKeywordsPredicate(
+                Arrays.asList(KEYWORD_MATCHING_MEIER)));
         ModelHelper.setFilteredList(expectedModel, DANIEL);
         assertCommandSuccess(command, expectedModel);
         assertSelectedCardUnchanged();
@@ -132,14 +135,6 @@ public class FindCommandSystemTest extends AddressBookSystemTest {
         assertCommandSuccess(command, expectedModel);
         assertSelectedCardUnchanged();
 
-        /* Case: find while a person is selected -> selected card deselected */
-        showAllPersons();
-        selectPerson(Index.fromOneBased(1));
-        assertFalse(getPersonListPanel().getHandleToSelectedCard().getName().equals(DANIEL.getName().fullName));
-        command = FindCommand.COMMAND_WORD + " n/Daniel";
-        ModelHelper.setFilteredList(expectedModel, DANIEL);
-        assertCommandSuccess(command, expectedModel);
-        assertSelectedCardDeselected();
 
         /* Case: find person in empty address book -> 0 persons found */
         deleteAllPersons();

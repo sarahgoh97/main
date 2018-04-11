@@ -34,7 +34,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.AMY;
 import static seedu.address.testutil.TypicalPersons.BOB;
-import static seedu.address.testutil.TypicalPersons.CARL;
 import static seedu.address.testutil.TypicalPersons.HOON;
 import static seedu.address.testutil.TypicalPersons.IDA;
 import static seedu.address.testutil.TypicalPersons.KEYWORD_MATCHING_MEIER;
@@ -42,7 +41,6 @@ import static seedu.address.testutil.TypicalPersons.KEYWORD_MATCHING_MEIER;
 import org.junit.Test;
 
 import seedu.address.commons.core.Messages;
-import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.RedoCommand;
 import seedu.address.logic.commands.UndoCommand;
@@ -62,7 +60,7 @@ public class AddCommandSystemTest extends AddressBookSystemTest {
 
     @Test
     public void add() throws Exception {
-        Model model = getModel();
+        Model model = getNewModel();
 
         /* ------------------------ Perform add operations on the shown unfiltered list ----------------------------- */
 
@@ -138,12 +136,6 @@ public class AddCommandSystemTest extends AddressBookSystemTest {
         /* Case: filters the person list before adding -> added */
         showPersonsWithName(KEYWORD_MATCHING_MEIER);
         assertCommandSuccess(IDA);
-
-        /* ------------------------ Perform add operation while a person card is selected --------------------------- */
-
-        /* Case: selects first card in the person list, add a person -> added, card selection remains unchanged */
-        selectPerson(Index.fromOneBased(1));
-        assertCommandSuccess(CARL);
 
         /* ----------------------------------- Perform invalid add operations --------------------------------------- */
 
@@ -277,7 +269,7 @@ public class AddCommandSystemTest extends AddressBookSystemTest {
      * @see AddressBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)
      */
     private void assertCommandFailure(String command, String expectedResultMessage) {
-        Model expectedModel = getModel();
+        Model expectedModel = getNewModel();
 
         executeCommand(command);
         assertApplicationDisplaysExpected(command, expectedResultMessage, expectedModel);

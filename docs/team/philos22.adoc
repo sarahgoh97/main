@@ -15,12 +15,11 @@ PrisonBook is a desktop address book application used for Prison Guards/Inmates 
 * *Major enhancement*: Calendar Scheduling Feature
 ** What it does: Allows user to interact with Google Calendar through PrisonBook CLI
 ** Justification: Prisons need to follow a strict schedule and guards need to know where inmates are at all times.
-** Highlights: TBD as I go along
 ** Credits: Google API Guide
 
 * *Minor enhancement*: Enhanced the find command to be able to search by Tags in addition to Name-search
 
-* *Code contributed*: [https://github.com[Functional code]] [https://github.com[Test code]]
+* *Code contributed*: [https://github.com/CS2103JAN2018-T11-B2/main/blob/master/collated/functional/philos22.md[Functional code]] [https://github.com/CS2103JAN2018-T11-B2/main/blob/master/collated/test/philos22.md[Test code]]
 
 * *Other contributions*:
 
@@ -55,10 +54,14 @@ include::../UserGuide.adoc[tag=calendar]
 |_Given below are sections I contributed to the Developer Guide. They showcase my ability to write technical documentation and the technical depth of my contributions to the project._
 |===
 
-include::../DeveloperGuide.adoc[tag=FeatureContribution]
+include::../DeveloperGuide.adoc[tag=FeatureContributionPhilos]
 
 include::../DeveloperGuide.adoc[tag=findbytag]
 
 include::../DeveloperGuide.adoc[tag=scheduling]
+
+include::../DeveloperGuide.adoc[tag=UserStories]
+
+include::../DeveloperGuide.adoc[tag=NFR]
 
 

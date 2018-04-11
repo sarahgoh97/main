@@ -1,3 +1,4 @@
+//@@author zacci
 package seedu.address.model.user;
 
 /**

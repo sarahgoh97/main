@@ -3,6 +3,7 @@ package systemtests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import static seedu.address.ui.StatusBarFooter.SYNC_STATUS_INITIAL;
 import static seedu.address.ui.StatusBarFooter.SYNC_STATUS_UPDATED;
 import static seedu.address.ui.testutil.GuiTestAssert.assertListMatching;
@@ -25,11 +26,9 @@ import guitests.guihandles.ResultDisplayHandle;
 import guitests.guihandles.StatusBarFooterHandle;
 import seedu.address.TestApp;
 import seedu.address.commons.core.EventsCenter;
-import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.ListCommand;
-import seedu.address.logic.commands.SelectCommand;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.testutil.TypicalPersons;
@@ -61,6 +60,8 @@ public abstract class AddressBookSystemTest {
         setupHelper = new SystemTestSetupHelper();
         testApp = setupHelper.setupApplication(this::getInitialData, getDataFileLocation());
         mainWindowHandle = setupHelper.setupMainWindowHandle();
+        testApp.getModel().login("maxSecurityLevelUser", 999);
+        testApp.getModel().updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
         assertApplicationStartingStateIsCorrect();
     }
@@ -135,15 +136,7 @@ public abstract class AddressBookSystemTest {
      */
     protected void showPersonsWithName(String keyword) {
         executeCommand(FindCommand.COMMAND_WORD + " n/" + keyword);
-        assertTrue(getModel().getFilteredPersonList().size() < getModel().getAddressBook().getPersonList().size());
-    }
-
-    /**
-     * Selects the person at {@code index} of the displayed list.
-     */
-    protected void selectPerson(Index index) {
-        executeCommand(SelectCommand.COMMAND_WORD + " " + index.getOneBased());
-        assertEquals(index.getZeroBased(), getPersonListPanel().getSelectedCardIndex());
+        assertTrue(getModel().getFilteredPersonList().size() <= getModel().getAddressBook().getPersonList().size());
     }
 
     /**
@@ -234,7 +227,7 @@ public abstract class AddressBookSystemTest {
         assertFalse(handle.isNumberOfPeopleChanged());
         assertFalse(handle.isSaveLocationChanged());
     }
-
+    //@@author sarahgoh97
     /**
      * Asserts that the total number of people and sync status in the status bar was changed to the timing of
      * {@code ClockRule#getInjectedClock()}, while the save location remains the same.
@@ -248,6 +241,7 @@ public abstract class AddressBookSystemTest {
         assertEquals(expectedNumberOfPeopleStatus, handle.getNumberOfPeopleStatus());
         assertFalse(handle.isSaveLocationChanged());
     }
+    //@@author
 
     /**
      * Asserts that the starting state of the application is correct.
@@ -259,8 +253,7 @@ public abstract class AddressBookSystemTest {
             assertListMatching(getPersonListPanel(), getModel().getFilteredPersonList());
             assertEquals("./" + testApp.getStorageSaveLocation(), getStatusBarFooter().getSaveLocation());
             assertEquals(SYNC_STATUS_INITIAL, getStatusBarFooter().getSyncStatus());
-            assertEquals(testApp.getModel().getAddressBook().getPersonList().size() + " person(s) total.",
-                    getStatusBarFooter().getNumberOfPeopleStatus());
+
         } catch (Exception e) {
             throw new AssertionError("Starting state is wrong.", e);
         }
@@ -271,5 +264,12 @@ public abstract class AddressBookSystemTest {
      */
     protected Model getModel() {
         return testApp.getModel();
+    }
+    //@@author sarahgoh97
+    /**
+     * Returns a new model that starts with unfiltered list
+     */
+    protected Model getNewModel() {
+        return testApp.getNewModel();
     }
 }
