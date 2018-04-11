@@ -73,4 +73,8 @@ public class DeleteCommand extends UndoableCommand {
                 && this.targetIndex.equals(((DeleteCommand) other).targetIndex) // state check
                 && Objects.equals(this.personToDelete, ((DeleteCommand) other).personToDelete));
     }
+
+    public Person getPersonToDelete() {
+        return personToDelete;
+    }
 }

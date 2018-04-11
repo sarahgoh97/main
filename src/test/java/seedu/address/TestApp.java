@@ -1,5 +1,7 @@
 package seedu.address;
 
+import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.function.Supplier;
@@ -100,7 +102,16 @@ public class TestApp extends MainApp {
         ModelHelper.setFilteredList(copy, model.getFilteredPersonList());
         return copy;
     }
-    //@author
+
+    //@author sarahgoh97
+    public Model getNewModel() {
+        Model copy = new ModelManager((model.getAddressBook()), new UserPrefs());
+        model.login("maxSecurityLevelUser", 999);
+        model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        ModelHelper.setFilteredList(copy, model.getFilteredPersonList());
+        return copy;
+    }
+    //@@author
 
     @Override
     public void start(Stage primaryStage) {

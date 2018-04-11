@@ -26,13 +26,27 @@ public class UndoCommand extends Command {
             throw new CommandException(MESSAGE_FAILURE);
         }
 
+        //@author sarahgoh97
         UndoableCommand command = undoRedoStack.popUndo();
         if (command instanceof AddCellCommand) {
             String cellAddress = ((AddCellCommand) command).getCellAddress();
             Person prisoner = ((AddCellCommand) command).getPrisonerToAdd();
-            model.deletePrisonerFromCell(prisoner, cellAddress);
+            model.deletePrisonerFromCellFromUndo(prisoner, cellAddress);
+        }
+        if (command instanceof DeleteCommand) {
+            Person prisoner = ((DeleteCommand) command).getPersonToDelete();
+            if (prisoner.getIsInCell()) {
+                String cellAddress = prisoner.getCellAddress().toString();
+                model.addPrisonerToCellFromUndo(prisoner, cellAddress);
+            }
+        }
+        if (command instanceof DeleteCellCommand) {
+            Person prisoner = ((DeleteCellCommand) command).getPrisonerToDelete();
+            String cellAddress = ((DeleteCellCommand) command).getCellAddress();
+            model.addPrisonerToCellFromUndo(prisoner, cellAddress);
         }
         command.undo();
+        //@author
         return new CommandResult(MESSAGE_SUCCESS);
     }
 

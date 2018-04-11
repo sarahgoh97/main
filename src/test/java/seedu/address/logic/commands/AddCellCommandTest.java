@@ -5,6 +5,7 @@ import static seedu.address.logic.commands.AddCellCommand.MESSAGE_FULL_CELL;
 import static seedu.address.logic.commands.AddCellCommand.MESSAGE_NOT_PRISONER;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
+import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import static seedu.address.testutil.TypicalCells.FULL_CELL;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_THIRD_PERSON;
@@ -30,6 +31,10 @@ public class AddCellCommandTest {
 
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
+    public AddCellCommandTest() {
+        model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+    }
+
     @Test
     public void execute_validIndexUnfilteredListValidCellAddress_success() throws Exception {
         Person prisonerToAdd = model.getFilteredPersonList().get(INDEX_THIRD_PERSON.getZeroBased());
@@ -39,6 +44,7 @@ public class AddCellCommandTest {
         String expectedMessage = String.format(AddCellCommand.MESSAGE_ADD_CELL_SUCCESS,
                 prisonerToAdd.getName().toString(), cellAddress);
         ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        expectedModel.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         expectedModel.addPrisonerToCell(prisonerToAdd, cellAddress);
 
         assertCommandSuccess(addCellCommand, model, expectedMessage, expectedModel);
