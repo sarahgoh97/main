@@ -3,6 +3,7 @@ package seedu.address.model;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.util.ArrayList;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
@@ -12,11 +13,13 @@ import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
+import seedu.address.model.cell.Cell;
 import seedu.address.model.cell.exceptions.AlreadyInCellException;
 import seedu.address.model.cell.exceptions.FullCellException;
 import seedu.address.model.cell.exceptions.NonExistentCellException;
 import seedu.address.model.cell.exceptions.NotImprisonedException;
 import seedu.address.model.cell.exceptions.NotPrisonerException;
+import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
@@ -50,6 +53,7 @@ public class ModelManager extends ComponentManager implements Model {
 
         this.addressBook = new AddressBook(addressBook);
         filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
+        updateFilteredPersonList(new NameContainsKeywordsPredicate(new ArrayList<String>()));
 
         logger.info("Initialising session");
         session = new Session();
@@ -101,6 +105,7 @@ public class ModelManager extends ComponentManager implements Model {
             return false;
         } else {
             login(username, securityLevel);
+            indicateAddressBookChanged();
             return true;
         }
     }
@@ -166,14 +171,6 @@ public class ModelManager extends ComponentManager implements Model {
         indicateAddressBookChanged();
     }
 
-    /* this is for undo command */
-    @Override
-    public void deletePrisonerFromCell(Person prisoner, String cellAddress) {
-        requireAllNonNull(prisoner, cellAddress);
-        Person updatedPrisoner = new Person(prisoner, true, cellAddress);
-        addressBook.deletePrisonerFromCell(updatedPrisoner, cellAddress);
-    }
-
     /* this is for delete cell command */
     @Override
     public void deletePrisonerFromCell(Person prisoner) throws PersonNotFoundException, NotImprisonedException {
@@ -191,6 +188,23 @@ public class ModelManager extends ComponentManager implements Model {
                 throw new NotImprisonedException();
             }
         }
+        indicateAddressBookChanged();
+    }
+
+    /* this is to undo add prisoner to cell */
+    @Override
+    public void deletePrisonerFromCellFromUndo(Person prisoner, String cellAddress) {
+        requireAllNonNull(prisoner, cellAddress);
+        Person updatedPrisoner = new Person(prisoner, true, cellAddress);
+        addressBook.deletePrisonerFromCell(updatedPrisoner, cellAddress);
+        indicateAddressBookChanged();
+    }
+
+    /* this is to undo deleting a person from prison */
+    @Override
+    public void addPrisonerToCellFromUndo(Person prisoner, String cellAddress) {
+        requireAllNonNull(prisoner, cellAddress);
+        addressBook.addPrisonerToCellPermitted(prisoner, cellAddress);
         indicateAddressBookChanged();
     }
     //@@author
@@ -227,6 +241,24 @@ public class ModelManager extends ComponentManager implements Model {
         // state check
         ModelManager other = (ModelManager) obj;
         return addressBook.equals(other.addressBook) && filteredPersons.equals(other.filteredPersons);
+    }
+
+    //@@author sarahgoh97
+    @Override
+    public void updateFilteredPersonListForCell(Predicate<Person> predicate, String cellAddress)
+            throws NonExistentCellException {
+        requireNonNull(predicate);
+        requireNonNull(cellAddress);
+        if (Cell.isValidCellAddress(cellAddress)) {
+            filteredPersons.setPredicate(predicate);
+        } else {
+            throw new NonExistentCellException();
+        }
+    }
+
+    @Override
+    public String toString() {
+        return filteredPersons.toString();
     }
 
 }

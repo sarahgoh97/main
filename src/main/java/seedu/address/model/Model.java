@@ -73,12 +73,14 @@ public interface Model {
             throws FullCellException, NonExistentCellException,
             NotPrisonerException, AlreadyInCellException;
 
-    /** Deletes given prisoner from a cell from undo command*/
-    void deletePrisonerFromCell(Person prisoner, String cellAddress);
-
     /**Deletes given prisoner from a cell from DeleteCellCommand */
     void deletePrisonerFromCell(Person prisoner) throws PersonNotFoundException, NotImprisonedException;
 
+    /**Adds given prisoner back into a cell from undo command */
+    void addPrisonerToCellFromUndo(Person prisoner, String cellAddress);
+
+    /** Deletes given prisoner from a cell from undo command*/
+    void deletePrisonerFromCellFromUndo(Person prisoner, String cellAddress);
     //@@author
     /**
      * Replaces the given person {@code target} with {@code editedPerson}.
@@ -98,5 +100,11 @@ public interface Model {
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredPersonList(Predicate<Person> predicate);
+
+    /**
+     * Updates the filter of the filtered person list to show only people in the cell.
+     */
+    void updateFilteredPersonListForCell(Predicate<Person> predicate, String cellAddress)
+            throws NonExistentCellException;
 
 }

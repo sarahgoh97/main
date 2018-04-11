@@ -29,6 +29,7 @@ public class DeleteCellCommand extends UndoableCommand {
     public final Index targetIndex;
 
     private Person prisonerToDelete;
+    private String cellAddress;
 
     /**
      * Creates a deleteCellCommand object
@@ -61,16 +62,23 @@ public class DeleteCellCommand extends UndoableCommand {
         }
 
         prisonerToDelete = lastShownList.get(targetIndex.getZeroBased());
+        if (prisonerToDelete.getIsInCell()) {
+            cellAddress = prisonerToDelete.getCellAddress().toString();
+        }
     }
 
     public Person getPrisonerToDelete() {
         return prisonerToDelete;
     }
 
+    public String getCellAddress() {
+        return cellAddress;
+    }
+
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof DeleteCommand // instanceof handles nulls
+                || (other instanceof DeleteCellCommand // instanceof handles nulls
                 && this.targetIndex.equals(((DeleteCellCommand) other).targetIndex) // state check
                 && Objects.equals(this.prisonerToDelete, ((DeleteCellCommand) other).prisonerToDelete));
     }
