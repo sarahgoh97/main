@@ -31,6 +31,9 @@ public interface Model {
     /** Returns the session */
     Session getSession();
 
+    /** Checks if there is a user logged in to the current session*/
+    boolean checkIsLoggedIn();
+
     /** Clears existing session*/
     void logout();
 

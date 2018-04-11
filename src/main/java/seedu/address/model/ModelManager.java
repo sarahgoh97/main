@@ -80,6 +80,11 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
+    public boolean checkIsLoggedIn(){
+        return session.checkIsLoggedIn();
+    }
+
+    @Override
     public void login(String username, int securityLevel) {
         session.login(username, securityLevel);
         logger.info("User logged in with: u/" + username + " slevel/" + securityLevel);
