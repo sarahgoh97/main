@@ -25,25 +25,11 @@ public class Person {
     private final UniqueTagList tags;
 
     private boolean isInCell = false;
-    /**
-     * Every field must be present and not null.
-     */
-    /*
-    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
-        requireAllNonNull(name, phone, email, address, tags);
-        this.name = name;
-        this.phone = phone;
-        this.email = email;
-        this.address = address;
-        this.role = new Role("p");
-        // protect internal tags from changes in the arg list
-        this.tags = new UniqueTagList(tags);
-    }
-    */
 
     /**
      * New Constructor for working
      * Every field must be present and not null.
+     * This is for adding people into the prisonbook database and by default, they are not imprisoned
      */
     public Person(Name name, Phone phone, Email email, Address address, Role role, Set<Tag> tags) {
         requireAllNonNull(name, phone, email, address, tags);
@@ -56,7 +42,7 @@ public class Person {
         this.tags = new UniqueTagList(tags);
     }
 
-    //for storage purposes
+    //for storage purposes and tests
     public Person(Name name, Phone phone, Email email, Address address, Role role, Set<Tag> tags, boolean isInCell) {
         requireAllNonNull(name, phone, email, address, tags);
         this.name = name;
