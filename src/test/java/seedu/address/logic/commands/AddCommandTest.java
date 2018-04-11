@@ -129,7 +129,15 @@ public class AddCommandTest {
         }
 
         @Override
-        public void addUser (User user) {};
+        public void addUser(User user) {};
+
+        @Override
+        public void deleteUser(String user) {};
+
+        @Override
+        public boolean checkIsLoggedIn() {
+            return true;
+        };
         //@@author
 
         @Override
