@@ -12,7 +12,11 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.user.User;
+import seedu.address.model.user.exceptions.CannotDeleteSelfException;
+import seedu.address.model.user.exceptions.MustHaveAtLeastOneSecurityLevelThreeUserException;
+import seedu.address.model.user.exceptions.NotEnoughAuthorityToDeleteException;
 import seedu.address.model.user.exceptions.UserAlreadyExistsException;
+import seedu.address.model.user.exceptions.UserDoesNotExistException;
 
 /**
  * The API of the Model component.
@@ -31,6 +35,9 @@ public interface Model {
     /** Returns the session */
     Session getSession();
 
+    /** Checks if there is a user logged in to the current session*/
+    boolean checkIsLoggedIn();
+
     /** Clears existing session*/
     void logout();
 
@@ -48,6 +55,10 @@ public interface Model {
 
     /** Adds given user to the PrisonBook */
     void addUser(User user) throws UserAlreadyExistsException;
+
+    /** Adds given user to the PrisonBook */
+    void deleteUser(String user) throws CannotDeleteSelfException, MustHaveAtLeastOneSecurityLevelThreeUserException,
+            UserDoesNotExistException, NotEnoughAuthorityToDeleteException;
     //@@author
 
     /** Deletes the given person. */

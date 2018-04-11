@@ -27,7 +27,11 @@ import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 import seedu.address.model.user.UniqueUserMap;
 import seedu.address.model.user.User;
+import seedu.address.model.user.exceptions.CannotDeleteSelfException;
+import seedu.address.model.user.exceptions.MustHaveAtLeastOneSecurityLevelThreeUserException;
+import seedu.address.model.user.exceptions.NotEnoughAuthorityToDeleteException;
 import seedu.address.model.user.exceptions.UserAlreadyExistsException;
+import seedu.address.model.user.exceptions.UserDoesNotExistException;
 
 /**
  * Wraps all data at the address-book level
@@ -275,6 +279,12 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     public void setUsers(ObservableList<User> users) {
         this.users.setUsers(users);
+    }
+
+    public void deleteUser(String userToDelete, String deleterUsername) throws CannotDeleteSelfException,
+            MustHaveAtLeastOneSecurityLevelThreeUserException, UserDoesNotExistException,
+            NotEnoughAuthorityToDeleteException {
+        users.deleteUser(userToDelete, deleterUsername);
     }
 
     //@@author

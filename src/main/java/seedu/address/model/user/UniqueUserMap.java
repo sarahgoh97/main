@@ -3,9 +3,15 @@ package seedu.address.model.user;
 
 import java.util.HashMap;
 
+import java.util.Iterator;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import seedu.address.model.user.exceptions.CannotDeleteSelfException;
+import seedu.address.model.user.exceptions.MustHaveAtLeastOneSecurityLevelThreeUserException;
+import seedu.address.model.user.exceptions.NotEnoughAuthorityToDeleteException;
 import seedu.address.model.user.exceptions.UserAlreadyExistsException;
+import seedu.address.model.user.exceptions.UserDoesNotExistException;
 
 /**
  * Contains the users of the PrisonBook
@@ -15,6 +21,8 @@ public class UniqueUserMap {
     private final ObservableList<User> internalList = FXCollections.observableArrayList();
 
     private HashMap<String, User> userMap;
+
+    private int numberOfSecurityLevelThree = 0;
 
     private final User defaultUser1 = new User("prisonguard", "password1", 1);
     private final User defaultUser2 = new User("prisonleader", "password2", 2);
@@ -74,6 +82,40 @@ public class UniqueUserMap {
         } else {
             userMap.put(user.getUsername(), user);
             internalList.add(user);
+            if (user.getSecurityLevel() == 3) {
+                numberOfSecurityLevelThree++;
+            }
+            return true;
+        }
+    }
+
+    /**
+     * Delete user from the userMap and the internalList
+     * @param userToDelete must be an existing user
+     * @return true if added successfully and false if failed to add
+     */
+    public boolean deleteUser(String userToDelete, String deleterUsername) throws UserDoesNotExistException,
+            NotEnoughAuthorityToDeleteException, CannotDeleteSelfException,
+            MustHaveAtLeastOneSecurityLevelThreeUserException {
+        int deleterSecurityLevel = userMap.get(deleterUsername).getSecurityLevel();
+        if (!contains(userToDelete)) {
+            throw new UserDoesNotExistException();
+        } else if (userToDelete.equals(deleterUsername)) {
+            throw new CannotDeleteSelfException();
+        } else if (deleterSecurityLevel != 3 && userMap.get(userToDelete).getSecurityLevel() >= deleterSecurityLevel) {
+            throw new NotEnoughAuthorityToDeleteException();
+        } else if (userMap.get(userToDelete).getSecurityLevel() == 3 && numberOfSecurityLevelThree <= 1) {
+            throw new MustHaveAtLeastOneSecurityLevelThreeUserException();
+        } else {
+            userMap.remove(userToDelete);
+            Iterator<User> iter = internalList.listIterator();
+            for (int i = 0; i < internalList.size(); i++) {
+                User curr = iter.next();
+                if (userToDelete.equals(curr.getUsername())) {
+                    iter.remove();
+                    break;
+                }
+            }
             return true;
         }
     }
