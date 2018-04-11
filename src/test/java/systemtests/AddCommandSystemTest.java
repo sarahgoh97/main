@@ -31,7 +31,6 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
-import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.AMY;
 import static seedu.address.testutil.TypicalPersons.BOB;
 import static seedu.address.testutil.TypicalPersons.HOON;
@@ -117,10 +116,6 @@ public class AddCommandSystemTest extends AddressBookSystemTest {
         command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
                 + ROLE_DESC_BOB + TAG_DESC_FRIEND;
         assertCommandSuccess(command, toAdd);
-
-        /* Case: add to empty address book -> added */
-        deleteAllPersons();
-        assertCommandSuccess(ALICE);
 
         /* Case: add a person with tags, command with parameters in random order -> added */
         toAdd = BOB;
