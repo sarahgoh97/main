@@ -30,22 +30,28 @@ public class TypicalPersons {
 
     public static final Person ALICE = new PersonBuilder().withName("Alice Pauline")
             .withAddress("123, Jurong West Ave 6, #08-111").withEmail("alice@example.com")
-            .withPhone("85355255").withRole("p")
-            .withTags("friends").build();
+            .withPhone("85355255").withRole("p").withTags("friends")
+            .withIsInCell(false).build();
     public static final Person BENSON = new PersonBuilder().withName("Benson Meier")
-            .withAddress("311, Clementi Ave 2, #02-25")
-            .withEmail("johnd@example.com").withPhone("98765432").withRole("g")
-            .withTags("owesMoney", "friends").build();
-    public static final Person CARL = new PersonBuilder().withName("Carl Kurz").withPhone("95352563").withRole("p")
-            .withEmail("heinz@example.com").withAddress("wall street").withTags("Tag1").build();
-    public static final Person DANIEL = new PersonBuilder().withName("Daniel Meier").withPhone("87652533")
-            .withEmail("cornelia@example.com").withAddress("10th street").withRole("g").build();
-    public static final Person ELLE = new PersonBuilder().withName("Elle Meyer").withPhone("9482224")
-            .withEmail("werner@example.com").withAddress("michegan ave").withTags("Tag1").withRole("p").build();
-    public static final Person FIONA = new PersonBuilder().withName("Fiona Kunz").withPhone("9482427")
-            .withEmail("lydia@example.com").withAddress("little tokyo").withTags("Tag1").withRole("g").build();
-    public static final Person GEORGE = new PersonBuilder().withName("George Best").withPhone("9482442")
-            .withEmail("anna@example.com").withAddress("4th street").withRole("p").build();
+            .withAddress("311, Clementi Ave 2, #02-25").withEmail("johnd@example.com")
+            .withPhone("98765432").withRole("g").withTags("owesMoney", "friends").build();
+    public static final Person CARL = new PersonBuilder().withName("Carl Kurz")
+            .withAddress("1-2 [Old address: wall street]").withEmail("heinz@example.com")
+            .withPhone("95352563").withRole("p").withTags("Tag1")
+            .withIsInCell(true).build();
+    public static final Person DANIEL = new PersonBuilder().withName("Daniel Meier")
+            .withPhone("87652533").withAddress("10th street")
+            .withEmail("cornelia@example.com").withRole("g").build();
+    public static final Person ELLE = new PersonBuilder().withName("Elle Meyer")
+            .withPhone("9482224").withAddress("1-3 [Old address: michegan ave]")
+            .withEmail("werner@example.com").withTags("Tag1").withRole("p")
+            .withIsInCell(true).build();
+    public static final Person FIONA = new PersonBuilder().withName("Fiona Kunz")
+            .withPhone("9482427").withEmail("lydia@example.com").withAddress("little tokyo")
+            .withTags("Tag1").withRole("g").build();
+    public static final Person GEORGE = new PersonBuilder().withName("George Best")
+            .withPhone("9482442").withAddress("1-3 [Old address: 4th street]")
+            .withEmail("anna@example.com").withRole("p").withIsInCell(true).build();
 
     // Manually added
     public static final Person HOON = new PersonBuilder().withName("Hoon Meier").withPhone("8482424")
