@@ -143,10 +143,10 @@ public class Calendar {
                 if (start == null) {
                     start = event.getStart().getDate();
                 }
-                String EventId = event.getId();
-                addEventIDs(EventId);
+                String eventId = event.getId();
+                addEventIDs(eventId);
                 result.append(String.format("[Event %s] \t %s \t (%s) \t (%s)\n",
-                        eventNumber, event.getSummary(), start, EventId));
+                        eventNumber, event.getSummary(), start, eventId));
                 eventNumber++;
             }
         }
