@@ -46,7 +46,7 @@ public class Calendar {
     /** Global instance of the HTTP transport. */
     private static HttpTransport httptransport;
 
-    private static ArrayList<String> EventIDs = new ArrayList<>();
+    private static ArrayList<String> eventIDs = new ArrayList<>();
 
     /** Global instance of the scopes required by this quickstart.
      *
@@ -67,7 +67,7 @@ public class Calendar {
     }
 
     public static void addEventIDs(String event) {
-        EventIDs.add(event);
+        eventIDs.add(event);
     }
 
     /**
@@ -201,7 +201,7 @@ public class Calendar {
         String successDeletedMessage = "Event successfully deleted.";
 
         int eventArrayIdInt = Integer.parseInt(eventArrayId) - 1;
-        String eventId = EventIDs.get(eventArrayIdInt);
+        String eventId = eventIDs.get(eventArrayIdInt);
 
         // Build a new authorized API client service.
         com.google.api.services.calendar.Calendar service = getCalendarService();

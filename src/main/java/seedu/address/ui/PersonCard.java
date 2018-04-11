@@ -49,7 +49,7 @@ public class PersonCard extends UiPart<Region> {
         phone.setText(person.getPhone().value);
         address.setText(person.getAddress().value);
         email.setText(person.getEmail().value);
-        if (person.getRole().value.equals("p")){
+        if (person.getRole().value.equals("p")) {
             role.setText("Prisoner");
         } else {
             role.setText("Guard");
