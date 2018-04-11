@@ -101,6 +101,7 @@ public class AddCommandTest {
 
     private class ModelStub implements Model {
 
+        //@@author zacci
         @Override
         public void login(String username, int securityLevel){};
 
@@ -129,12 +130,14 @@ public class AddCommandTest {
 
         @Override
         public void addUser (User user) {};
+        //@@author
 
         @Override
         public void addPerson(Person person) throws DuplicatePersonException {
             fail("This method should not be called.");
         }
 
+        //@@author sarahgoh97
         @Override
         public void addPrisonerToCell(Person prisoner, String cellAddress) {
             fail("This method should not be called.");
@@ -154,6 +157,17 @@ public class AddCommandTest {
         public void addPrisonerToCellFromUndo(Person prisoner, String cellAddress) {
             fail("This method should not be called.");
         }
+
+        @Override
+        public void updatePrisonerFromUndo(Person orignal, Person changed) {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void updateFilteredPersonListForCell(Predicate <Person> predicate, String cellAddress) {
+            fail("This method should not be called.");
+        }
+        //@@author
 
         @Override
         public void resetData(ReadOnlyAddressBook newData) {
@@ -185,11 +199,6 @@ public class AddCommandTest {
 
         @Override
         public void updateFilteredPersonList(Predicate<Person> predicate) {
-            fail("This method should not be called.");
-        }
-
-        @Override
-        public void updateFilteredPersonListForCell(Predicate <Person> predicate, String cellAddress) {
             fail("This method should not be called.");
         }
     }

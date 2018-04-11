@@ -117,6 +117,7 @@ public class EditCommand extends UndoableCommand {
                 updatedTags, personToEdit.getIsInCell());
     }
 
+    //@@author sarahgoh97
     private static Address getUpdatedAddress(Person personToEdit, EditPersonDescriptor editPersonDescriptor) {
         Address updatedAddress = personToEdit.getAddress(); //no change
         if (!personToEdit.getIsInCell()) { //not imprisoned
@@ -131,6 +132,7 @@ public class EditCommand extends UndoableCommand {
         }
         return updatedAddress;
     }
+    //@@author
 
     @Override
     /**
