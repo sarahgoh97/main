@@ -24,7 +24,6 @@ PrisonBook is a desktop address book application used for Prison Guards/Inmates 
 * *Other contributions*:
 
 ** Project management:
-*** PR management and tagging up till V1.3
 *** PR management and tagging up till v1.3
 *** Verified and closed issues for v1.3 Milestone
 ** Enhancements to existing features:

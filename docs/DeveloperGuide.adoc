@@ -1014,9 +1014,6 @@ See this https://github.com/se-edu/addressbook-level4/pull/599[PR] for the step-
 
 *Value proposition*: manage contacts faster than a typical mouse/GUI driven app
 
-// tag::FeatureContribution[]
-// end::FeatureContribution[]
-
 *Feature Contributions*:
 
 // tag::FeatureContributionPhilos[]
@@ -1028,12 +1025,16 @@ See this https://github.com/se-edu/addressbook-level4/pull/599[PR] for the step-
   Find by tag: This function will allow admins to filter user list by tags. Tags may include classification of Prisoner vs. Guards, Prisoner cell blocks and cell numbers, Guards' current teams and assignments, etc...
 
 // end::FeatureContributionPhilos[]
+// tag::FeatureContributionIsaac[]
 
 * Isaac Gideon Tan (zacci)
   1. Major enhancement: +
   Login and Authorization Levels: Enable creation of account for guards, logging in, and authorization levels for commands that may compromise the security of the Prison data.
   2. Minor enhancement: +
   Additional Attribute to store 'Role' information. To identify the person as a Prisoner or Guard
+
+// end::FeatureContributionIsaac[]
+// tag::FeatureContributionSarah[]
 
 * Sarah Goh Shi Ning (sarahgoh97)
   1. Major enhancement: +
@@ -1045,6 +1046,7 @@ See this https://github.com/se-edu/addressbook-level4/pull/599[PR] for the step-
   This helps users to prevent people nearby from looking at the information.
   At the same time, it also has a bright theme that helps users use the app more easily.
 
+// end::FeatureContributionSarah[]
 
 // tag::UserStories[]
 [appendix]
