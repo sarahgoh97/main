@@ -1,6 +1,8 @@
 //@@author zacci
 package seedu.address.logic.commands;
 
+import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
+
 /**
  * Attempts to log in user with given Username and Password
  */
@@ -34,6 +36,7 @@ public class LoginCommand extends Command {
         if (!model.attemptLogin(username, password)) {
             return new CommandResult(MESSAGE_LOGIN_FAILURE);
         } else {
+            model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
             return new CommandResult(MESSAGE_LOGIN_SUCCESS);
         }
     }
