@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 
 import com.google.common.eventbus.Subscribe;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -12,6 +13,7 @@ import javafx.scene.layout.Region;
 
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
+import seedu.address.commons.events.ui.HideMapEvent;
 import seedu.address.model.cell.Cell;
 
 
@@ -60,28 +62,42 @@ public class MapPanel extends UiPart<Region> {
         registerAsAnEventHandler(this);
     }
 
-    private void setConnections(ObservableList<Cell> cellList) {
-        cellAddress11.setText(Integer.toString(cellList.get(0).getNumberOfPrisoners()));
-        cellAddress12.setText(Integer.toString(cellList.get(1).getNumberOfPrisoners()));
-        cellAddress13.setText(Integer.toString(cellList.get(2).getNumberOfPrisoners()));
-        cellAddress14.setText(Integer.toString(cellList.get(3).getNumberOfPrisoners()));
-        cellAddress15.setText(Integer.toString(cellList.get(4).getNumberOfPrisoners()));
-        cellAddress21.setText(Integer.toString(cellList.get(5).getNumberOfPrisoners()));
-        cellAddress22.setText(Integer.toString(cellList.get(6).getNumberOfPrisoners()));
-        cellAddress23.setText(Integer.toString(cellList.get(7).getNumberOfPrisoners()));
-        cellAddress24.setText(Integer.toString(cellList.get(8).getNumberOfPrisoners()));
-        cellAddress25.setText(Integer.toString(cellList.get(9).getNumberOfPrisoners()));
-        cellAddress31.setText(Integer.toString(cellList.get(10).getNumberOfPrisoners()));
-        cellAddress32.setText(Integer.toString(cellList.get(11).getNumberOfPrisoners()));
-        cellAddress33.setText(Integer.toString(cellList.get(12).getNumberOfPrisoners()));
-        cellAddress34.setText(Integer.toString(cellList.get(13).getNumberOfPrisoners()));
-        cellAddress35.setText(Integer.toString(cellList.get(14).getNumberOfPrisoners()));
+    private void setConnections(ObservableList<String> list) {
+        cellAddress11.setText(list.get(0));
+        cellAddress12.setText(list.get(1));
+        cellAddress13.setText(list.get(2));
+        cellAddress14.setText(list.get(3));
+        cellAddress15.setText(list.get(4));
+        cellAddress21.setText(list.get(5));
+        cellAddress22.setText(list.get(6));
+        cellAddress23.setText(list.get(7));
+        cellAddress24.setText(list.get(8));
+        cellAddress25.setText(list.get(9));
+        cellAddress31.setText(list.get(10));
+        cellAddress32.setText(list.get(11));
+        cellAddress33.setText(list.get(12));
+        cellAddress34.setText(list.get(13));
+        cellAddress35.setText(list.get(14));
+    }
+
+    private void setStrings(ObservableList<Cell> cellList) {
+        ObservableList<String> list = FXCollections.observableArrayList();
+        for (int i = 0; i < 15; i++) {
+            list.add(Integer.toString(cellList.get(i).getNumberOfPrisoners()));
+        }
+        setConnections(list);
     }
 
     @Subscribe
     public void handleAddressBookChangedEvent(AddressBookChangedEvent abce) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(abce, "Changing map"));
-        setConnections(abce.data.getCellList());
+        logger.info(LogsCenter.getEventHandlingLogMessage(abce, "Changing map\n"));
+        setStrings(abce.data.getCellList());
+    }
+
+    @Subscribe
+    private void handleHideMapRequestEvent(HideMapEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        setConnections(event.list);
     }
 
 }

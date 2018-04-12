@@ -8,6 +8,7 @@ public class Session {
 
     private String username;
     private int securityLevel;
+    private boolean isLoggedIn = false;
 
     public Session() {
         resetSession();
@@ -19,6 +20,7 @@ public class Session {
     public void login(String username, int securityLevel) {
         this.username = username;
         this.securityLevel = securityLevel;
+        this.isLoggedIn = true;
     }
 
     public void logout() {
@@ -28,6 +30,7 @@ public class Session {
     private void resetSession() {
         username = "";
         securityLevel = 0;
+        isLoggedIn = false;
     }
 
     public String getUsername() {
@@ -36,6 +39,10 @@ public class Session {
 
     public int getSecurityLevel() {
         return securityLevel;
+    }
+
+    public boolean checkIsLoggedIn () {
+        return isLoggedIn;
     }
 
     @Override

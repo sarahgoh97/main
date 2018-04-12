@@ -27,7 +27,11 @@ import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 import seedu.address.model.user.UniqueUserMap;
 import seedu.address.model.user.User;
+import seedu.address.model.user.exceptions.CannotDeleteSelfException;
+import seedu.address.model.user.exceptions.MustHaveAtLeastOneSecurityLevelThreeUserException;
+import seedu.address.model.user.exceptions.NotEnoughAuthorityToDeleteException;
 import seedu.address.model.user.exceptions.UserAlreadyExistsException;
+import seedu.address.model.user.exceptions.UserDoesNotExistException;
 
 /**
  * Wraps all data at the address-book level
@@ -132,6 +136,19 @@ public class AddressBook implements ReadOnlyAddressBook {
         // This can cause the tags master list to have additional tags that are not tagged to any person
         // in the person list.
         persons.setPerson(target, syncedEditedPerson);
+        if (target.getIsInCell()) {
+            cells.setPrisonerToCell(target, syncedEditedPerson);
+        }
+    }
+
+    /**
+     * Replaces the given person {@code changed} in the list with {@code original} in the cellMap.
+     * This is only done from undo.
+     */
+    public void updatePrisonerFromUndo(Person changed, Person original) {
+        requireAllNonNull(original, changed);
+
+        cells.setPrisonerToCell(changed, original);
     }
 
     /**
@@ -275,6 +292,12 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     public void setUsers(ObservableList<User> users) {
         this.users.setUsers(users);
+    }
+
+    public void deleteUser(String userToDelete, String deleterUsername) throws CannotDeleteSelfException,
+            MustHaveAtLeastOneSecurityLevelThreeUserException, UserDoesNotExistException,
+            NotEnoughAuthorityToDeleteException {
+        users.deleteUser(userToDelete, deleterUsername);
     }
 
     //@@author

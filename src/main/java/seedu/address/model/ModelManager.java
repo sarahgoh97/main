@@ -24,7 +24,11 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.user.User;
+import seedu.address.model.user.exceptions.CannotDeleteSelfException;
+import seedu.address.model.user.exceptions.MustHaveAtLeastOneSecurityLevelThreeUserException;
+import seedu.address.model.user.exceptions.NotEnoughAuthorityToDeleteException;
 import seedu.address.model.user.exceptions.UserAlreadyExistsException;
+import seedu.address.model.user.exceptions.UserDoesNotExistException;
 
 /**
  * Represents the in-memory model of the address book data.
@@ -84,6 +88,11 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
+    public boolean checkIsLoggedIn() {
+        return session.checkIsLoggedIn();
+    }
+
+    @Override
     public void login(String username, int securityLevel) {
         session.login(username, securityLevel);
         logger.info("User logged in with: u/" + username + " slevel/" + securityLevel);
@@ -116,6 +125,14 @@ public class ModelManager extends ComponentManager implements Model {
         addressBook.addUser(userToAdd);
         indicateAddressBookChanged();
     }
+
+    @Override
+    public void deleteUser (String userToDelete) throws CannotDeleteSelfException,
+            MustHaveAtLeastOneSecurityLevelThreeUserException, UserDoesNotExistException,
+            NotEnoughAuthorityToDeleteException {
+        addressBook.deleteUser(userToDelete, session.getUsername());
+        indicateAddressBookChanged();
+    }
     //@@author
 
     /** Raises an event to indicate the model has changed */
@@ -146,6 +163,12 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     //@@author sarahgoh97
+    @Override
+    public void updatePrisonerFromUndo(Person changed, Person original) {
+        addressBook.updatePrisonerFromUndo(changed, original);
+        indicateAddressBookChanged();
+    }
+
     @Override
     public void addPrisonerToCell(Person prisoner, String cellAddress)
             throws FullCellException, NonExistentCellException,
