@@ -29,8 +29,8 @@ public class CalendarAddCommand extends UndoableCommand {
             + PREFIX_START + "EVENT_START_TIME "
             + PREFIX_END + "EVENT_END_TIME \n"
             + "Example: \n" + COMMAND_WORD + " "
-            + PREFIX_EVENT + "Finish Software Engineering Milestone "
-            + PREFIX_LOCATION + "NUS UTown Residence "
+            + PREFIX_EVENT + "Prison Security Sweep "
+            + PREFIX_LOCATION + "NUS Prison "
             + PREFIX_START + "2020-04-01 15:00:00 "
             + PREFIX_END + "2020-04-01 17:00:00";
 
