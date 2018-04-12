@@ -142,7 +142,8 @@ public class Calendar {
                 String eventId = event.getId();
                 addEventIDs(eventId);
                 result.append(String.format("[Event %s] \t %s \t [%s] to [%s] \tLocation: %s\n",
-                        eventNumber, event.getSummary(), event.getStart().getDateTime(), event.getEnd().getDateTime(), event.getLocation()));
+                        eventNumber, event.getSummary(), event.getStart().getDateTime(),
+                        event.getEnd().getDateTime(), event.getLocation()));
                 eventNumber++;
             }
         }
