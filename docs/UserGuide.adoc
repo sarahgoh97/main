@@ -120,7 +120,7 @@ Examples:
 // end::adduser[]
 
 // tag::deleteuser[]
-=== Delete a user: `deleteuser` [1] (v1.5rc)
+=== Delete a user: `deleteuser` [2] (v1.5rc)
 
 Deletes a user from the PrisonBook +
 Format: `deleteuser user/NEW_USERNAME`
