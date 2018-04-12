@@ -1,4 +1,31 @@
 # sarahgoh97
+###### \java\seedu\address\commons\events\ui\HideMapEvent.java
+``` java
+package seedu.address.commons.events.ui;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import seedu.address.commons.events.BaseEvent;
+
+/**
+ * Indicates an event to hide the map.
+ */
+public class HideMapEvent extends BaseEvent {
+
+    public final ObservableList<String> list = FXCollections.observableArrayList();
+
+    public HideMapEvent() {
+        for (int i = 0; i < 15; i++) {
+            list.add("Insufficient Access");
+        }
+    }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName();
+    }
+}
+```
 ###### \java\seedu\address\logic\commands\AddCellCommand.java
 ``` java
 package seedu.address.logic.commands;
@@ -79,7 +106,7 @@ public class AddCellCommand extends UndoableCommand {
             throw new CommandException(String.format(MESSAGE_NOT_PRISONER, prisonerToAdd.getName()));
         } catch (AlreadyInCellException aice) {
             throw new CommandException(String.format(MESSAGE_ALREADY_IN_CELL,
-                    prisonerToAdd.getName(), prisonerToAdd.getAddress()));
+                    prisonerToAdd.getName(), prisonerToAdd.getCellAddress()));
         }
         return new CommandResult(String.format(MESSAGE_ADD_CELL_SUCCESS, prisonerToAdd.getName(), cellAddress));
     }
@@ -144,6 +171,7 @@ public class DeleteCellCommand extends UndoableCommand {
     public final Index targetIndex;
 
     private Person prisonerToDelete;
+    private String cellAddress;
 
     /**
      * Creates a deleteCellCommand object
@@ -176,18 +204,100 @@ public class DeleteCellCommand extends UndoableCommand {
         }
 
         prisonerToDelete = lastShownList.get(targetIndex.getZeroBased());
+        if (prisonerToDelete.getIsInCell()) {
+            cellAddress = prisonerToDelete.getCellAddress().toString();
+        }
     }
 
     public Person getPrisonerToDelete() {
         return prisonerToDelete;
     }
 
+    public String getCellAddress() {
+        return cellAddress;
+    }
+
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof DeleteCommand // instanceof handles nulls
+                || (other instanceof DeleteCellCommand // instanceof handles nulls
                 && this.targetIndex.equals(((DeleteCellCommand) other).targetIndex) // state check
                 && Objects.equals(this.prisonerToDelete, ((DeleteCellCommand) other).prisonerToDelete));
+    }
+}
+```
+###### \java\seedu\address\logic\commands\EditCommand.java
+``` java
+    private static Address getUpdatedAddress(Person personToEdit, EditPersonDescriptor editPersonDescriptor) {
+        Address updatedAddress = personToEdit.getAddress(); //no change
+        if (!personToEdit.getIsInCell()) { //not imprisoned
+            updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
+        } else {
+            String newAddress = editPersonDescriptor.getAddress().orElse(updatedAddress).toString();
+            if (!new Address(newAddress).equals(updatedAddress)) { //address changed
+                updatedAddress = new Address(updatedAddress.toString()
+                        .substring(0, updatedAddress.toString().indexOf("s: ") + 3)
+                        + newAddress.substring(newAddress.indexOf("[") + 1, newAddress.indexOf("]") + 1));
+            }
+        }
+        return updatedAddress;
+    }
+```
+###### \java\seedu\address\logic\commands\ListCellCommand.java
+``` java
+package seedu.address.logic.commands;
+
+import java.util.function.Predicate;
+
+import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.model.cell.exceptions.NonExistentCellException;
+import seedu.address.model.person.Person;
+
+/**
+ * Lists all person in specified cell
+ */
+public class ListCellCommand extends Command {
+    public static final String COMMAND_WORD = "listcell";
+    public static final String COMMAND_ALIAS = "lc";
+    public static final int MIN_SECURITY_LEVEL = 1;
+
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Lists all people in the specified cell."
+            + " Parameters: CELLADDRESS\n"
+            + "Example: " + COMMAND_WORD + " 1-1";
+
+    public static final String MESSAGE_SUCCESS = "Listed persons in cell %s";
+    public static final String MESSAGE_NON_EXISTENT_CELL = "This cell %s does not exist";
+    private final Predicate<Person> predicate;
+    private final String cellAddress;
+
+    public ListCellCommand(Predicate<Person> predicate, String cellAddress) {
+        this.predicate = predicate;
+        this.cellAddress = cellAddress;
+    }
+
+    @Override
+    public CommandResult execute() throws CommandException {
+        try {
+            model.updateFilteredPersonListForCell(predicate, cellAddress);
+        } catch (NonExistentCellException nece) {
+            throw new CommandException(String.format(MESSAGE_NON_EXISTENT_CELL, cellAddress));
+        }
+        return new CommandResult(String.format(MESSAGE_SUCCESS, cellAddress));
+    }
+
+    @Override
+    /**
+     * Returns the MIN_SECURITY_LEVEL to caller
+     */
+    public int getMinSecurityLevel() {
+        return MIN_SECURITY_LEVEL;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof ListCellCommand // instanceof handles nulls
+                && this.predicate.equals(((ListCellCommand) other).predicate)); // state check
     }
 }
 ```
@@ -303,6 +413,10 @@ public class AddCellCommandParser implements Parser<AddCellCommand> {
         case DeleteCellCommand.COMMAND_WORD:
         case DeleteCellCommand.COMMAND_ALIAS:
             return new DeleteCellCommandParser().parse(arguments);
+
+        case ListCellCommand.COMMAND_WORD:
+        case ListCellCommand.COMMAND_ALIAS:
+            return new ListCellCommandParser().parse(arguments);
 ```
 ###### \java\seedu\address\logic\parser\DeleteCellCommandParser.java
 ``` java
@@ -336,11 +450,41 @@ public class DeleteCellCommandParser implements Parser<DeleteCellCommand> {
     }
 }
 ```
+###### \java\seedu\address\logic\parser\ListCellCommandParser.java
+``` java
+package seedu.address.logic.parser;
+
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+
+import seedu.address.logic.commands.ListCellCommand;
+import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.AddressContainsCellPredicate;
+
+/**
+ * Parses the given input and gives a new ListCellCommand object.
+ */
+public class ListCellCommandParser implements Parser<ListCellCommand> {
+    /**
+     * Parses the given {@code String} of arguments in the context of ListCellCommand
+     * and returns a ListCellCommand object for execution
+     * @throws ParseException if the user input does not conform the expected format
+     */
+
+    @Override
+    public ListCellCommand parse(String args) throws ParseException {
+        args = args.trim();
+        if (args.matches("\\d+-\\d+")) {
+            return new ListCellCommand(new AddressContainsCellPredicate(args), args);
+        } else {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCellCommand.MESSAGE_USAGE));
+        }
+    }
+}
+```
 ###### \java\seedu\address\model\AddressBook.java
 ``` java
             if (key.getIsInCell() == true) {
-                String cellAddress = key.getAddress().toString();
-                cellAddress = cellAddress.substring(0, cellAddress.length() - 13);
+                String cellAddress = key.getCellAddress().toString();
                 cells.deletePrisonerFromCell(key, cellAddress);
             }
 ```
@@ -379,8 +523,17 @@ public class DeleteCellCommandParser implements Parser<DeleteCellCommand> {
         } else {
             Person updatedPrisoner = new Person(prisoner, true, cellAddress);
             updatePrisoner(prisoner, updatedPrisoner);
-            cells.addPrisonerToCell(updatedPrisoner, cellAddress);
+            addPrisonerToCellPermitted(updatedPrisoner, cellAddress);
         }
+    }
+
+    /**
+     * Adding prisoner to cellmap once exceptions cleared
+     * @param prisoner is the correct person without requiring editting
+     * @param cellAddress is the String corresponding to the cell shown on map
+     */
+    public void addPrisonerToCellPermitted(Person prisoner, String cellAddress) {
+        cells.addPrisonerToCell(prisoner, cellAddress);
     }
 
     /**
@@ -405,6 +558,7 @@ public class DeleteCellCommandParser implements Parser<DeleteCellCommand> {
                 + cells.getCellList() + users.getUserList();
         // TODO: refine later
     }
+
 ```
 ###### \java\seedu\address\model\AddressBook.java
 ``` java
@@ -606,6 +760,15 @@ public class CellMap {
     }
 
     /**
+     * Sets new edited person to original cell, target must be imprisoned
+     */
+    public void setPrisonerToCell(Person target, Person updatedPrisoner) {
+        String cellAddress = target.getCellAddress().toString();
+        deletePrisonerFromCell(target, cellAddress);
+        addPrisonerToCell(updatedPrisoner, cellAddress);
+    }
+
+    /**
      * For storage purposes
      */
     public ObservableList<Cell> getCellList() {
@@ -733,15 +896,26 @@ public class NotPrisonerException extends IllegalValueException {
             throws FullCellException, NonExistentCellException,
             NotPrisonerException, AlreadyInCellException;
 
-    /** Deletes given prisoner from a cell from undo command*/
-    void deletePrisonerFromCell(Person prisoner, String cellAddress);
-
     /**Deletes given prisoner from a cell from DeleteCellCommand */
     void deletePrisonerFromCell(Person prisoner) throws PersonNotFoundException, NotImprisonedException;
 
+    /**Adds given prisoner back into a cell from undo command */
+    void addPrisonerToCellFromUndo(Person prisoner, String cellAddress);
+
+    /** Deletes given prisoner from a cell from undo command*/
+    void deletePrisonerFromCellFromUndo(Person prisoner, String cellAddress);
+
+    /** Updates given prisoner who changed from undo command*/
+    void updatePrisonerFromUndo(Person changed, Person original);
 ```
 ###### \java\seedu\address\model\ModelManager.java
 ``` java
+    @Override
+    public void updatePrisonerFromUndo(Person changed, Person original) {
+        addressBook.updatePrisonerFromUndo(changed, original);
+        indicateAddressBookChanged();
+    }
+
     @Override
     public void addPrisonerToCell(Person prisoner, String cellAddress)
             throws FullCellException, NonExistentCellException,
@@ -749,14 +923,6 @@ public class NotPrisonerException extends IllegalValueException {
         requireAllNonNull(prisoner, cellAddress);
         addressBook.addPrisonerToCell(cellAddress, prisoner);
         indicateAddressBookChanged();
-    }
-
-    /* this is for undo command */
-    @Override
-    public void deletePrisonerFromCell(Person prisoner, String cellAddress) {
-        requireAllNonNull(prisoner, cellAddress);
-        Person updatedPrisoner = new Person(prisoner, true, cellAddress);
-        addressBook.deletePrisonerFromCell(updatedPrisoner, cellAddress);
     }
 
     /* this is for delete cell command */
@@ -778,6 +944,90 @@ public class NotPrisonerException extends IllegalValueException {
         }
         indicateAddressBookChanged();
     }
+
+    /* this is to undo add prisoner to cell */
+    @Override
+    public void deletePrisonerFromCellFromUndo(Person prisoner, String cellAddress) {
+        requireAllNonNull(prisoner, cellAddress);
+        Person updatedPrisoner = new Person(prisoner, true, cellAddress);
+        addressBook.deletePrisonerFromCell(updatedPrisoner, cellAddress);
+        indicateAddressBookChanged();
+    }
+
+    /* this is to undo deleting a person from prison */
+    @Override
+    public void addPrisonerToCellFromUndo(Person prisoner, String cellAddress) {
+        requireAllNonNull(prisoner, cellAddress);
+        addressBook.addPrisonerToCellPermitted(prisoner, cellAddress);
+        indicateAddressBookChanged();
+    }
+```
+###### \java\seedu\address\model\ModelManager.java
+``` java
+    @Override
+    public void updateFilteredPersonListForCell(Predicate<Person> predicate, String cellAddress)
+            throws NonExistentCellException {
+        requireNonNull(predicate);
+        requireNonNull(cellAddress);
+        if (Cell.isValidCellAddress(cellAddress)) {
+            filteredPersons.setPredicate(predicate);
+        } else {
+            throw new NonExistentCellException();
+        }
+    }
+
+    @Override
+    public String toString() {
+        return filteredPersons.toString();
+    }
+
+}
+```
+###### \java\seedu\address\model\person\AddressContainsCellPredicate.java
+``` java
+package seedu.address.model.person;
+
+import java.util.function.Predicate;
+
+/**
+ * Tests that the person is in the cell
+ */
+public class AddressContainsCellPredicate implements Predicate<Person> {
+    private final String cellAddress;
+
+    public AddressContainsCellPredicate(String cellAddress) {
+        this.cellAddress = cellAddress;
+    }
+
+    @Override
+    public boolean test(Person person) {
+        if (person.getIsInCell()) {
+            if (person.getCellAddress().toString().equals(cellAddress)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof AddressContainsCellPredicate // instanceof handles nulls
+                && this.cellAddress.equals(((AddressContainsCellPredicate) other).cellAddress)); // state check
+    }
+}
+```
+###### \java\seedu\address\model\person\Person.java
+``` java
+    //only called if prisoner isInCell
+    public Address getCellAddress() {
+        assert(isInCell);
+        String cellAddress = address.value.substring(0, address.value.indexOf("[") - 1);
+        return new Address(cellAddress);
+    }
 ```
 ###### \java\seedu\address\model\ReadOnlyAddressBook.java
 ``` java
@@ -786,6 +1036,7 @@ public class NotPrisonerException extends IllegalValueException {
      * This list will not contain any duplicate cells.
      */
     ObservableList<Cell> getCellList();
+
 ```
 ###### \java\seedu\address\storage\XmlAdaptedCell.java
 ``` java
@@ -878,6 +1129,11 @@ public class XmlAdaptedCell {
     }
 }
 ```
+###### \java\seedu\address\ui\MainWindow.java
+``` java
+        mapPanel = new MapPanel();
+        mapPanelPlaceholder.getChildren().add(mapPanel.getRoot());
+```
 ###### \java\seedu\address\ui\MapPanel.java
 ``` java
 package seedu.address.ui;
@@ -886,6 +1142,7 @@ import java.util.logging.Logger;
 
 import com.google.common.eventbus.Subscribe;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -893,6 +1150,7 @@ import javafx.scene.layout.Region;
 
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
+import seedu.address.commons.events.ui.HideMapEvent;
 import seedu.address.model.cell.Cell;
 
 
@@ -936,40 +1194,54 @@ public class MapPanel extends UiPart<Region> {
     @FXML
     private Label cellAddress35;
 
-    public MapPanel(ObservableList<Cell> cellList) {
+    public MapPanel() {
         super(FXML);
-        setConnections(cellList);
         registerAsAnEventHandler(this);
     }
 
-    private void setConnections(ObservableList<Cell> cellList) {
-        cellAddress11.setText(Integer.toString(cellList.get(0).getNumberOfPrisoners()));
-        cellAddress12.setText(Integer.toString(cellList.get(1).getNumberOfPrisoners()));
-        cellAddress13.setText(Integer.toString(cellList.get(2).getNumberOfPrisoners()));
-        cellAddress14.setText(Integer.toString(cellList.get(3).getNumberOfPrisoners()));
-        cellAddress15.setText(Integer.toString(cellList.get(4).getNumberOfPrisoners()));
-        cellAddress21.setText(Integer.toString(cellList.get(5).getNumberOfPrisoners()));
-        cellAddress22.setText(Integer.toString(cellList.get(6).getNumberOfPrisoners()));
-        cellAddress23.setText(Integer.toString(cellList.get(7).getNumberOfPrisoners()));
-        cellAddress24.setText(Integer.toString(cellList.get(8).getNumberOfPrisoners()));
-        cellAddress25.setText(Integer.toString(cellList.get(9).getNumberOfPrisoners()));
-        cellAddress31.setText(Integer.toString(cellList.get(10).getNumberOfPrisoners()));
-        cellAddress32.setText(Integer.toString(cellList.get(11).getNumberOfPrisoners()));
-        cellAddress33.setText(Integer.toString(cellList.get(12).getNumberOfPrisoners()));
-        cellAddress34.setText(Integer.toString(cellList.get(13).getNumberOfPrisoners()));
-        cellAddress35.setText(Integer.toString(cellList.get(14).getNumberOfPrisoners()));
+    private void setConnections(ObservableList<String> list) {
+        cellAddress11.setText(list.get(0));
+        cellAddress12.setText(list.get(1));
+        cellAddress13.setText(list.get(2));
+        cellAddress14.setText(list.get(3));
+        cellAddress15.setText(list.get(4));
+        cellAddress21.setText(list.get(5));
+        cellAddress22.setText(list.get(6));
+        cellAddress23.setText(list.get(7));
+        cellAddress24.setText(list.get(8));
+        cellAddress25.setText(list.get(9));
+        cellAddress31.setText(list.get(10));
+        cellAddress32.setText(list.get(11));
+        cellAddress33.setText(list.get(12));
+        cellAddress34.setText(list.get(13));
+        cellAddress35.setText(list.get(14));
+    }
+
+    private void setStrings(ObservableList<Cell> cellList) {
+        ObservableList<String> list = FXCollections.observableArrayList();
+        for (int i = 0; i < 15; i++) {
+            list.add(Integer.toString(cellList.get(i).getNumberOfPrisoners()));
+        }
+        setConnections(list);
     }
 
     @Subscribe
     public void handleAddressBookChangedEvent(AddressBookChangedEvent abce) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(abce, "Changing map"));
-        setConnections(abce.data.getCellList());
+        logger.info(LogsCenter.getEventHandlingLogMessage(abce, "Changing map\n"));
+        setStrings(abce.data.getCellList());
+    }
+
+    @Subscribe
+    private void handleHideMapRequestEvent(HideMapEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        setConnections(event.list);
     }
 
 }
 ```
 ###### \resources\view\MapPanel.fxml
 ``` fxml
+
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -1006,21 +1278,21 @@ public class MapPanel extends UiPart<Region> {
                <Label alignment="CENTER" prefHeight="62.0" prefWidth="176.0" styleClass="label-header" stylesheets="@DarkTheme.css" text="3-4" GridPane.columnIndex="3" GridPane.rowIndex="4" />
                <Label alignment="CENTER" prefHeight="62.0" prefWidth="201.0" styleClass="label-header" stylesheets="@DarkTheme.css" text="2-4" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                <Label alignment="CENTER" prefHeight="62.0" prefWidth="164.0" styleClass="label-header" stylesheets="@DarkTheme.css" text="1-1" />
-               <Label fx:id="cellAddress11" alignment="CENTER" prefHeight="21.0" prefWidth="215.0" styleClass="label-bright" stylesheets="@DarkTheme.css" text="Label" GridPane.rowIndex="1" />
-               <Label fx:id="cellAddress15" alignment="CENTER" prefHeight="21.0" prefWidth="168.0" styleClass="label-bright" stylesheets="@DarkTheme.css" text="Label" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-               <Label fx:id="cellAddress14" alignment="CENTER" prefHeight="21.0" prefWidth="159.0" styleClass="label-bright" stylesheets="@DarkTheme.css" text="Label" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-               <Label fx:id="cellAddress23" alignment="CENTER" prefHeight="21.0" prefWidth="187.0" styleClass="label-bright" stylesheets="@DarkTheme.css" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-               <Label fx:id="cellAddress22" alignment="CENTER" prefHeight="21.0" prefWidth="163.0" styleClass="label-bright" stylesheets="@DarkTheme.css" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-               <Label fx:id="cellAddress31" alignment="CENTER" prefHeight="21.0" prefWidth="191.0" styleClass="label-bright" stylesheets="@DarkTheme.css" text="Label" GridPane.rowIndex="5" />
-               <Label fx:id="cellAddress21" alignment="CENTER" prefHeight="21.0" prefWidth="143.0" styleClass="label-bright" stylesheets="@DarkTheme.css" text="Label" GridPane.rowIndex="3" />
-               <Label fx:id="cellAddress13" alignment="CENTER" prefHeight="21.0" prefWidth="173.0" styleClass="label-bright" stylesheets="@DarkTheme.css" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-               <Label fx:id="cellAddress12" alignment="CENTER" prefHeight="21.0" prefWidth="171.0" styleClass="label-bright" stylesheets="@DarkTheme.css" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-               <Label fx:id="cellAddress32" alignment="CENTER" prefHeight="21.0" prefWidth="186.0" styleClass="label-bright" stylesheets="@DarkTheme.css" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-               <Label fx:id="cellAddress25" alignment="CENTER" prefHeight="21.0" prefWidth="256.0" styleClass="label-bright" stylesheets="@DarkTheme.css" text="Label" GridPane.columnIndex="4" GridPane.rowIndex="3" />
-               <Label fx:id="cellAddress24" alignment="CENTER" prefHeight="21.0" prefWidth="185.0" styleClass="label-bright" stylesheets="@DarkTheme.css" text="Label" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-               <Label fx:id="cellAddress35" alignment="CENTER" prefHeight="21.0" prefWidth="212.0" styleClass="label-bright" stylesheets="@DarkTheme.css" text="Label" GridPane.columnIndex="4" GridPane.rowIndex="5" />
-               <Label fx:id="cellAddress34" alignment="CENTER" prefHeight="21.0" prefWidth="201.0" styleClass="label-bright" stylesheets="@DarkTheme.css" text="Label" GridPane.columnIndex="3" GridPane.rowIndex="5" />
-               <Label fx:id="cellAddress33" alignment="CENTER" prefHeight="21.0" prefWidth="167.0" styleClass="label-bright" stylesheets="@DarkTheme.css" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+               <Label fx:id="cellAddress11" alignment="CENTER" prefHeight="21.0" prefWidth="215.0" styleClass="label-bright" stylesheets="@DarkTheme.css" text="Insufficient Access" GridPane.rowIndex="1" />
+               <Label fx:id="cellAddress15" alignment="CENTER" prefHeight="21.0" prefWidth="168.0" styleClass="label-bright" stylesheets="@DarkTheme.css" text="Insufficient Access" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+               <Label fx:id="cellAddress14" alignment="CENTER" prefHeight="21.0" prefWidth="159.0" styleClass="label-bright" stylesheets="@DarkTheme.css" text="Insufficient Access" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+               <Label fx:id="cellAddress23" alignment="CENTER" prefHeight="21.0" prefWidth="187.0" styleClass="label-bright" stylesheets="@DarkTheme.css" text="Insufficient Access" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+               <Label fx:id="cellAddress22" alignment="CENTER" prefHeight="21.0" prefWidth="163.0" styleClass="label-bright" stylesheets="@DarkTheme.css" text="Insufficient Access" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+               <Label fx:id="cellAddress31" alignment="CENTER" prefHeight="21.0" prefWidth="191.0" styleClass="label-bright" stylesheets="@DarkTheme.css" text="Insufficient Access" GridPane.rowIndex="5" />
+               <Label fx:id="cellAddress21" alignment="CENTER" prefHeight="21.0" prefWidth="143.0" styleClass="label-bright" stylesheets="@DarkTheme.css" text="Insufficient Access" GridPane.rowIndex="3" />
+               <Label fx:id="cellAddress13" alignment="CENTER" prefHeight="21.0" prefWidth="173.0" styleClass="label-bright" stylesheets="@DarkTheme.css" text="Insufficient Access" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+               <Label fx:id="cellAddress12" alignment="CENTER" prefHeight="21.0" prefWidth="171.0" styleClass="label-bright" stylesheets="@DarkTheme.css" text="Insufficient Access" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+               <Label fx:id="cellAddress32" alignment="CENTER" prefHeight="21.0" prefWidth="186.0" styleClass="label-bright" stylesheets="@DarkTheme.css" text="Insufficient Access" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+               <Label fx:id="cellAddress25" alignment="CENTER" prefHeight="21.0" prefWidth="256.0" styleClass="label-bright" stylesheets="@DarkTheme.css" text="Insufficient Access" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+               <Label fx:id="cellAddress24" alignment="CENTER" prefHeight="21.0" prefWidth="185.0" styleClass="label-bright" stylesheets="@DarkTheme.css" text="Insufficient Access" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+               <Label fx:id="cellAddress35" alignment="CENTER" prefHeight="21.0" prefWidth="212.0" styleClass="label-bright" stylesheets="@DarkTheme.css" text="Insufficient Access" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+               <Label fx:id="cellAddress34" alignment="CENTER" prefHeight="21.0" prefWidth="201.0" styleClass="label-bright" stylesheets="@DarkTheme.css" text="Insufficient Access" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+               <Label fx:id="cellAddress33" alignment="CENTER" prefHeight="21.0" prefWidth="167.0" styleClass="label-bright" stylesheets="@DarkTheme.css" text="Insufficient Access" GridPane.columnIndex="2" GridPane.rowIndex="5" />
       <Label alignment="CENTER" prefHeight="62.0" prefWidth="221.0" styleClass="label-header" stylesheets="@DarkTheme.css" text="3-2" GridPane.columnIndex="1" GridPane.rowIndex="4" />
            </children>
        </GridPane>

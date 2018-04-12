@@ -7,9 +7,10 @@ import static seedu.address.logic.commands.AddCellCommand.MESSAGE_FULL_CELL;
 import static seedu.address.logic.commands.AddCellCommand.MESSAGE_NOT_PRISONER;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
+import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import static seedu.address.testutil.TypicalCells.FULL_CELL;
+import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
-import static seedu.address.testutil.TypicalIndexes.INDEX_THIRD_PERSON;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import org.junit.Rule;
@@ -32,15 +33,20 @@ public class AddCellCommandTest {
 
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
+    public AddCellCommandTest() {
+        model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+    }
+
     @Test
     public void execute_validIndexUnfilteredListValidCellAddress_success() throws Exception {
-        Person prisonerToAdd = model.getFilteredPersonList().get(INDEX_THIRD_PERSON.getZeroBased());
+        Person prisonerToAdd = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         String cellAddress = "2-5";
-        AddCellCommand addCellCommand = prepareCommand(INDEX_THIRD_PERSON, cellAddress);
+        AddCellCommand addCellCommand = prepareCommand(INDEX_FIRST_PERSON, cellAddress);
 
         String expectedMessage = String.format(AddCellCommand.MESSAGE_ADD_CELL_SUCCESS,
                 prisonerToAdd.getName().toString(), cellAddress);
         ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        expectedModel.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         expectedModel.addPrisonerToCell(prisonerToAdd, cellAddress);
 
         assertCommandSuccess(addCellCommand, model, expectedMessage, expectedModel);
@@ -59,9 +65,9 @@ public class AddCellCommandTest {
 
     @Test
     public void execute_validIndexUnfilteredListInvalidCellAddress_success() {
-        Person prisonerToAdd = model.getFilteredPersonList().get(INDEX_THIRD_PERSON.getZeroBased());
+        Person prisonerToAdd = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         String cellAddress = "0-0";
-        AddCellCommand addCellCommand = prepareCommand(INDEX_THIRD_PERSON, cellAddress);
+        AddCellCommand addCellCommand = prepareCommand(INDEX_FIRST_PERSON, cellAddress);
 
         assertCommandFailure(addCellCommand, model, String.format(AddCellCommand.MESSAGE_NON_EXISTENT_CELL,
                 cellAddress, getMapString()));
@@ -70,9 +76,9 @@ public class AddCellCommandTest {
 
     @Test
     public void execute_fullCell_failure() {
-        Person prisonerToAdd = model.getFilteredPersonList().get(INDEX_THIRD_PERSON.getZeroBased());
+        Person prisonerToAdd = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         String cellAddress = FULL_CELL.getCellAddress();
-        AddCellCommand addCellCommand = prepareCommand(INDEX_THIRD_PERSON, cellAddress);
+        AddCellCommand addCellCommand = prepareCommand(INDEX_FIRST_PERSON, cellAddress);
 
         assertCommandFailure(addCellCommand, model,
                 String.format(MESSAGE_FULL_CELL, cellAddress, getMapString()));
@@ -113,6 +119,46 @@ public class AddCellCommandTest {
         return new ShowCellsCommand().getMapString(model.getAddressBook().getCellList().toString());
     }
 }
+```
+###### \java\seedu\address\logic\commands\AddCommandTest.java
+``` java
+        @Override
+        public void addPrisonerToCell(Person prisoner, String cellAddress) {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void deletePrisonerFromCell(Person prisoner) throws PersonNotFoundException, NotImprisonedException {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void deletePrisonerFromCellFromUndo(Person prisoner, String cellAddress) {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void addPrisonerToCellFromUndo(Person prisoner, String cellAddress) {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void updatePrisonerFromUndo(Person orignal, Person changed) {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void updateFilteredPersonListForCell(Predicate <Person> predicate, String cellAddress) {
+            fail("This method should not be called.");
+        }
+```
+###### \java\seedu\address\logic\commands\UndoableCommandTest.java
+``` java
+    @Before
+    public void setUp() {
+        model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        expectedModel.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+    }
 ```
 ###### \java\seedu\address\logic\parser\AddCellCommandParserTest.java
 ``` java
@@ -227,7 +273,7 @@ public class CellBuilder {
 ``` java
 package seedu.address.testutil;
 
-import static seedu.address.testutil.TypicalPersons.ALICE;
+import static seedu.address.testutil.TypicalPersons.CARL;
 import static seedu.address.testutil.TypicalPersons.ELLE;
 import static seedu.address.testutil.TypicalPersons.GEORGE;
 
@@ -242,7 +288,7 @@ import seedu.address.model.cell.Cell;
  */
 public class TypicalCells {
     public static final Cell EMPTY_CELL = new CellBuilder().build();
-    public static final Cell CELL_WITH_PRISONER = new CellBuilder().withCellAddress("1-2").withPrisoner(ALICE).build();
+    public static final Cell CELL_WITH_PRISONER = new CellBuilder().withCellAddress("1-2").withPrisoner(CARL).build();
     public static final Cell FULL_CELL = new CellBuilder().withCellAddress("1-3").withPrisoner(ELLE)
             .withPrisoner(GEORGE).build();
     public static final Cell LAST_CELL_OF_ROW = new CellBuilder().withCellAddress("1-5").withIsLast(true).build();
@@ -250,6 +296,32 @@ public class TypicalCells {
 
     public static List<Cell> getTypicalCells() {
         return new ArrayList<>(Arrays.asList(EMPTY_CELL, LAST_CELL_OF_ROW, CELL_WITH_PRISONER, FULL_CELL));
+    }
+}
+```
+###### \java\systemtests\AddressBookSystemTest.java
+``` java
+    /**
+     * Asserts that the total number of people and sync status in the status bar was changed to the timing of
+     * {@code ClockRule#getInjectedClock()}, while the save location remains the same.
+     */
+    protected void assertStatusBarChangedExceptSaveLocation(int expectedNumberOfPeople) {
+        StatusBarFooterHandle handle = getStatusBarFooter();
+        String timestamp = new Date(clockRule.getInjectedClock().millis()).toString();
+        String expectedSyncStatus = String.format(SYNC_STATUS_UPDATED, timestamp);
+        String expectedNumberOfPeopleStatus = expectedNumberOfPeople + " person(s) total.";
+        assertEquals(expectedSyncStatus, handle.getSyncStatus());
+        assertEquals(expectedNumberOfPeopleStatus, handle.getNumberOfPeopleStatus());
+        assertFalse(handle.isSaveLocationChanged());
+    }
+```
+###### \java\systemtests\AddressBookSystemTest.java
+``` java
+    /**
+     * Returns a new model that starts with unfiltered list
+     */
+    protected Model getNewModel() {
+        return testApp.getNewModel();
     }
 }
 ```

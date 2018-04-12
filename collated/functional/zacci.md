@@ -14,7 +14,7 @@ import seedu.address.model.user.exceptions.UserAlreadyExistsException;
 /**
  * Adds a new user to the PrisonBook
  */
-public class AddUserCommand extends UndoableCommand {
+public class AddUserCommand extends Command {
     public static final String COMMAND_WORD = "adduser";
     public static final String COMMAND_ALIAS = "au";
     public static final int MIN_SECURITY_LEVEL = 3;
@@ -54,7 +54,7 @@ public class AddUserCommand extends UndoableCommand {
     }
 
     @Override
-    public CommandResult executeUndoableCommand() throws CommandException {
+    public CommandResult execute() throws CommandException {
         requireNonNull(model);
         requireNonNull(userToAdd);
         try {
@@ -89,11 +89,16 @@ public class CheckStatusCommand extends Command {
 
     public static final String COMMAND_WORD = "status";
 
+    public static final String MESSAGE_USER_NOT_LOGGED_IN = "You are not currently logged in";
+
     /**
      * Checks the status of current session
      * @return details of the status
      */
     public CommandResult execute() {
+        if (!model.checkIsLoggedIn()) {
+            return new CommandResult(MESSAGE_USER_NOT_LOGGED_IN);
+        }
         String details = (model.getSessionDetails());
         return new CommandResult(details);
     }
@@ -109,9 +114,76 @@ public class CheckStatusCommand extends Command {
         return MIN_SECURITY_LEVEL;
     }
 ```
+###### \java\seedu\address\logic\commands\DeleteUserCommand.java
+``` java
+package seedu.address.logic.commands;
+
+import static java.util.Objects.requireNonNull;
+
+import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.model.user.exceptions.CannotDeleteSelfException;
+import seedu.address.model.user.exceptions.MustHaveAtLeastOneSecurityLevelThreeUserException;
+import seedu.address.model.user.exceptions.NotEnoughAuthorityToDeleteException;
+import seedu.address.model.user.exceptions.UserDoesNotExistException;
+
+/**
+ * Deletes a user from the PrisonBook.
+ */
+public class DeleteUserCommand extends UndoableCommand {
+    public static final String COMMAND_WORD = "deleteuser";
+    public static final String COMMAND_ALIAS = "du";
+
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Deletes specified user.\n"
+            + "Parameters: user/USERNAME_TO_BE_DELETED\n"
+            + "Example: " + COMMAND_WORD + " user/prisonguard";
+
+    public static final String MESSAGE_DELETE_CELL_SUCCESS = "User has been successfully deleted";
+
+    private String userToDelete;
+
+    /**
+     * Creates a deleteUserCommand object
+     * @param userToDelete username to be deleted
+     */
+    public DeleteUserCommand(String userToDelete) {
+        this.userToDelete = userToDelete;
+    }
+
+    @Override
+    public CommandResult executeUndoableCommand() throws CommandException {
+        requireNonNull(userToDelete);
+        try {
+            model.deleteUser(userToDelete);
+        } catch (CannotDeleteSelfException cdse) {
+            throw new CommandException(cdse.getMessage());
+        } catch (MustHaveAtLeastOneSecurityLevelThreeUserException mhalosltue) {
+            throw new CommandException(mhalosltue.getMessage());
+        } catch (UserDoesNotExistException udnee) {
+            throw new CommandException(udnee.getMessage());
+        } catch (NotEnoughAuthorityToDeleteException neatde) {
+            throw new CommandException(neatde.getMessage());
+        }
+
+        return new CommandResult(MESSAGE_DELETE_CELL_SUCCESS);
+    }
+
+    @Override
+    protected void preprocessUndoableCommand() {
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof DeleteUserCommand // instanceof handles nulls
+                && this.userToDelete.equals(((DeleteUserCommand) other).userToDelete)); // state check
+    }
+}
+```
 ###### \java\seedu\address\logic\commands\LoginCommand.java
 ``` java
 package seedu.address.logic.commands;
+
+import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 /**
  * Attempts to log in user with given Username and Password
@@ -122,6 +194,8 @@ public class LoginCommand extends Command {
 
     public static final String MESSAGE_LOGIN_FAILURE = "Login failed. Username and/or Password entered incorrectly.";
     public static final String MESSAGE_LOGIN_SUCCESS = "Login Success";
+    public static final String MESSAGE_ALREADY_LOGGED_IN = "You are already logged in. Please logout before "
+            + "attempting to login with another account.";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Logs in with your username and password to gain "
             + "access to the Prison Book.\n"
@@ -138,9 +212,13 @@ public class LoginCommand extends Command {
 
     @Override
     public CommandResult execute() {
+        if (model.checkIsLoggedIn()) {
+            return new CommandResult(MESSAGE_ALREADY_LOGGED_IN);
+        }
         if (!model.attemptLogin(username, password)) {
             return new CommandResult(MESSAGE_LOGIN_FAILURE);
         } else {
+            model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
             return new CommandResult(MESSAGE_LOGIN_SUCCESS);
         }
     }
@@ -151,6 +229,12 @@ public class LoginCommand extends Command {
 ``` java
 package seedu.address.logic.commands;
 
+import java.util.ArrayList;
+
+import seedu.address.commons.core.EventsCenter;
+import seedu.address.commons.events.ui.HideMapEvent;
+import seedu.address.model.person.NameContainsKeywordsPredicate;
+
 /**
  * Logs the user out of the current session
  */
@@ -159,11 +243,17 @@ public class LogoutCommand extends Command {
     public static final String COMMAND_WORD = "logout";
 
     public static final String MESSAGE_SUCCESS = "Successfully logged out";
+    public static final String MESSAGE_USER_NOT_LOGGED_IN = "You are not currently logged in";
 
     @Override
     public CommandResult execute() {
         undoRedoStack.clearStack();
+        if (!model.checkIsLoggedIn()) {
+            return new CommandResult(MESSAGE_USER_NOT_LOGGED_IN);
+        }
         model.logout();
+        model.updateFilteredPersonList(new NameContainsKeywordsPredicate(new ArrayList<String>()));
+        EventsCenter.getInstance().post(new HideMapEvent());
         return new CommandResult(MESSAGE_SUCCESS);
     }
 }
@@ -221,6 +311,9 @@ public class LogoutCommand extends Command {
 
         case AddUserCommand.COMMAND_WORD:
             return new AddUserCommandParser().parse(arguments);
+
+        case DeleteUserCommand.COMMAND_WORD:
+            return new DeleteUserCommandParser().parse(arguments);
 ```
 ###### \java\seedu\address\logic\parser\AddUserCommandParser.java
 ``` java
@@ -357,6 +450,9 @@ public class LoginCommandParser implements Parser<LoginCommand> {
     public static String parseUsername(String username) throws IllegalValueException {
         requireNonNull(username);
         String trimmedUsername = username.trim();
+        if (!trimmedUsername.matches("[\\p{Alnum}]*")) {
+            throw new IllegalValueException("Username can only consist of alphanumeric characters");
+        }
         return trimmedUsername;
     }
 
@@ -378,6 +474,10 @@ public class LoginCommandParser implements Parser<LoginCommand> {
     public static String parsePassword(String password) throws IllegalValueException {
         requireNonNull(password);
         String trimmedPassword = password.trim();
+
+        if (!trimmedPassword.matches("[\\p{Alnum}]*")) {
+            throw new IllegalValueException("Password can only consist of alphanumeric characters");
+        }
         return trimmedPassword;
     }
 
@@ -396,9 +496,14 @@ public class LoginCommandParser implements Parser<LoginCommand> {
      *
      * @throws IllegalValueException if the given {@code securityLevel} is invalid.
      */
-    public static int parseSecurityLevel(String securityLevel) throws NumberFormatException {
+    public static int parseSecurityLevel(String securityLevel) throws NumberFormatException, IllegalValueException {
         requireNonNull(securityLevel);
         String trimmedSecurityLevel = securityLevel.trim();
+
+        if (!trimmedSecurityLevel.matches("[123]")) {
+            throw new IllegalValueException("Security Level can only take integer values 1, 2 or 3");
+        }
+
         int intSecurityLevel = Integer.parseInt(trimmedSecurityLevel);
         return intSecurityLevel;
     }
@@ -408,7 +513,8 @@ public class LoginCommandParser implements Parser<LoginCommand> {
      * if {@code securityLevel} is present.
      * See header comment of this class regarding the use of {@code Optional} parameters.
      */
-    public static int parseSecurityLevel (Optional<String> password) throws NumberFormatException {
+    public static int parseSecurityLevel (Optional<String> password)
+            throws NumberFormatException, IllegalValueException {
         requireNonNull(password);
         return password.isPresent() ? parseSecurityLevel(password.get()) : -1;
     }
@@ -421,7 +527,7 @@ public class LoginCommandParser implements Parser<LoginCommand> {
      *
      * @param u is the user to add to the HashMap
      */
-    public void addUser(User u) {
+    public void addUser(User u) throws UserAlreadyExistsException {
         users.addUser(u);
     }
 
@@ -441,11 +547,20 @@ public class LoginCommandParser implements Parser<LoginCommand> {
         this.users.setUsers(users);
     }
 
+    public void deleteUser(String userToDelete, String deleterUsername) throws CannotDeleteSelfException,
+            MustHaveAtLeastOneSecurityLevelThreeUserException, UserDoesNotExistException,
+            NotEnoughAuthorityToDeleteException {
+        users.deleteUser(userToDelete, deleterUsername);
+    }
+
 ```
 ###### \java\seedu\address\model\Model.java
 ``` java
     /** Returns the session */
     Session getSession();
+
+    /** Checks if there is a user logged in to the current session*/
+    boolean checkIsLoggedIn();
 
     /** Clears existing session*/
     void logout();
@@ -464,6 +579,10 @@ public class LoginCommandParser implements Parser<LoginCommand> {
 
     /** Adds given user to the PrisonBook */
     void addUser(User user) throws UserAlreadyExistsException;
+
+    /** Adds given user to the PrisonBook */
+    void deleteUser(String user) throws CannotDeleteSelfException, MustHaveAtLeastOneSecurityLevelThreeUserException,
+            UserDoesNotExistException, NotEnoughAuthorityToDeleteException;
 ```
 ###### \java\seedu\address\model\ModelManager.java
 ``` java
@@ -479,6 +598,11 @@ public class LoginCommandParser implements Parser<LoginCommand> {
     }
 
     @Override
+    public boolean checkIsLoggedIn() {
+        return session.checkIsLoggedIn();
+    }
+
+    @Override
     public void login(String username, int securityLevel) {
         session.login(username, securityLevel);
         logger.info("User logged in with: u/" + username + " slevel/" + securityLevel);
@@ -491,6 +615,7 @@ public class LoginCommandParser implements Parser<LoginCommand> {
             return false;
         } else {
             login(username, securityLevel);
+            indicateAddressBookChanged();
             return true;
         }
     }
@@ -506,8 +631,16 @@ public class LoginCommandParser implements Parser<LoginCommand> {
     }
 
     @Override
-    public void addUser(User userToAdd) {
+    public void addUser(User userToAdd) throws UserAlreadyExistsException {
         addressBook.addUser(userToAdd);
+        indicateAddressBookChanged();
+    }
+
+    @Override
+    public void deleteUser (String userToDelete) throws CannotDeleteSelfException,
+            MustHaveAtLeastOneSecurityLevelThreeUserException, UserDoesNotExistException,
+            NotEnoughAuthorityToDeleteException {
+        addressBook.deleteUser(userToDelete, session.getUsername());
         indicateAddressBookChanged();
     }
 ```
@@ -530,6 +663,7 @@ public class Session {
 
     private String username;
     private int securityLevel;
+    private boolean isLoggedIn = false;
 
     public Session() {
         resetSession();
@@ -541,6 +675,7 @@ public class Session {
     public void login(String username, int securityLevel) {
         this.username = username;
         this.securityLevel = securityLevel;
+        this.isLoggedIn = true;
     }
 
     public void logout() {
@@ -550,6 +685,7 @@ public class Session {
     private void resetSession() {
         username = "";
         securityLevel = 0;
+        isLoggedIn = false;
     }
 
     public String getUsername() {
@@ -558,6 +694,10 @@ public class Session {
 
     public int getSecurityLevel() {
         return securityLevel;
+    }
+
+    public boolean checkIsLoggedIn () {
+        return isLoggedIn;
     }
 
     @Override
@@ -600,8 +740,15 @@ package seedu.address.model.user;
 
 import java.util.HashMap;
 
+import java.util.Iterator;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import seedu.address.model.user.exceptions.CannotDeleteSelfException;
+import seedu.address.model.user.exceptions.MustHaveAtLeastOneSecurityLevelThreeUserException;
+import seedu.address.model.user.exceptions.NotEnoughAuthorityToDeleteException;
+import seedu.address.model.user.exceptions.UserAlreadyExistsException;
+import seedu.address.model.user.exceptions.UserDoesNotExistException;
 
 /**
  * Contains the users of the PrisonBook
@@ -611,6 +758,8 @@ public class UniqueUserMap {
     private final ObservableList<User> internalList = FXCollections.observableArrayList();
 
     private HashMap<String, User> userMap;
+
+    private int numberOfSecurityLevelThree = 0;
 
     private final User defaultUser1 = new User("prisonguard", "password1", 1);
     private final User defaultUser2 = new User("prisonleader", "password2", 2);
@@ -625,9 +774,6 @@ public class UniqueUserMap {
      */
     public void resetData() {
         userMap = new HashMap<String, User>();
-        addUser(defaultUser1);
-        addUser(defaultUser2);
-        addUser(defaultUser3);
     }
 
     /**
@@ -667,19 +813,57 @@ public class UniqueUserMap {
      * @param user must be valid User
      * @return true if added successfully and false if failed to add
      */
-    public boolean addUser(User user) {
-        if (!contains(user.getUsername())) {
+    public boolean addUser(User user) throws UserAlreadyExistsException {
+        if (contains(user.getUsername())) {
+            throw new UserAlreadyExistsException();
+        } else {
             userMap.put(user.getUsername(), user);
             internalList.add(user);
+            if (user.getSecurityLevel() == 3) {
+                numberOfSecurityLevelThree++;
+            }
             return true;
+        }
+    }
+
+    /**
+     * Delete user from the userMap and the internalList
+     * @param userToDelete must be an existing user
+     * @return true if added successfully and false if failed to add
+     */
+    public boolean deleteUser(String userToDelete, String deleterUsername) throws UserDoesNotExistException,
+            NotEnoughAuthorityToDeleteException, CannotDeleteSelfException,
+            MustHaveAtLeastOneSecurityLevelThreeUserException {
+        int deleterSecurityLevel = userMap.get(deleterUsername).getSecurityLevel();
+        if (!contains(userToDelete)) {
+            throw new UserDoesNotExistException();
+        } else if (userToDelete.equals(deleterUsername)) {
+            throw new CannotDeleteSelfException();
+        } else if (deleterSecurityLevel != 3 && userMap.get(userToDelete).getSecurityLevel() >= deleterSecurityLevel) {
+            throw new NotEnoughAuthorityToDeleteException();
+        } else if (userMap.get(userToDelete).getSecurityLevel() == 3 && numberOfSecurityLevelThree <= 1) {
+            throw new MustHaveAtLeastOneSecurityLevelThreeUserException();
         } else {
-            return false;
+            userMap.remove(userToDelete);
+            Iterator<User> iter = internalList.listIterator();
+            for (int i = 0; i < internalList.size(); i++) {
+                User curr = iter.next();
+                if (userToDelete.equals(curr.getUsername())) {
+                    iter.remove();
+                    break;
+                }
+            }
+            return true;
         }
     }
 
     public void setUsers(ObservableList<User> users) {
         for (User u: users) {
-            addUser(u);
+            try {
+                addUser(u);
+            } catch (UserAlreadyExistsException e) {
+                int dummy = 0;
+            }
         }
         internalList.clear();
         internalList.setAll(users);
