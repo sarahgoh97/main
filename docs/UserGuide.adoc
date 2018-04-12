@@ -123,7 +123,7 @@ Examples:
 === Delete a user: `deleteuser` [1] (v1.5rc)
 
 Deletes a user from the PrisonBook +
-Format: `deleteuser user/NEW_USERNAME`
+Format: `deleteuser user/USERNAME`
 
 You can only delete users which have a lower security level than yourself.
 
