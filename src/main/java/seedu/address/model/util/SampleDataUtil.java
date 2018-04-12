@@ -86,8 +86,8 @@ public class SampleDataUtil {
                 new Address("11 Chancery Lane #01-04, 309502, Singapore"), new Role("p"),
                 getTagSet("Speaks French")),
             new Person(new Name("Sarah Goh"), new Phone("90288173"), new Email("anluo@example.com"),
-                new Address("Tung Ann Association Building 141 Cecil Street #03-02/04 069541, Singapore"), new Role("p"),
-                getTagSet())
+                new Address("Tung Ann Association Building 141 Cecil Street #03-02/04 069541, Singapore"),
+                new Role("p"), getTagSet())
         };
     }
 
