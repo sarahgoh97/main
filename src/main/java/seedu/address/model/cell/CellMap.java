@@ -92,6 +92,15 @@ public class CellMap {
     }
 
     /**
+     * Sets new edited person to original cell, target must be imprisoned
+     */
+    public void setPrisonerToCell(Person target, Person updatedPrisoner) {
+        String cellAddress = target.getCellAddress().toString();
+        deletePrisonerFromCell(target, cellAddress);
+        addPrisonerToCell(updatedPrisoner, cellAddress);
+    }
+
+    /**
      * For storage purposes
      */
     public ObservableList<Cell> getCellList() {
