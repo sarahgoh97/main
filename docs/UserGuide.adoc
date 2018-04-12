@@ -382,41 +382,43 @@ _{explain how the user can enable/disable data encryption}_
 == Command Summary
 
 * Security Level 0: +
-*Check status* : `status` +
-*Exit* : `exit` +
-*Help* : `help` +
-*History* : `history` or `h` +
-*Log in* : `login` +
-*Log out* : `logout` +
-*Undo* : `undo` or `u` +
-*Redo* : `redo` or `r`
+** *Check status* : `status` +
+** *Exit* : `exit` +
+** *Help* : `help` +
+** *History* : `history` or `h` +
+** *Log in* : `login` +
+** *Log out* : `logout` +
+** *Undo* : `undo` or `u` +
+** *Redo* : `redo` or `r`
 
 * Security Level 1: +
-*Calendar* : `calendar` or `cal` +
-*Find* : `find n/NAME_KEYWORD [MORE_KEYWORDS] t/TAG_KEYWORD [MORE_KEYWORDS]` +
+** *Calendar* : `calendar` or `cal` +
+** *Find* : `find n/NAME_KEYWORD [MORE_KEYWORDS] t/TAG_KEYWORD [MORE_KEYWORDS]` +
 e.g. `find n/Meier` +
-*List* : `list` or `l` +
-*List prisoners in a cell* : `listcell CELL` +
+** *List* : `list` or `l` +
+** *List prisoners in a cell* : `listcell CELL` +
 e.g. `listcell 1-1` +
-*Map* : `map` or `m`
+** *Map* : `map` or `m`
 
 * Security Level 2: +
-*Add* : `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS r/ROLE [t/TAG]...` +
+** *Add* : `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS r/ROLE [t/TAG]...` +
 e.g. `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 r/p t/friend t/colleague` +
-*Add prisoner to cell* : `addcell INDEX CELL` +
+** *Add prisoner to cell* : `addcell INDEX CELL` +
 e.g. `addcell 1 1-1` +
-*Delete* : `delete INDEX` +
+** *Delete* : `delete INDEX` +
 e.g. `delete 1` +
-*Delete prisoner from cell* : `deletecell INDEX` +
+** *Delete prisoner from cell* : `deletecell INDEX` +
 e.g. `deletecell 1` +
-*Edit* : `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [r/ROLE] [t/TAG]...` +
-eg. `edit 1 p/91234567 e/johndoe@example.com`
+** *Edit* : `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [r/ROLE] [t/TAG]...` +
+eg. `edit 1 p/91234567 e/johndoe@example.com` +
+** *Delete User*: `deleteuser user/USERNAME_TO_DELETE` +
+eg. deleteuser user/prisonguard1
 
 * Security Level 3: +
-*Add user* : `adduser user/NEW_USERNAME pw/NEW_PASSWORD sl/SECURITY_LEVEL` +
+** *Add user* : `adduser user/NEW_USERNAME pw/NEW_PASSWORD sl/SECURITY_LEVEL` +
 e.g. `adduser user/newuser pw/newpassword sl/1`
-* *Calendar Delete Event* : `calDel EVENTNUMBER` +
-e.g. `calDel 7`
-*Add event to calendar* : `calAdd event/EVENTNAME loc/LOCATION start/STARTDATETIME end/ENDDATETIME` +
+**  *Calendar Delete Event* : `calDel EVENTNUMBER` +
+e.g. `calDel 7` +
+** *Add event to calendar* : `calAdd event/EVENTNAME loc/LOCATION start/STARTDATETIME end/ENDDATETIME` +
 e.g. `calAdd event/IT Skills Training loc/Computer Lab 1 start/2018-06-06 10:00:00 end/2018-06-06 12:00:00` +
 
