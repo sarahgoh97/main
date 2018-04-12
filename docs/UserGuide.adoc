@@ -29,7 +29,7 @@ This app will not work with earlier versions of Java 8.
 +
 .  Download the latest `prisonbook.jar` link:{repoURL}/releases[here].
 .  Copy the file to the folder you want to use as the home folder for your PrisonBook.
-.  Double-click the file to start the app. The GUI should appear in a few seconds.
+.  Double-click the file to start the app. The GUI should appear in a few seconds. Do NOT use command prompt to open the app.
 +
 image::Ui.png[width="790"]
 +
