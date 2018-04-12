@@ -38,6 +38,27 @@
         return successAddedMessage;
     }
 
+    /**
+     * Delete event from the calendar - specifying EventID
+     * @return success code
+     * @throws IOException
+     */
+    public static String delEvent(String eventArrayId) throws IOException {
+
+        String reList = listEvents(); // to regenerate the EventIDs array
+        String successDeletedMessage = "Event successfully deleted.";
+
+        int eventArrayIdInt = Integer.parseInt(eventArrayId) - 1;
+        String eventId = eventIDs.get(eventArrayIdInt);
+
+        // Build a new authorized API client service.
+        com.google.api.services.calendar.Calendar service = getCalendarService();
+
+        service.events().delete("primary", eventId).execute();
+
+        return successDeletedMessage;
+    }
+
 }
 ```
 ###### \java\seedu\address\logic\commands\CalendarAddCommand.java
@@ -160,6 +181,60 @@ public class CalendarCommand extends Command {
 
 }
 ```
+###### \java\seedu\address\logic\commands\CalendarDeleteCommand.java
+``` java
+package seedu.address.logic.commands;
+
+import static java.util.Objects.requireNonNull;
+
+import java.io.IOException;
+
+import seedu.address.Calendar;
+import seedu.address.logic.commands.exceptions.CommandException;
+
+/**
+ * Deletes an event from the Google Calendar.
+ */
+public class CalendarDeleteCommand extends UndoableCommand {
+
+    public static final String COMMAND_WORD = "calDel";
+    public static final String COMMAND_ALIAS = "calD";
+
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Deletes an event from the calendar. \n"
+            + "Parameter: EVENT NUMBER (from the event list in Calendar command)"
+            + "Example: \n" + COMMAND_WORD + " 12\n"
+            + "Deletes the 12th event listed in cal command";
+
+    private final String toDel;
+
+    /**
+     * Creates an CalendarAddCommand to add the specified {@code Event}
+     */
+    public CalendarDeleteCommand(String eventId) {
+        requireNonNull(eventId);
+        toDel = eventId;
+    }
+
+    @Override
+    public CommandResult executeUndoableCommand() throws CommandException {
+        requireNonNull(model);
+        try {
+            String successMessage = new Calendar().delEvent(toDel);
+            return new CommandResult(String.format(successMessage, toDel));
+        } catch (IOException e) {
+            throw new CommandException(e.toString());
+        }
+
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof CalendarDeleteCommand // instanceof handles nulls
+                && toDel.equals(((CalendarDeleteCommand) other).toDel));
+    }
+}
+```
 ###### \java\seedu\address\logic\commands\FindCommand.java
 ``` java
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose names or tags contain any of "
@@ -205,6 +280,10 @@ public class CalendarCommand extends Command {
         case CalendarAddCommand.COMMAND_WORD:
         case CalendarAddCommand.COMMAND_ALIAS:
             return new CalendarAddCommandParser().parse(arguments);
+
+        case CalendarDeleteCommand.COMMAND_WORD:
+        case CalendarDeleteCommand.COMMAND_ALIAS:
+            return new CalendarDeleteCommandParser().parse(arguments);
 ```
 ###### \java\seedu\address\logic\parser\CalendarAddCommandParser.java
 ``` java
@@ -266,6 +345,29 @@ public class CalendarAddCommandParser implements Parser<CalendarAddCommand> {
         return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 
+}
+```
+###### \java\seedu\address\logic\parser\CalendarDeleteCommandParser.java
+``` java
+package seedu.address.logic.parser;
+
+import seedu.address.logic.commands.CalendarDeleteCommand;
+import seedu.address.logic.parser.exceptions.ParseException;
+
+
+/**
+ * Parses input arguments and creates a new CalendarDeleteCommandParser object
+ */
+public class CalendarDeleteCommandParser implements Parser<CalendarDeleteCommand> {
+
+    /**
+     * Parses the given {@code String} of arguments in the context of the CalendarDeleteCommand
+     * and returns the message of whether execution was successful or not.
+     * @throws ParseException if the user input does not conform the expected format
+     */
+    public CalendarDeleteCommand parse(String args) throws ParseException {
+        return new CalendarDeleteCommand(args.trim());
+    }
 }
 ```
 ###### \java\seedu\address\logic\parser\CliSyntax.java
