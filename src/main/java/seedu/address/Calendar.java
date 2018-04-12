@@ -197,7 +197,6 @@ public class Calendar {
      */
     public static String delEvent(String eventArrayId) throws IOException {
 
-        String reList = listEvents(); // to regenerate the EventIDs array
         String successDeletedMessage = "Event successfully deleted.";
 
         int eventArrayIdInt = Integer.parseInt(eventArrayId) - 1;
@@ -207,6 +206,10 @@ public class Calendar {
         com.google.api.services.calendar.Calendar service = getCalendarService();
 
         service.events().delete("primary", eventId).execute();
+
+        eventIDs.clear();
+
+        String reList = listEvents(); // to regenerate the EventIDs array
 
         return successDeletedMessage;
     }
