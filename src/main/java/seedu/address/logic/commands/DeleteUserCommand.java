@@ -15,6 +15,7 @@ import seedu.address.model.user.exceptions.UserDoesNotExistException;
 public class DeleteUserCommand extends UndoableCommand {
     public static final String COMMAND_WORD = "deleteuser";
     public static final String COMMAND_ALIAS = "du";
+    public static final int MIN_SECURITY_LEVEL = 2;
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Deletes specified user.\n"
             + "Parameters: user/USERNAME_TO_BE_DELETED\n"
@@ -52,6 +53,14 @@ public class DeleteUserCommand extends UndoableCommand {
 
     @Override
     protected void preprocessUndoableCommand() {
+    }
+
+    @Override
+    /**
+     * Returns the MIN_SECURITY_LEVEL to caller
+     */
+    public int getMinSecurityLevel() {
+        return MIN_SECURITY_LEVEL;
     }
 
     @Override
