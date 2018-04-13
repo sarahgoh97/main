@@ -119,20 +119,18 @@ public class EditCommand extends UndoableCommand {
 
     //@@author sarahgoh97
     private static Address getUpdatedAddress(Person personToEdit, EditPersonDescriptor editPersonDescriptor) {
-        Address updatedAddress = personToEdit.getAddress(); //no change
-        if (!personToEdit.getIsInCell()) { //not imprisoned
-            updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
-        } else {
-            String newAddress = editPersonDescriptor.getAddress().orElse(updatedAddress).toString();
-            if (!new Address(newAddress).equals(updatedAddress)) { //address changed
-                updatedAddress = new Address(updatedAddress.toString()
-                        .substring(0, updatedAddress.toString().indexOf("s: ") + 3)
-                        + newAddress.substring(newAddress.indexOf("[") + 1, newAddress.indexOf("]") + 1));
-            }
+        //if no one write anything then leave address as it is
+        //if imprisoned person change address, must change houmian
+        Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
+        if (!updatedAddress.equals(personToEdit.getAddress()) && personToEdit.getIsInCell()) {
+            String original = personToEdit.getAddress().toString();
+            String newAddress = original.substring(0, original.indexOf("s: ") + 3) + updatedAddress.toString() + "]";
+            updatedAddress = new Address(newAddress);
         }
         return updatedAddress;
     }
-    //@@author
+
+    //@@author zacci
 
     @Override
     /**
@@ -141,6 +139,7 @@ public class EditCommand extends UndoableCommand {
     public int getMinSecurityLevel() {
         return MIN_SECURITY_LEVEL;
     }
+    //@@author
 
     public Person getPersonToEdit() {
         return personToEdit;
