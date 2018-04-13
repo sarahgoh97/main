@@ -2,12 +2,15 @@
 package seedu.address.logic.commands;
 
 import static org.junit.Assert.assertFalse;
+
 import static org.junit.Assert.assertTrue;
 import static seedu.address.logic.commands.AddCellCommand.MESSAGE_ALREADY_IN_CELL;
 import static seedu.address.logic.commands.AddCellCommand.MESSAGE_FULL_CELL;
 import static seedu.address.logic.commands.AddCellCommand.MESSAGE_NOT_PRISONER;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
+import static seedu.address.logic.commands.CommandTestUtil.prepareRedoCommand;
+import static seedu.address.logic.commands.CommandTestUtil.prepareUndoCommand;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import static seedu.address.testutil.TypicalCells.FULL_CELL;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
@@ -27,9 +30,11 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Person;
-import seedu.address.testutil.PersonBuilder;
 
 public class AddCellCommandTest {
+
+    private static final String FIRST_CELL = "1-1";
+    private static final String LAST_CELL = "3-5";
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -68,7 +73,6 @@ public class AddCellCommandTest {
 
     @Test
     public void execute_validIndexUnfilteredListInvalidFirstDigitCellAddress_success() {
-        Person prisonerToAdd = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         String cellAddress = "0-1";
         AddCellCommand addCellCommand = prepareCommand(INDEX_FIRST_PERSON, cellAddress);
 
@@ -79,7 +83,6 @@ public class AddCellCommandTest {
 
     @Test
     public void execute_validIndexUnfilteredListInvalidSecondDigitCellAddress_success() {
-        Person prisonerToAdd = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         String cellAddress = "1-0";
         AddCellCommand addCellCommand = prepareCommand(INDEX_FIRST_PERSON, cellAddress);
 
@@ -90,7 +93,6 @@ public class AddCellCommandTest {
 
     @Test
     public void execute_fullCell_failure() {
-        Person prisonerToAdd = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         String cellAddress = FULL_CELL.getCellAddress();
         AddCellCommand addCellCommand = prepareCommand(INDEX_FIRST_PERSON, cellAddress);
 
@@ -102,7 +104,7 @@ public class AddCellCommandTest {
     @Test
     public void execute_personNotPrisoner_failure() {
         Person prisonerToAdd = model.getFilteredPersonList().get(INDEX_SECOND_PERSON.getZeroBased());
-        String cellAddress = "2-5";
+        String cellAddress = LAST_CELL;
         AddCellCommand addCellCommand = prepareCommand(INDEX_SECOND_PERSON, cellAddress);
 
         assertCommandFailure(addCellCommand, model,
@@ -113,7 +115,7 @@ public class AddCellCommandTest {
     @Test
     public void execute_personInCell_failure() {
         Person prisonerToAdd = model.getFilteredPersonList().get(INDEX_THIRD_PERSON.getZeroBased());
-        String cellAddress = "2-5";
+        String cellAddress = LAST_CELL;
         AddCellCommand addCellCommand = prepareCommand(INDEX_THIRD_PERSON, cellAddress);
 
         assertCommandFailure(addCellCommand, model,
@@ -122,28 +124,18 @@ public class AddCellCommandTest {
 
     }
 
-    private AddCellCommand prepareCommand(Index index, String cellAddress) {
-        AddCellCommand addCellCommand = new AddCellCommand(index, cellAddress);
-        addCellCommand.setData(model, new CommandHistory(), new UndoRedoStack());
-        return addCellCommand;
-    }
-
-    private String getMapString() {
-        return new ShowCellsCommand().getMapString(model.getAddressBook().getCellList().toString());
-    }
-
     @Test
     public void equals() {
-        AddCellCommand acFirstCommand = prepareCommand(INDEX_FIRST_PERSON, "1-1");
-        AddCellCommand acSecondCommand = prepareCommand(INDEX_FIRST_PERSON, "1-2");
-        AddCellCommand acThirdCommand = prepareCommand(INDEX_SECOND_PERSON, "1-1");
+        AddCellCommand acFirstCommand = prepareCommand(INDEX_FIRST_PERSON, FIRST_CELL);
+        AddCellCommand acSecondCommand = prepareCommand(INDEX_FIRST_PERSON, LAST_CELL);
+        AddCellCommand acThirdCommand = prepareCommand(INDEX_SECOND_PERSON, FIRST_CELL);
 
 
         // same object -> returns true
         assertTrue(acFirstCommand.equals(acFirstCommand));
 
         // same values -> returns true
-        AddCellCommand copy = prepareCommand(INDEX_FIRST_PERSON, "1-1");
+        AddCellCommand copy = prepareCommand(INDEX_FIRST_PERSON, FIRST_CELL);
         assertTrue(acFirstCommand.equals(copy));
 
         // different types -> returns false
@@ -157,5 +149,38 @@ public class AddCellCommandTest {
 
         //different person/index -> returns false
         assertFalse(acFirstCommand.equals(acThirdCommand));
+    }
+
+    @Test
+    public void executeUndoRedo() throws Exception {
+        UndoRedoStack undoRedoStack = new UndoRedoStack();
+        UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
+        RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
+        AddCellCommand addCellCommand = prepareCommand(INDEX_FIRST_PERSON, FIRST_CELL);
+
+        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        expectedModel.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+
+        // add cell -> first person added to a cell
+        Person prisonerToAdd = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        addCellCommand.preprocessUndoableCommand();
+        addCellCommand.execute();
+        undoRedoStack.push(addCellCommand);
+
+        // undo -> reverts addressbook back to previous state and filtered person list to show all persons
+        assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
+
+        expectedModel.addPrisonerToCell(prisonerToAdd, FIRST_CELL);
+        assertCommandSuccess(redoCommand, model, RedoCommand.MESSAGE_SUCCESS, expectedModel);
+    }
+
+    private AddCellCommand prepareCommand(Index index, String cellAddress) {
+        AddCellCommand addCellCommand = new AddCellCommand(index, cellAddress);
+        addCellCommand.setData(model, new CommandHistory(), new UndoRedoStack());
+        return addCellCommand;
+    }
+
+    private String getMapString() {
+        return new ShowCellsCommand().getMapString(model.getAddressBook().getCellList().toString());
     }
 }
