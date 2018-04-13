@@ -30,7 +30,8 @@ public class CellMap {
     public Cell getCell(String cellAddress) {
         int row = getCellMapRow(cellAddress);
         int col = getCellMapCol(cellAddress);
-        return internalList.get(row * MAX_COL + col);
+        int index = getIndex(row, col);
+        return internalList.get(index);
     }
 
     public void setCells(ObservableList<Cell> cells) {
@@ -45,7 +46,7 @@ public class CellMap {
         int row = getCellMapRow(cellAddress);
         int col = getCellMapCol(cellAddress);
         cellMap[row][col] = cell;
-        int num = row * MAX_COL + col;
+        int num = getIndex(row, col);
         if (num >= internalList.size()) {
             internalList.add(cell);
         } else {
@@ -76,8 +77,12 @@ public class CellMap {
     private void addPrisonerToCell(Person prisoner, int row, int col) {
         Cell cell = cellMap[row][col];
         cellMap[row][col].addPrisoner(prisoner);
-        int index = (row) * MAX_COL + col;
+        int index = getIndex(row, col);
         internalList.set(index, cell);
+    }
+
+    private int getIndex(int row, int col) {
+        return row * MAX_COL + col;
     }
 
     /**
@@ -95,7 +100,7 @@ public class CellMap {
     private void deletePrisonerFromCell(Person prisoner, int row, int col) {
         Cell cell = cellMap[row][col];
         cell.deletePrisoner(prisoner);
-        int index = row * MAX_COL + col;
+        int index = getIndex(row, col);
         internalList.set(index, cell);
     }
 
