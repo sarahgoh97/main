@@ -55,9 +55,11 @@ public class ModelManager extends ComponentManager implements Model {
         filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
         updateFilteredPersonList(new NameContainsKeywordsPredicate(new ArrayList<String>()));
 
+        //@@author zacci
         logger.info("Initialising session");
         session = new Session();
         logger.info("Initialised session");
+        //@@ author
     }
 
     public ModelManager() {
@@ -262,6 +264,7 @@ public class ModelManager extends ComponentManager implements Model {
             throw new NonExistentCellException();
         }
     }
+    //@@author
 
     @Override
     public String toString() {

@@ -45,7 +45,6 @@
      */
     public static String delEvent(String eventArrayId) throws IOException {
 
-        String reList = listEvents(); // to regenerate the EventIDs array
         String successDeletedMessage = "Event successfully deleted.";
 
         int eventArrayIdInt = Integer.parseInt(eventArrayId) - 1;
@@ -55,6 +54,10 @@
         com.google.api.services.calendar.Calendar service = getCalendarService();
 
         service.events().delete("primary", eventId).execute();
+
+        eventIDs.clear();
+
+        String reList = listEvents(); // to regenerate the EventIDs array
 
         return successDeletedMessage;
     }
@@ -93,8 +96,8 @@ public class CalendarAddCommand extends UndoableCommand {
             + PREFIX_START + "EVENT_START_TIME "
             + PREFIX_END + "EVENT_END_TIME \n"
             + "Example: \n" + COMMAND_WORD + " "
-            + PREFIX_EVENT + "Finish Software Engineering Milestone "
-            + PREFIX_LOCATION + "NUS UTown Residence "
+            + PREFIX_EVENT + "Prison Security Sweep "
+            + PREFIX_LOCATION + "NUS Prison "
             + PREFIX_START + "2020-04-01 15:00:00 "
             + PREFIX_END + "2020-04-01 17:00:00";
 
@@ -284,6 +287,7 @@ public class CalendarDeleteCommand extends UndoableCommand {
         case CalendarDeleteCommand.COMMAND_WORD:
         case CalendarDeleteCommand.COMMAND_ALIAS:
             return new CalendarDeleteCommandParser().parse(arguments);
+
 ```
 ###### \java\seedu\address\logic\parser\CalendarAddCommandParser.java
 ``` java
@@ -418,7 +422,7 @@ public class CalendarDeleteCommandParser implements Parser<CalendarDeleteCommand
         String theDateTime = dateTime.replaceAll("[\\[\\]]", "").replaceAll("Optional", "");
 
         TemporalAccessor ta = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").parse(theDateTime);
-        String strDateTime = LocalDateTime.from(ta).toString() + ":00";
+        String strDateTime = LocalDateTime.from(ta).toString() + ":00+08:00";
         return new DateTime(strDateTime);
     }
 

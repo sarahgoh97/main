@@ -1,5 +1,4 @@
 # sarahgoh97
-
 ###### \java\seedu\address\commons\events\ui\HideMapEvent.java
 ``` java
 package seedu.address.commons.events.ui;
@@ -60,8 +59,8 @@ public class AddCellCommand extends UndoableCommand {
             + "Example: " + COMMAND_WORD + " 1 1-1";
 
     public static final String MESSAGE_ADD_CELL_SUCCESS = "Prisoner %s added to %s.";
-    public static final String MESSAGE_FULL_CELL = "Cell %s is already full. Here is the map:\n%s";
-    public static final String MESSAGE_NON_EXISTENT_CELL = "This cell %s does not exist. Here is the map:\n%s";
+    public static final String MESSAGE_FULL_CELL = "Cell %s is already full. Below is the map.";
+    public static final String MESSAGE_NON_EXISTENT_CELL = "This cell %s does not exist. Below is the map.";
     public static final String MESSAGE_NOT_PRISONER = "%s is not a prisoner.";
     public static final String MESSAGE_ALREADY_IN_CELL = "%s is already in cell %s";
 
@@ -100,9 +99,7 @@ public class AddCellCommand extends UndoableCommand {
                     cellAddress, new ShowCellsCommand().getMapString(
                             model.getAddressBook().getCellList().toString())));
         } catch (NonExistentCellException nece) {
-            throw new CommandException(String.format(MESSAGE_NON_EXISTENT_CELL,
-                    cellAddress, new ShowCellsCommand().getMapString(
-                            model.getAddressBook().getCellList().toString())));
+            throw new CommandException(String.format(MESSAGE_NON_EXISTENT_CELL, cellAddress));
         } catch (NotPrisonerException npe) {
             throw new CommandException(String.format(MESSAGE_NOT_PRISONER, prisonerToAdd.getName()));
         } catch (AlreadyInCellException aice) {
@@ -136,7 +133,8 @@ public class AddCellCommand extends UndoableCommand {
         return other == this // short circuit if same object
                 || (other instanceof AddCellCommand // instanceof handles nulls
                 && this.index.equals(((AddCellCommand) other).index) // state check
-                && Objects.equals(this.prisonerToAdd, ((AddCellCommand) other).prisonerToAdd));
+                && Objects.equals(this.prisonerToAdd, ((AddCellCommand) other).prisonerToAdd)  //prisoner check
+                && Objects.equals(this.cellAddress, ((AddCellCommand) other).cellAddress)); //celladdress check
     }
 }
 ```
@@ -168,6 +166,7 @@ public class DeleteCellCommand extends UndoableCommand {
             + "Example: " + COMMAND_WORD + "1";
 
     public static final String MESSAGE_DELETE_CELL_SUCCESS = "Prisoner %s has been released.";
+    public static final String MESSAGE_NOT_IMPRISONED = "The target person is not imprisoned here";
 
     public final Index targetIndex;
 
@@ -188,9 +187,9 @@ public class DeleteCellCommand extends UndoableCommand {
         try {
             model.deletePrisonerFromCell(prisonerToDelete);
         } catch (PersonNotFoundException pnfe) {
-            throw new CommandException("The target person cannot be missing");
+            throw new AssertionError("The target person cannot be missing");
         } catch (NotImprisonedException nie) {
-            throw new CommandException("The target person is not imprisoned here");
+            throw new CommandException(MESSAGE_NOT_IMPRISONED);
         }
 
         return new CommandResult(String.format(MESSAGE_DELETE_CELL_SUCCESS, prisonerToDelete.getName().toString()));
@@ -230,19 +229,16 @@ public class DeleteCellCommand extends UndoableCommand {
 ###### \java\seedu\address\logic\commands\EditCommand.java
 ``` java
     private static Address getUpdatedAddress(Person personToEdit, EditPersonDescriptor editPersonDescriptor) {
-        Address updatedAddress = personToEdit.getAddress(); //no change
-        if (!personToEdit.getIsInCell()) { //not imprisoned
-            updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
-        } else {
-            String newAddress = editPersonDescriptor.getAddress().orElse(updatedAddress).toString();
-            if (!new Address(newAddress).equals(updatedAddress)) { //address changed
-                updatedAddress = new Address(updatedAddress.toString()
-                        .substring(0, updatedAddress.toString().indexOf("s: ") + 3)
-                        + newAddress.substring(newAddress.indexOf("[") + 1, newAddress.indexOf("]") + 1));
-            }
+        Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
+        if (!updatedAddress.equals(personToEdit.getAddress()) && personToEdit.getIsInCell()) {
+            //if address has changed and imprisoned person
+            String original = personToEdit.getAddress().toString();
+            String newAddress = original.substring(0, original.indexOf("s: ") + 3) + updatedAddress.toString() + "]";
+            updatedAddress = new Address(newAddress);
         }
         return updatedAddress;
     }
+
 ```
 ###### \java\seedu\address\logic\commands\ListCellCommand.java
 ``` java
@@ -266,7 +262,7 @@ public class ListCellCommand extends Command {
             + " Parameters: CELLADDRESS\n"
             + "Example: " + COMMAND_WORD + " 1-1";
 
-    public static final String MESSAGE_SUCCESS = "Listed persons in cell %s";
+    public static final String MESSAGE_LISTCELL_SUCCESS = "Listed persons in cell %s";
     public static final String MESSAGE_NON_EXISTENT_CELL = "This cell %s does not exist";
     private final Predicate<Person> predicate;
     private final String cellAddress;
@@ -283,7 +279,7 @@ public class ListCellCommand extends Command {
         } catch (NonExistentCellException nece) {
             throw new CommandException(String.format(MESSAGE_NON_EXISTENT_CELL, cellAddress));
         }
-        return new CommandResult(String.format(MESSAGE_SUCCESS, cellAddress));
+        return new CommandResult(String.format(MESSAGE_LISTCELL_SUCCESS, cellAddress));
     }
 
     @Override
@@ -450,6 +446,12 @@ public class DeleteCellCommandParser implements Parser<DeleteCellCommand> {
         }
     }
 }
+```
+###### \java\seedu\address\logic\parser\EditCommandParser.java
+``` java
+        if (args.contains(PREFIX_ROLE.toString())) {
+            throw new ParseException(String.format(EditCommand.MESSAGE_CANNOT_CHANGE_ROLE));
+        }
 ```
 ###### \java\seedu\address\logic\parser\ListCellCommandParser.java
 ``` java
@@ -697,8 +699,8 @@ public class CellMap {
      * @return Cell from cellAddress
      */
     public Cell getCell(String cellAddress) {
-        int row = Cell.getRow(cellAddress) - 1;
-        int col = Cell.getCol(cellAddress) - 1;
+        int row = getCellMapRow(cellAddress);
+        int col = getCellMapCol(cellAddress);
         return internalList.get(row * MAX_COL + col);
     }
 
@@ -711,8 +713,8 @@ public class CellMap {
     }
 
     public void setCell(Cell cell, String cellAddress) {
-        int row = Cell.getRow(cellAddress) - 1;
-        int col = Cell.getCol(cellAddress) - 1;
+        int row = getCellMapRow(cellAddress);
+        int col = getCellMapCol(cellAddress);
         cellMap[row][col] = cell;
         int num = row * MAX_COL + col;
         if (num >= internalList.size()) {
@@ -722,12 +724,20 @@ public class CellMap {
         }
     }
 
+    private int getCellMapRow(String cellAddress) {
+        return Cell.getRow(cellAddress) - 1;
+    }
+
+    private int getCellMapCol(String cellAddress) {
+        return Cell.getCol(cellAddress) - 1;
+    }
+
     /**
      * Adds a prisoner to a specified cell.
      */
     public void addPrisonerToCell(Person prisoner, String cellAddress) {
-        int row = Cell.getRow(cellAddress) - 1;
-        int col = Cell.getCol(cellAddress) - 1;
+        int row = getCellMapRow(cellAddress);
+        int col = getCellMapCol(cellAddress);
         addPrisonerToCell(prisoner, row, col);
     }
 
@@ -745,8 +755,8 @@ public class CellMap {
      * Removes a prisoner from a specified cell
      */
     public void deletePrisonerFromCell(Person prisoner, String cellAddress) {
-        int row = Cell.getRow(cellAddress) - 1;
-        int col = Cell.getCol(cellAddress) - 1;
+        int row = getCellMapRow(cellAddress);
+        int col = getCellMapCol(cellAddress);
         deletePrisonerFromCell(prisoner, row, col);
     }
 
@@ -909,6 +919,16 @@ public class NotPrisonerException extends IllegalValueException {
     /** Updates given prisoner who changed from undo command*/
     void updatePrisonerFromUndo(Person changed, Person original);
 ```
+###### \java\seedu\address\model\Model.java
+``` java
+    /**
+     * Updates the filter of the filtered person list to show only people in the cell.
+     */
+    void updateFilteredPersonListForCell(Predicate<Person> predicate, String cellAddress)
+            throws NonExistentCellException;
+
+}
+```
 ###### \java\seedu\address\model\ModelManager.java
 ``` java
     @Override
@@ -976,13 +996,6 @@ public class NotPrisonerException extends IllegalValueException {
             throw new NonExistentCellException();
         }
     }
-
-    @Override
-    public String toString() {
-        return filteredPersons.toString();
-    }
-
-}
 ```
 ###### \java\seedu\address\model\person\AddressContainsCellPredicate.java
 ``` java
@@ -1030,6 +1043,16 @@ public class AddressContainsCellPredicate implements Predicate<Person> {
         return new Address(cellAddress);
     }
 ```
+###### \java\seedu\address\model\person\UniquePersonList.java
+``` java
+    /**
+     * Replaces the person {@code target} in the list with {@code updatedPrisoner}.
+     */
+    public void setPrisoner(Person target, Person updatedPrisoner) {
+        int index = internalList.indexOf(target);
+        internalList.set(index, updatedPrisoner);
+    }
+```
 ###### \java\seedu\address\model\ReadOnlyAddressBook.java
 ``` java
     /**
@@ -1037,6 +1060,38 @@ public class AddressContainsCellPredicate implements Predicate<Person> {
      * This list will not contain any duplicate cells.
      */
     ObservableList<Cell> getCellList();
+
+```
+###### \java\seedu\address\model\util\SampleDataUtil.java
+``` java
+    public static Cell[] getSampleCells() {
+        Person alex = new Person(new Name("Alex Yeoh"), new Phone("87438807"), new Email("alexyeoh@example.com"),
+                new Address("1-1 [Old address: Blk 30 Geylang Street 29, #06-40]"), new Role("p"),
+                getTagSet("ChickenAllergy"), true);
+        Person charlotte = new Person(new Name("Charlotte Oliveiro"), new Phone("93210283"),
+                new Email("charlotte@example.com"),
+                new Address("1-1 [Old address: Blk 11 Ang Mo Kio Street 74, #11-04]"), new Role("p"),
+                getTagSet("ViolentTendencies"), true);
+        Person sarah = new Person(new Name("Sarah Goh"), new Phone("90288173"), new Email("gohst@example.com"),
+                new Address("3-5 [Old address: Tung Ann Association Building 141 Cecil Street #03-02]"),
+                new Role("p"), getTagSet(), true);
+
+        return new Cell[] {
+            new Cell(getPrisoners(alex, charlotte), "1-1", false),
+            new Cell(1, 2), new Cell(1, 3), new Cell(1, 4), new Cell(1,  5),
+            new Cell(2, 1), new Cell(2, 2), new Cell(2, 3), new Cell(2, 4), new Cell(2,  5),
+            new Cell(3, 1), new Cell(3, 2), new Cell(3, 3), new Cell(3, 4),
+            new Cell(getPrisoners(sarah), "3-5", true)
+        };
+    }
+
+    public static ArrayList<Person> getPrisoners(Person... prisoners) {
+        ArrayList<Person> list = new ArrayList<Person>();
+        for (Person p: prisoners) {
+            list.add(p);
+        }
+        return list;
+    }
 
 ```
 ###### \java\seedu\address\storage\XmlAdaptedCell.java
