@@ -139,14 +139,11 @@ public class Calendar {
             System.out.println("Upcoming events");
             Integer eventNumber = 1;
             for (Event event : items) {
-                DateTime start = event.getStart().getDateTime();
-                if (start == null) {
-                    start = event.getStart().getDate();
-                }
                 String eventId = event.getId();
                 addEventIDs(eventId);
-                result.append(String.format("[Event %s] \t %s \t (%s) \t (%s)\n",
-                        eventNumber, event.getSummary(), start, eventId));
+                result.append(String.format("[Event %s] \t %s \t [%s] to [%s] \tLocation: %s\n",
+                        eventNumber, event.getSummary(), event.getStart().getDateTime(),
+                        event.getEnd().getDateTime(), event.getLocation()));
                 eventNumber++;
             }
         }
@@ -197,7 +194,6 @@ public class Calendar {
      */
     public static String delEvent(String eventArrayId) throws IOException {
 
-        String reList = listEvents(); // to regenerate the EventIDs array
         String successDeletedMessage = "Event successfully deleted.";
 
         int eventArrayIdInt = Integer.parseInt(eventArrayId) - 1;
@@ -207,6 +203,10 @@ public class Calendar {
         com.google.api.services.calendar.Calendar service = getCalendarService();
 
         service.events().delete("primary", eventId).execute();
+
+        eventIDs.clear();
+
+        String reList = listEvents(); // to regenerate the EventIDs array
 
         return successDeletedMessage;
     }
