@@ -78,7 +78,7 @@ public class AddCellCommandTest {
         AddCellCommand addCellCommand = prepareCommand(INDEX_FIRST_PERSON, cellAddress);
 
         assertCommandFailure(addCellCommand, model, String.format(AddCellCommand.MESSAGE_NON_EXISTENT_CELL,
-                cellAddress, getMapString()));
+                cellAddress));
 
     }
 
@@ -88,7 +88,7 @@ public class AddCellCommandTest {
         AddCellCommand addCellCommand = prepareCommand(INDEX_FIRST_PERSON, cellAddress);
 
         assertCommandFailure(addCellCommand, model, String.format(AddCellCommand.MESSAGE_NON_EXISTENT_CELL,
-                cellAddress, getMapString()));
+                cellAddress));
 
     }
 
@@ -98,7 +98,7 @@ public class AddCellCommandTest {
         AddCellCommand addCellCommand = prepareCommand(INDEX_FIRST_PERSON, cellAddress);
 
         assertCommandFailure(addCellCommand, model,
-                String.format(MESSAGE_FULL_CELL, cellAddress, getMapString()));
+                String.format(MESSAGE_FULL_CELL, cellAddress));
 
     }
 
@@ -180,9 +180,5 @@ public class AddCellCommandTest {
         AddCellCommand addCellCommand = new AddCellCommand(index, cellAddress);
         addCellCommand.setData(model, new CommandHistory(), new UndoRedoStack());
         return addCellCommand;
-    }
-
-    private String getMapString() {
-        return new ShowCellsCommand().getMapString(model.getAddressBook().getCellList().toString());
     }
 }
