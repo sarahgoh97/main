@@ -106,6 +106,7 @@ public class AddCellCommand extends UndoableCommand {
         return other == this // short circuit if same object
                 || (other instanceof AddCellCommand // instanceof handles nulls
                 && this.index.equals(((AddCellCommand) other).index) // state check
-                && Objects.equals(this.prisonerToAdd, ((AddCellCommand) other).prisonerToAdd));
+                && Objects.equals(this.prisonerToAdd, ((AddCellCommand) other).prisonerToAdd)  //prisoner check
+                && Objects.equals(this.cellAddress, ((AddCellCommand) other).cellAddress)); //celladdress check
     }
 }

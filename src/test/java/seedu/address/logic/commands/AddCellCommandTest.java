@@ -1,6 +1,9 @@
 //@@author sarahgoh97
 package seedu.address.logic.commands;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static seedu.address.logic.commands.AddCellCommand.MESSAGE_ALREADY_IN_CELL;
 import static seedu.address.logic.commands.AddCellCommand.MESSAGE_FULL_CELL;
 import static seedu.address.logic.commands.AddCellCommand.MESSAGE_NOT_PRISONER;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
@@ -9,6 +12,7 @@ import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import static seedu.address.testutil.TypicalCells.FULL_CELL;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
+import static seedu.address.testutil.TypicalIndexes.INDEX_THIRD_PERSON;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import org.junit.Rule;
@@ -23,6 +27,7 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Person;
+import seedu.address.testutil.PersonBuilder;
 
 public class AddCellCommandTest {
 
@@ -62,9 +67,20 @@ public class AddCellCommandTest {
     }
 
     @Test
-    public void execute_validIndexUnfilteredListInvalidCellAddress_success() {
+    public void execute_validIndexUnfilteredListInvalidFirstDigitCellAddress_success() {
         Person prisonerToAdd = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        String cellAddress = "0-0";
+        String cellAddress = "0-1";
+        AddCellCommand addCellCommand = prepareCommand(INDEX_FIRST_PERSON, cellAddress);
+
+        assertCommandFailure(addCellCommand, model, String.format(AddCellCommand.MESSAGE_NON_EXISTENT_CELL,
+                cellAddress, getMapString()));
+
+    }
+
+    @Test
+    public void execute_validIndexUnfilteredListInvalidSecondDigitCellAddress_success() {
+        Person prisonerToAdd = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        String cellAddress = "1-0";
         AddCellCommand addCellCommand = prepareCommand(INDEX_FIRST_PERSON, cellAddress);
 
         assertCommandFailure(addCellCommand, model, String.format(AddCellCommand.MESSAGE_NON_EXISTENT_CELL,
@@ -94,18 +110,17 @@ public class AddCellCommandTest {
 
     }
 
-    /*difficult to test, will fix later
     @Test
     public void execute_personInCell_failure() {
-        Person prisonerToAdd = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Person prisonerToAdd = model.getFilteredPersonList().get(INDEX_THIRD_PERSON.getZeroBased());
         String cellAddress = "2-5";
-        AddCellCommand addCellCommand = prepareCommand(INDEX_FIRST_PERSON, cellAddress);
+        AddCellCommand addCellCommand = prepareCommand(INDEX_THIRD_PERSON, cellAddress);
 
         assertCommandFailure(addCellCommand, model,
                 String.format(MESSAGE_ALREADY_IN_CELL,
-                        prisonerToAdd.getName().toString(), prisonerToAdd.getAddress().toString()));
+                        prisonerToAdd.getName().toString(), prisonerToAdd.getCellAddress()));
 
-    }*/
+    }
 
     private AddCellCommand prepareCommand(Index index, String cellAddress) {
         AddCellCommand addCellCommand = new AddCellCommand(index, cellAddress);
@@ -115,5 +130,32 @@ public class AddCellCommandTest {
 
     private String getMapString() {
         return new ShowCellsCommand().getMapString(model.getAddressBook().getCellList().toString());
+    }
+
+    @Test
+    public void equals() {
+        AddCellCommand acFirstCommand = prepareCommand(INDEX_FIRST_PERSON, "1-1");
+        AddCellCommand acSecondCommand = prepareCommand(INDEX_FIRST_PERSON, "1-2");
+        AddCellCommand acThirdCommand = prepareCommand(INDEX_SECOND_PERSON, "1-1");
+
+
+        // same object -> returns true
+        assertTrue(acFirstCommand.equals(acFirstCommand));
+
+        // same values -> returns true
+        AddCellCommand copy = prepareCommand(INDEX_FIRST_PERSON, "1-1");
+        assertTrue(acFirstCommand.equals(copy));
+
+        // different types -> returns false
+        assertFalse(acFirstCommand.equals(1));
+
+        // null -> returns false
+        assertFalse(acFirstCommand.equals(null));
+
+        // different cell -> returns false
+        assertFalse(acFirstCommand.equals(acSecondCommand));
+
+        //different person/index -> returns false
+        assertFalse(acFirstCommand.equals(acThirdCommand));
     }
 }
