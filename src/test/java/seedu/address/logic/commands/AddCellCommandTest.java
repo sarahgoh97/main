@@ -48,7 +48,7 @@ public class AddCellCommandTest {
     @Test
     public void execute_validIndexUnfilteredListValidCellAddress_success() throws Exception {
         Person prisonerToAdd = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        String cellAddress = "2-5";
+        String cellAddress = LAST_CELL;
         AddCellCommand addCellCommand = prepareCommand(INDEX_FIRST_PERSON, cellAddress);
 
         String expectedMessage = String.format(AddCellCommand.MESSAGE_ADD_CELL_SUCCESS,
@@ -58,13 +58,13 @@ public class AddCellCommandTest {
         expectedModel.addPrisonerToCell(prisonerToAdd, cellAddress);
 
         assertCommandSuccess(addCellCommand, model, expectedMessage, expectedModel);
-
+        addCellCommand.undo();
     }
 
     @Test
-    public void execute_inValidIndexUnfilteredListValidCellAddress_success() {
+    public void execute_inValidIndexUnfilteredListValidCellAddress_failure() {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
-        String cellAddress = "2-5";
+        String cellAddress = FIRST_CELL;
         AddCellCommand addCellCommand = prepareCommand(outOfBoundIndex, cellAddress);
 
         assertCommandFailure(addCellCommand, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
@@ -72,7 +72,7 @@ public class AddCellCommandTest {
     }
 
     @Test
-    public void execute_validIndexUnfilteredListInvalidFirstDigitCellAddress_success() {
+    public void execute_validIndexUnfilteredListInvalidFirstDigitCellAddress_failure() {
         String cellAddress = "0-1";
         AddCellCommand addCellCommand = prepareCommand(INDEX_FIRST_PERSON, cellAddress);
 
@@ -82,7 +82,7 @@ public class AddCellCommandTest {
     }
 
     @Test
-    public void execute_validIndexUnfilteredListInvalidSecondDigitCellAddress_success() {
+    public void execute_validIndexUnfilteredListInvalidSecondDigitCellAddress_failure() {
         String cellAddress = "1-0";
         AddCellCommand addCellCommand = prepareCommand(INDEX_FIRST_PERSON, cellAddress);
 
@@ -172,6 +172,7 @@ public class AddCellCommandTest {
 
         expectedModel.addPrisonerToCell(prisonerToAdd, FIRST_CELL);
         assertCommandSuccess(redoCommand, model, RedoCommand.MESSAGE_SUCCESS, expectedModel);
+        addCellCommand.undo();
     }
 
     private AddCellCommand prepareCommand(Index index, String cellAddress) {
