@@ -119,10 +119,9 @@ public class EditCommand extends UndoableCommand {
 
     //@@author sarahgoh97
     private static Address getUpdatedAddress(Person personToEdit, EditPersonDescriptor editPersonDescriptor) {
-        //if no one write anything then leave address as it is
-        //if imprisoned person change address, must change houmian
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
         if (!updatedAddress.equals(personToEdit.getAddress()) && personToEdit.getIsInCell()) {
+            //if address has changed and imprisoned person
             String original = personToEdit.getAddress().toString();
             String newAddress = original.substring(0, original.indexOf("s: ") + 3) + updatedAddress.toString() + "]";
             updatedAddress = new Address(newAddress);
