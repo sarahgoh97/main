@@ -26,7 +26,7 @@ public class AddCellCommand extends UndoableCommand {
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a prisoner to the specified cell."
             + "by the index number used in the last person listing.\n"
             + "Parameters: INDEX (must be a positive integer) "
-            + "CELLADDRESS (block-unit)"
+            + "CELLADDRESS (block-unit)\n"
             + "Example: " + COMMAND_WORD + " 1 1-1";
 
     public static final String MESSAGE_ADD_CELL_SUCCESS = "Prisoner %s added to %s.";

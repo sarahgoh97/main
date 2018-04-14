@@ -45,9 +45,13 @@ It will also show the list of persons in PrisonBook and people in the map when l
 |===
 
 include::../UserGuide.adoc[tag=addcell]
+
 include::../UserGuide.adoc[tag=listcell]
+
 include::../UserGuide.adoc[tag=map]
+
 include::../UserGuide.adoc[tag=deletecell]
+
 include::../UserGuide.adoc[tag=commandsummary]
 
 == Contributions to the Developer Guide
@@ -61,4 +65,6 @@ include::../DeveloperGuide.adoc[tag=cellmap]
 include::../DeveloperGuide.adoc[tag=FeatureContributionSarah]
 
 include::../DeveloperGuide.adoc[tag=UseCases]
+
+include::../DeveloperGuide.adoc[tag=sarahtest]
 

@@ -149,6 +149,7 @@ Examples:
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 r/p t/criminal`
 
 // tag::addcell[]
+
 === Adding a prisoner to a cell: `addcell or ac` [2] (v1.3)
 
 Adds a person to one of the cells in the prison. +
@@ -170,7 +171,7 @@ Examples:
 Shows a list of all persons in the prison book. +
 Format: `list`
 
-//tag::listcell[]
+// tag::listcell[]
 === Listing prisoners in a cell : `listcell or lc` (v1.5rc)
 
 Shows a list of all persons in a prison cell in the prison book. +
@@ -180,14 +181,14 @@ Examples:
 
 * `listcell 1-1`
 * `lc 3-3`
-//end::listcell[]
+// end::listcell[]
 
-//tag::map[]
+// tag::map[]
 === Showing cells in the map: `map or m` [1] (v1.1)
 
 Shows a table of prison cells like a map in the command display (used for debugging and checking UI). +
 Format: `map`
-//end::map[]
+// end::map[]
 
 === Editing a person : `edit or e` [2]
 
