@@ -425,7 +425,7 @@ e.g. `addcell 1 1-1` +
 e.g. `delete 1` +
 ** *Delete prisoner from cell* : `deletecell INDEX` +
 e.g. `deletecell 1` +
-** *Edit* : `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [r/ROLE] [t/TAG]...` +
+** *Edit* : `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]...` +
 eg. `edit 1 p/91234567 e/johndoe@example.com` +
 ** *Delete User*: `deleteuser user/USERNAME_TO_DELETE` +
 eg. deleteuser user/prisonguard1
