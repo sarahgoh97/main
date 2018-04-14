@@ -21,7 +21,7 @@ public class DeleteCellCommandParserTest {
 
     @Test
     public void parse_invalidArgs_throwsParseException() {
-        assertParseFailure(parser, "a", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+        assertParseFailure(parser, "dc", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                 DeleteCellCommand.MESSAGE_USAGE));
     }
 }
