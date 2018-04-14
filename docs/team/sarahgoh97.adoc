@@ -21,7 +21,7 @@ It also allows guards and prison wardens to view a list of prisoners in a specif
 ** Justification: This helps to keep track of prisoners and their locations and to take into consideration prisoner combinations
 when adding and removing them from cells.
 
-* *Minor enhancement*: Changing browser panel to show map of prison cells. Hides information on GUI before logging in and after logging out.
+* *Minor enhancement*: Map of prison cells on GUI. It hides information on GUI before logging in and after logging out.
 It will also show the list of persons in PrisonBook and people in the map when logged in successfully.
 ** Justification: This helps to boost security for the application, by preventing users who have insufficient security level to view classified information.
 * *Code contributed*: [https://github.com/CS2103JAN2018-T11-B2/main/blob/master/collated/functional/sarahgoh97.md[Functional code]] [https://github.com/CS2103JAN2018-T11-B2/main/blob/master/collated/test/sarahgoh97.md[Test code]]
@@ -34,6 +34,7 @@ It will also show the list of persons in PrisonBook and people in the map when l
 *** Assigned issues to different team members
 ** Enhancements to existing features:
 *** Status bar shows number of people in the PrisonBook
+*** Map panel to show cell system of prison
 ** Documentation:
 *** Did revisions to existing contents of the User Guide and Developer Guide
 
@@ -46,11 +47,11 @@ It will also show the list of persons in PrisonBook and people in the map when l
 
 include::../UserGuide.adoc[tag=addcell]
 
+include::../UserGuide.adoc[tag=deletecell]
+
 include::../UserGuide.adoc[tag=listcell]
 
 include::../UserGuide.adoc[tag=map]
-
-include::../UserGuide.adoc[tag=deletecell]
 
 == Contributions to the Developer Guide
 

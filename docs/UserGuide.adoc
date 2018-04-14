@@ -172,7 +172,7 @@ Shows a list of all persons in the prison book. +
 Format: `list`
 
 // tag::listcell[]
-=== Listing prisoners in a cell : `listcell or lc` (v1.5rc)
+=== Listing prisoners in a cell : `listcell or lc` [1] (v1.5rc)
 
 Shows a list of all persons in a prison cell in the prison book. +
 Format: `listcell CELL`
@@ -296,7 +296,7 @@ Format: `deletecell INDEX`
 Examples:
 
 * `dc 1` +
-Deletes the first person in the prison book if he/she is imprisoned here.
+Deletes the first person in the prison book from his/her cell if he/she is imprisoned here.
 * `listcell 1-1` +
 `deletecell 1` +
 Deletes the first person in the cell 1-1 if there are any prisoners inside it.
@@ -334,7 +334,7 @@ Examples:
 The `undo` command fails as there are no undoable commands executed previously.
 
 * `delete 1` +
-`undo` (reverses the `delete 1` command) +
+`undo` (reverses the `delete 1` command)
 
 === Redoing the previously undone command : `redo or r` [0]
 
@@ -356,7 +356,7 @@ The `redo` command fails as there are no `undo` commands executed previously.
 `undo` (reverses the `edit` command) +
 `undo` (reverses the `delete 1` command) +
 `redo` (reapplies the `delete 1` command) +
-`redo` (reapplies the `edit` command) +
+`redo` (reapplies the `edit` command)
 // end::undoredo[]
 
 === Exiting the program : `exit` [0]

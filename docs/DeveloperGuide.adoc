@@ -331,7 +331,7 @@ image::UndoRedoActivityDiagram.png[width="650"]
 
 ===== Aspect: How undo & redo executes
 
-* **Alternative 1 (current choice):** Saves the entire address book.
+* **Alternative 1 (current choice):** Saves the entire prison book.
 ** Pros: Easy to implement.
 ** Cons: May have performance issues in terms of memory usage.
 * **Alternative 2:** Individual command knows how to undo/redo by itself.
@@ -389,32 +389,31 @@ It is important to keep track of the prisoners in the cell and whether the `Cell
 
 This cell system is most clearly represented using a 2-D array.
 Hence, this was used as the basis of the map system of the prison.
-However, to prevent accidental changes, a read-only version of the cells are returned in an ObservableList.
+However, to prevent accidental changes, a read-only version of the cells are returned in an `ObservableList`.
 Since this is part of the `Model` component of the PrisonBook, the `Model` component has been updated accordingly as shown below.
 At the bottom of the `Model` class diagram, it has been updated to show how the cell system is linked to the other components.
 
-image::ModelClassDiagram.png[Width="600"]
+image::ModelClassDiagram.png[Width="550"]
 
 To save and load the data of the cell system, storage also played an important component to ensure no data is lost when closing the app.
 Below is a class diagram of `Storage` to show how the cells are saved. A new type is added to the storage so that it knows how to save and load data for cells.
 
-image::StorageClassDiagram.png[Width="600"]
+image::StorageClassDiagram.png[Width="550"]
 
 This map is shown on the user interface on the right side area, shown in the picture below.
 Since the app is still being tested, the `map` command will also show the actual cells in the result display box.
 This basic map shows the cell system and helps keep track of what is happening in the cells.
 
-image::Ui.png[width="600"]
+image::MapPanel.png[width="550"]
 
 This cell system helps users visualise the locations of the prisoners more easily. Not only that, prisoners can also be added and removed from them.
-These changes can be viewed in the bigger map which displays the number of people in them (also shown in the UI mockup above,
-represented by the square brackets) in individual cells.
+These changes can be viewed in the bigger map which displays the number of people in individual cells below each cell address.
 
 Assuming the user has access to the functions to add prisoners into prison cells, they can use the `addcell` command to do so.
 Below is the sequence diagram of the logic and model components.
 
-image::AddCellSequenceDiagram.PNG[width="800"]
-image::AddCellModelSequenceDiagram.PNG[width="800"]
+image::AddCellSequenceDiagram.PNG[width="550"]
+image::AddCellModelSequenceDiagram.PNG[width="550"]
 
 Besides the cell map system being updated, we will also update the addresses of these prisoners added to the prison, since they now live in the prison, rather than in their own homes.
 
@@ -439,7 +438,7 @@ It also makes it harder to implement undo and redo functions for actions below.
 * **Alternative 2:** Use a 2-level ArrayList
 ** Pros: Can use Java functions meant for Lists, can have different number of units for each block
 ** Cons: Not uniform number of units for each block will be harder to take into consideration when using the individual cells.
-* **Alternative 3:** Use a ObservableList
+* **Alternative 3:** Use an ObservableList
 ** Pros: Easier to save state of cells when undoing and redoing.
 ** Cons: Harder to visualise where each row of cells/prisons end.
 
@@ -784,8 +783,8 @@ b. Require developers to download those libraries manually (this creates extra w
   It can also help users keep track of locations of the cells of each prisoner.
   Users can also add and remove prisoners more easily by first listing people in each cell to decide where to add or remove them.
   2. Minor enhancement: +
-  Adding to UI to show map of the cell system instead of having a browser panel.
-  It also updates the UI to show the list of persons and the map when first logged in
+  Show map of the cell system on the UI.
+  Also implemented the UI to show the list of persons and the map when first logged in
   and to hide it when logging out and when the application is first opened.
 // end::FeatureContributionSarah[]
 
@@ -881,6 +880,7 @@ Use case ends.
 ** 1b1. PrisonBook shows an error message.
 +
 Use case ends.
+
 [discrete]
 === Use case: Add prisoner to a cell
 Actor: Guard
@@ -920,6 +920,7 @@ Use case resumes at step 1.
 ** 4a1. PrisonBook sends an error message regarding invalid cell address.
 +
 Use case resumes at step 1.
+
 [discrete]
 === Use case: Get the list of prisoners in a certain cell
 Actor: Guard
@@ -1004,13 +1005,13 @@ These instructions only provide a starting point for testers to work on; testers
 
 // tag::sarahtest[]
 === Minor Feature: Showing prisoners in the UI
-. Checking accuracy of map displayed.
+. Map panel in UI showing the map of cells in the system.
 
 .. Prerequisites: Have sufficient security level[1]
-.. Test case: Starting up the app and before logging in
+.. Test case: Starting up the app and before logging in +
    Expected: No details regarding cells shown on the map.
    Map shows that user has insufficient access to view information.
-.. Test case: Using features below while logged in
+.. Test case: Using features below while logged in +
    Expected: UI matches what `map` command shows on the display.
 
 === Major Feature: Managing prisoners in a prison
@@ -1024,10 +1025,10 @@ These instructions only provide a starting point for testers to work on; testers
    Address of the prisoner updated in the person card and message of prisoner added to cell is displayed.
    The map on the right side of the UI will also update correspondingly by adding to the number corresponding to cell address 1-5.
    Timestamp in the status bar is updated.
-.. Test case: `addcell 0 1-4`
+.. Test case: `addcell 0 1-4` +
    Expected: No prisoner is added to a cell because of the index.
    Error message displayed regarding format. The map and status bar will not be updated.
-.. Other incorrect add cell commands to try: `ac`, `addcell 2 1=1`, +
+.. Other incorrect add cell commands to try: `ac`, `addcell 2 1=1` +
    Expected: No change to UI and displays error message.
 
 ==== Deleting prisoner from a cell
@@ -1035,11 +1036,11 @@ These instructions only provide a starting point for testers to work on; testers
 . Deleting a prisoner from a cell when all prisoners are listed and has sufficient security level [2].
 
 .. Prerequisites: List all persons using the `list` command. Multiple persons in the list, from initial state of program.
-.. Test case: `deletecell 1`
+.. Test case: `deletecell 1` +
    Expected: Prisoner is deleted from his/her cell and their original cell will be updated.
    Message regarding prisoner being released will be displayed.
    The map on the right will be updated, as well as the prisoner's address back to their old address.
-.. Test case: `deletecell 0`
+.. Test case: `deletecell 0` +
    Expected: No change to map and to the list of persons.
    Message regarding error will be shown for correct format of command.
 .. Other incorrect delete cell commands to try: `dc`, `dc 0` +
@@ -1048,9 +1049,9 @@ These instructions only provide a starting point for testers to work on; testers
 ==== Listing prisoners in a cell
 
 . Listing a prisoner from a cell when here is sufficient security level [1].
-.. Test case: `listcell 1-1`
+.. Test case: `listcell 1-1` +
    Expected: List of prisoners in cell address 1-1 will be updated and shown.
-.. Test case: `listcell 10-10`
+.. Test case: `listcell 10-10` +
    Expected: There is no change in the UI except the error message regarding an invalid cell.
 .. Other incorrect list cell commands to try: `lc`, `lc 1` +
    Expected: Similar to previous.
