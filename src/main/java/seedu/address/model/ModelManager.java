@@ -180,7 +180,12 @@ public class ModelManager extends ComponentManager implements Model {
         indicateAddressBookChanged();
     }
 
-    /* this is for delete cell command */
+    /**
+     * Deletes a prisoner from a cell from DeleteCellCommand
+      * @param prisoner to be removed from cell
+     * @throws PersonNotFoundException if prisoner does not exist
+     * @throws NotImprisonedException if person chosen is not imprisoned here
+     */
     @Override
     public void deletePrisonerFromCell(Person prisoner) throws PersonNotFoundException, NotImprisonedException {
         requireNonNull(prisoner);
@@ -200,7 +205,7 @@ public class ModelManager extends ComponentManager implements Model {
         indicateAddressBookChanged();
     }
 
-    /* this is to undo add prisoner to cell */
+    /* this is to undo AddCellCommand*/
     @Override
     public void deletePrisonerFromCellFromUndo(Person prisoner, String cellAddress) {
         requireAllNonNull(prisoner, cellAddress);
@@ -209,7 +214,7 @@ public class ModelManager extends ComponentManager implements Model {
         indicateAddressBookChanged();
     }
 
-    /* this is to undo deleting a person from prison */
+    /* this is to undo DeleteCellCommand*/
     @Override
     public void addPrisonerToCellFromUndo(Person prisoner, String cellAddress) {
         requireAllNonNull(prisoner, cellAddress);
@@ -253,6 +258,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     //@@author sarahgoh97
+    /* This is for ListCellCommand */
     @Override
     public void updateFilteredPersonListForCell(Predicate<Person> predicate, String cellAddress)
             throws NonExistentCellException {

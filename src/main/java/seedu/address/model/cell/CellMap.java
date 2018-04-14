@@ -105,9 +105,12 @@ public class CellMap {
     }
 
     /**
-     * Sets new edited person to original cell, target must be imprisoned
+     * Sets new edited person to original cell
+     * Precondition: target must be imprisoned
      */
     public void setPrisonerToCell(Person target, Person updatedPrisoner) {
+        assert(target.getIsInCell());
+        assert(updatedPrisoner.getIsInCell());
         String cellAddress = target.getCellAddress().toString();
         deletePrisonerFromCell(target, cellAddress);
         addPrisonerToCell(updatedPrisoner, cellAddress);
