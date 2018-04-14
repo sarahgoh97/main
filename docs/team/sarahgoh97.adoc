@@ -52,8 +52,6 @@ include::../UserGuide.adoc[tag=map]
 
 include::../UserGuide.adoc[tag=deletecell]
 
-include::../UserGuide.adoc[tag=commandsummary]
-
 == Contributions to the Developer Guide
 
 |===
@@ -63,8 +61,6 @@ include::../UserGuide.adoc[tag=commandsummary]
 include::../DeveloperGuide.adoc[tag=cellmap]
 
 include::../DeveloperGuide.adoc[tag=FeatureContributionSarah]
-
-include::../DeveloperGuide.adoc[tag=UseCases]
 
 include::../DeveloperGuide.adoc[tag=sarahtest]
 
