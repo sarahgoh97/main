@@ -136,6 +136,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         // This can cause the tags master list to have additional tags that are not tagged to any person
         // in the person list.
         persons.setPerson(target, syncedEditedPerson);
+        //@@author sarahgoh97
         if (target.getIsInCell()) {
             cells.setPrisonerToCell(target, syncedEditedPerson);
         }
@@ -150,6 +151,7 @@ public class AddressBook implements ReadOnlyAddressBook {
 
         cells.setPrisonerToCell(changed, original);
     }
+    //@@author
 
     /**
      *  Updates the master tag list to include tags in {@code person} that are not in the list.

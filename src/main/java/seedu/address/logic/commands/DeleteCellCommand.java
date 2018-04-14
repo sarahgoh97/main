@@ -25,7 +25,6 @@ public class DeleteCellCommand extends UndoableCommand {
             + "Example: " + COMMAND_WORD + "1";
 
     public static final String MESSAGE_DELETE_CELL_SUCCESS = "Prisoner %s has been released.";
-    public static final String MESSAGE_MISSING_PERSON = "The target person cannot be missing";
     public static final String MESSAGE_NOT_IMPRISONED = "The target person is not imprisoned here";
 
     public final Index targetIndex;

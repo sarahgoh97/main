@@ -67,6 +67,7 @@ public class UniquePersonList implements Iterable<Person> {
         internalList.set(index, editedPerson);
     }
 
+    //@@author sarahgoh97
     /**
      * Replaces the person {@code target} in the list with {@code updatedPrisoner}.
      */
@@ -74,6 +75,7 @@ public class UniquePersonList implements Iterable<Person> {
         int index = internalList.indexOf(target);
         internalList.set(index, updatedPrisoner);
     }
+    //@@author
 
     /**
      * Removes the equivalent person from the list.

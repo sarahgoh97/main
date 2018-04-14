@@ -5,22 +5,30 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
+import static seedu.address.testutil.TypicalCells.FIRST_CELL_ADDRESS;
+import static seedu.address.testutil.TypicalCells.LAST_CELL_ADDRESS;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import seedu.address.logic.commands.AddCellCommand;
 import seedu.address.logic.commands.AddCommand;
+import seedu.address.logic.commands.DeleteCellCommand;
 import seedu.address.logic.commands.DeleteCommand;
+import seedu.address.logic.commands.EditCommand;
+import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.HistoryCommand;
+import seedu.address.logic.commands.ListCellCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.RedoCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Person;
+import seedu.address.testutil.EditPersonDescriptorBuilder;
 import seedu.address.testutil.PersonBuilder;
 import seedu.address.testutil.PersonUtil;
 
@@ -43,15 +51,14 @@ public class AddressBookParserTest {
                 DeleteCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
         assertEquals(new DeleteCommand(INDEX_FIRST_PERSON), command);
     }
-    //Test removed because of role in descriptor
-    //@Test
-    //public void parseCommand_edit() throws Exception {
-    //Person person = new PersonBuilder().build();
-    //EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(person).build();
-    //EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
-    // + INDEX_FIRST_PERSON.getOneBased() + " " + PersonUtil.getPersonDetails(person));
-    //assertEquals(new EditCommand(INDEX_FIRST_PERSON, descriptor), command);
-    //}
+    @Test
+    public void parseCommand_edit() throws Exception {
+        Person person = new PersonBuilder().build();
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withName("Sarah").build();
+        EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
+            + INDEX_FIRST_PERSON.getOneBased() + " n/Sarah");
+        assertEquals(new EditCommand(INDEX_FIRST_PERSON, descriptor), command);
+    }
 
     @Test
     public void parseCommand_exit() throws Exception {
@@ -108,6 +115,32 @@ public class AddressBookParserTest {
         assertTrue(parser.parseCommand(UndoCommand.COMMAND_WORD) instanceof UndoCommand);
         assertTrue(parser.parseCommand("undo 3") instanceof UndoCommand);
     }
+
+    //@@author sarahgoh97
+    @Test
+    public void parseCommand_addCellCommandWord_returnsAddCellCommand() throws Exception {
+        assertTrue(parser.parseCommand(AddCellCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased()
+                + " " + FIRST_CELL_ADDRESS) instanceof AddCellCommand);
+        assertTrue(parser.parseCommand("addcell 3 1-4") instanceof AddCellCommand);
+        assertTrue(parser.parseCommand("ac 1 1-1") instanceof AddCellCommand);
+    }
+
+    @Test
+    public void parseCommand_deleteCellCommandWord_returnsDeleteCellCommand() throws Exception {
+        assertTrue(parser.parseCommand(DeleteCellCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased())
+                instanceof DeleteCellCommand);
+        assertTrue(parser.parseCommand("deletecell 3") instanceof DeleteCellCommand);
+        assertTrue(parser.parseCommand("dc 2") instanceof DeleteCellCommand);
+    }
+
+    @Test
+    public void parseCommand_listCellCommandWord_returnsListCellCommand() throws Exception {
+        assertTrue(parser.parseCommand(ListCellCommand.COMMAND_WORD + " " + LAST_CELL_ADDRESS)
+                instanceof ListCellCommand);
+        assertTrue(parser.parseCommand("listcell 2-2") instanceof ListCellCommand);
+        assertTrue(parser.parseCommand("lc 1-1") instanceof ListCellCommand);
+    }
+    //@@author
 
     @Test
     public void parseCommand_unrecognisedInput_throwsParseException() throws Exception {

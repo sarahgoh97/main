@@ -149,6 +149,7 @@ Examples:
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 r/p t/criminal`
 
 // tag::addcell[]
+
 === Adding a prisoner to a cell: `addcell or ac` [2] (v1.3)
 
 Adds a person to one of the cells in the prison. +
@@ -170,7 +171,7 @@ Examples:
 Shows a list of all persons in the prison book. +
 Format: `list`
 
-//tag::listcell[]
+// tag::listcell[]
 === Listing prisoners in a cell : `listcell or lc` (v1.5rc)
 
 Shows a list of all persons in a prison cell in the prison book. +
@@ -180,14 +181,14 @@ Examples:
 
 * `listcell 1-1`
 * `lc 3-3`
-//end::listcell[]
+// end::listcell[]
 
-//tag::map[]
+// tag::map[]
 === Showing cells in the map: `map or m` [1] (v1.1)
 
 Shows a table of prison cells like a map in the command display (used for debugging and checking UI). +
 Format: `map`
-//end::map[]
+// end::map[]
 
 === Editing a person : `edit or e` [2]
 
@@ -200,7 +201,7 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [r/ROLE] [t/TAG]...
 * Existing values will be updated to the input values.
 * When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
 * You can remove all the person's tags by typing `t/` without specifying any tags after it.
-* You cannot edit a prisoner's address once the prisoner is imprisoned.
+* Editing an imprisoned prisoner's address will only change his old address, not address of his/her cell.
 * You cannot edit a person's role.
 ****
 
@@ -379,6 +380,11 @@ _{explain how the user can enable/disable data encryption}_
 *Q*: How do I transfer my data to another Computer? +
 *A*: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous Address Book folder.
 
+*Q*: Can I increase the size of the prison in terms of number of cells and the number of prisoners it can contain? +
+*A*: You cannot do it directly as we want to prevent users from accidentally changing these things.
+Let us know what you want and we will adjust it for you according to your custom specifications.
+
+//tag::commandsummary[]
 == Command Summary
 
 * Security Level 0: +
@@ -421,4 +427,4 @@ e.g. `adduser user/newuser pw/newpassword sl/1`
 e.g. `calDel 7` +
 ** *Add event to calendar* : `calAdd event/EVENTNAME loc/LOCATION start/STARTDATETIME end/ENDDATETIME` +
 e.g. `calAdd event/IT Skills Training loc/Computer Lab 1 start/2018-06-06 10:00:00 end/2018-06-06 12:00:00` +
-
+// end::commandsummary[]
