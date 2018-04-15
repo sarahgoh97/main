@@ -1,14 +1,13 @@
 package seedu.address.logic.commands;
 
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
-import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalUsers.PRISONLEADER;
 import static seedu.address.testutil.TypicalUsers.PRISONWARDEN;
-import static seedu.address.testutil.TypicalUsers.VALID_PASSWORD;
 import static seedu.address.testutil.TypicalUsers.VALID_USERNAME;
 import static seedu.address.testutil.TypicalUsers.getTypicalUserDatabase;
 
 import org.junit.Test;
+
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.UndoRedoStack;
 import seedu.address.model.Model;
@@ -28,7 +27,7 @@ public class DeleteUserCommandTest {
     public void execute_deleteUserOfHigherSecurityLevel_failure() {
 
         ModelManager tempModel = new ModelManager(model.getAddressBook(), new UserPrefs());
-        tempModel.attemptLogin(PRISONLEADER.getUsername(),PRISONLEADER.getPassword());
+        tempModel.attemptLogin(PRISONLEADER.getUsername(), PRISONLEADER.getPassword());
         DeleteUserCommand deleteUserCommand = prepareCommand(PRISONWARDEN.getUsername(), tempModel);
 
         assertCommandFailure(deleteUserCommand, model, NotEnoughAuthorityToDeleteException.MESSAGE);
@@ -38,7 +37,7 @@ public class DeleteUserCommandTest {
     public void execute_deleteSelf_failure() {
 
         ModelManager tempModel = new ModelManager(model.getAddressBook(), new UserPrefs());
-        tempModel.attemptLogin(PRISONLEADER.getUsername(),PRISONLEADER.getPassword());
+        tempModel.attemptLogin(PRISONLEADER.getUsername(), PRISONLEADER.getPassword());
         DeleteUserCommand deleteUserCommand = prepareCommand(PRISONLEADER.getUsername(), tempModel);
 
         assertCommandFailure(deleteUserCommand, model, CannotDeleteSelfException.MESSAGE);
@@ -48,7 +47,7 @@ public class DeleteUserCommandTest {
     public void execute_deleteNonExistentUser_failure() {
 
         ModelManager tempModel = new ModelManager(model.getAddressBook(), new UserPrefs());
-        tempModel.attemptLogin(PRISONLEADER.getUsername(),PRISONLEADER.getPassword());
+        tempModel.attemptLogin(PRISONLEADER.getUsername(), PRISONLEADER.getPassword());
         DeleteUserCommand deleteUserCommand = prepareCommand(VALID_USERNAME, tempModel);
 
         assertCommandFailure(deleteUserCommand, model, UserDoesNotExistException.MESSAGE);
@@ -60,7 +59,7 @@ public class DeleteUserCommandTest {
         return deleteUserCommand;
     }
 
-    private DeleteUserCommand prepareCommand(String username, Model tempModel){
+    private DeleteUserCommand prepareCommand(String username, Model tempModel) {
         DeleteUserCommand deleteUserCommand = new DeleteUserCommand(username);
         deleteUserCommand.setData(tempModel, new CommandHistory(), new UndoRedoStack());
         return deleteUserCommand;

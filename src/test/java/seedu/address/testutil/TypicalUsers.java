@@ -4,6 +4,7 @@ package seedu.address.testutil;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import seedu.address.model.AddressBook;
 import seedu.address.model.user.User;
 import seedu.address.model.user.exceptions.UserAlreadyExistsException;
@@ -46,6 +47,6 @@ public class TypicalUsers {
     }
 
     public static List<User> getTypicalUsers() {
-        return new ArrayList<User>(Arrays.asList(PRISONWARDEN,PRISONLEADER,PRISONGUARD));
+        return new ArrayList<User>(Arrays.asList(PRISONWARDEN, PRISONLEADER, PRISONGUARD));
     }
 }

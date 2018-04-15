@@ -1,8 +1,8 @@
 package seedu.address.logic.commands;
 
 import static seedu.address.logic.commands.AddUserCommand.MESSAGE_ALREADY_EXISTING_USER;
-import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
+import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalUsers.PRISONGUARD;
 import static seedu.address.testutil.TypicalUsers.VALID_MINIMUM_SECURITY_LEVEL;
 import static seedu.address.testutil.TypicalUsers.VALID_PASSWORD;
@@ -12,6 +12,7 @@ import static seedu.address.testutil.TypicalUsers.getTypicalUserDatabase;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.UndoRedoStack;
 import seedu.address.model.Model;
@@ -35,7 +36,7 @@ public class AddUserCommandTest {
 
         String expectedMessage = String.format(AddUserCommand.MESSAGE_ADD_USER_SUCCESS, VALID_USERNAME);
         ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
-        User userToAdd = new User(VALID_USERNAME,VALID_PASSWORD,VALID_MINIMUM_SECURITY_LEVEL);
+        User userToAdd = new User(VALID_USERNAME, VALID_PASSWORD, VALID_MINIMUM_SECURITY_LEVEL);
         expectedModel.addUser(userToAdd);
 
         assertCommandSuccess(addUserCommand, model, expectedMessage, expectedModel);
