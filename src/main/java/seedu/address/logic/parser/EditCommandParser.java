@@ -35,13 +35,10 @@ public class EditCommandParser implements Parser<EditCommand> {
         requireNonNull(args);
 
         ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG);
+                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
+                        PREFIX_ROLE, PREFIX_TAG);
 
         Index index;
-
-        if (args.contains(PREFIX_ROLE.toString())) {
-            throw new ParseException(String.format(EditCommand.MESSAGE_CANNOT_CHANGE_ROLE));
-        }
 
         try {
             index = ParserUtil.parseIndex(argMultimap.getPreamble());
@@ -59,6 +56,12 @@ public class EditCommandParser implements Parser<EditCommand> {
         } catch (IllegalValueException ive) {
             throw new ParseException(ive.getMessage(), ive);
         }
+
+        //@@author sarahgoh97
+        if (args.contains(PREFIX_ROLE.toString())) {
+            throw new ParseException(String.format(EditCommand.MESSAGE_CANNOT_CHANGE_ROLE));
+        }
+        //@@author
 
         if (!editPersonDescriptor.isAnyFieldEdited()) {
             throw new ParseException(EditCommand.MESSAGE_NOT_EDITED);

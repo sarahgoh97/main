@@ -7,7 +7,7 @@ import seedu.address.model.person.Person;
 
 /**
  * Represents a cell in the prison.
- * Guarantees: cell cannot exceed maximum number of people
+ * Guarantees: Cells created are all part of the CellMap
  */
 public class Cell {
 

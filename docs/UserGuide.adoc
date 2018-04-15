@@ -37,9 +37,9 @@ image::Ui.png[width="790"]
 e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 .  Some example commands you can try:
 
-* *`list`* : lists all contacts
-* **`add`** `n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : adds a contact named `John Doe` to the Address Book.
-* **`delete`** `3` : deletes the 3rd contact shown in the current list
+* *`list`* : lists all prisoners and guards
+* **`add`** `n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : adds a contact named `John Doe` to PrisonBook.
+* **`delete`** `3` : deletes the 3rd person shown in the current list
 * *`exit`* : exits the app
 
 .  Refer to <<Features>> for details of each command.
@@ -108,8 +108,8 @@ Adds new user to have access to the PrisonBook +
 Format: `adduser user/NEW_USERNAME pw/NEW_PASSWORD sl/SECURITY_LEVEL`
 
 Higher security levels allow users to access a greater range of commands:
+Security levels for new users must be from levels 1 to 3, refer to the list below for the differences in security levels.
 
-* Security Level 0: Most basic commands such as Login and Status.
 * Security Level 1: Most commands that only require read access.
 * Security Level 2: Most commands that require write access.
 * Security Level 3: Complete access to all commands.
@@ -122,7 +122,7 @@ Examples:
 // tag::deleteuser[]
 === Delete a user: `deleteuser` [2] (v1.5rc)
 
-Deletes a user from the PrisonBook +
+Deletes a user from PrisonBook +
 Format: `deleteuser user/USERNAME`
 
 You can only delete users which have a lower security level than yourself.
@@ -136,7 +136,7 @@ Examples:
 
 === Adding a person: `add or a` [2]
 
-Adds a person to the prison book +
+Adds a person to PrisonBook +
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS r/ROLE [t/TAG]...`
 
 [TIP]
@@ -149,6 +149,7 @@ Examples:
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 r/p t/criminal`
 
 // tag::addcell[]
+
 === Adding a prisoner to a cell: `addcell or ac` [2] (v1.3)
 
 Adds a person to one of the cells in the prison. +
@@ -167,32 +168,32 @@ Examples:
 
 === Listing all persons : `list or l` [1]
 
-Shows a list of all persons in the prison book. +
+Shows a list of all persons in PrisonBook. +
 Format: `list`
 
-//tag::listcell[]
-=== Listing prisoners in a cell : `listcell or lc` (v1.5rc)
+// tag::listcell[]
+=== Listing prisoners in a cell : `listcell or lc` [1] (v1.5rc)
 
-Shows a list of all persons in a prison cell in the prison book. +
+Shows a list of all persons in a prison cell in PrisonBook. +
 Format: `listcell CELL`
 
 Examples:
 
 * `listcell 1-1`
 * `lc 3-3`
-//end::listcell[]
+// end::listcell[]
 
-//tag::map[]
+// tag::map[]
 === Showing cells in the map: `map or m` [1] (v1.1)
 
 Shows a table of prison cells like a map in the command display (used for debugging and checking UI). +
 Format: `map`
-//end::map[]
+// end::map[]
 
 === Editing a person : `edit or e` [2]
 
-Edits an existing person in the prison book. +
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [r/ROLE] [t/TAG]...`
+Edits an existing person in PrisonBook. +
+Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]...`
 
 ****
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the last person listing. The index *must be a positive integer* 1, 2, 3, ...
@@ -200,7 +201,7 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [r/ROLE] [t/TAG]...
 * Existing values will be updated to the input values.
 * When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
 * You can remove all the person's tags by typing `t/` without specifying any tags after it.
-* You cannot edit a prisoner's address once the prisoner is imprisoned.
+* Editing an imprisoned prisoner's address will only change his old address, not address of his/her cell.
 * You cannot edit a person's role.
 ****
 
@@ -237,31 +238,41 @@ Returns any person having names `Betsy` and are tagged `Friends`
 
 // tag::calendar[]
 === Various commands to interact with Google Calendar
-For the first time that you open the calendar, you will be prompted to login to the PrisonBook Google account. The PrisonBook app will attempt to open the browser for you, alternatively you can copy the link and login with the following details:
+
+For the first time that you open the calendar, you will be prompted to login to PrisonBook Google account. The PrisonBook app will attempt to open the browser for you, alternatively you can copy the link and login with the following details:
+
 * Google Username: prisonbooksystem | Password: prisonbook2018
 
 ==== View upcoming events in the calendar: `calendar or cal` [1] (v1.3)
+
+Displays first 10 events in the calendar below Command Line Input. +
 Format: `calendar`
 
 ==== Add event to the calendar: `calAdd or calA` [3] (v1.4)
+
+Adds an event to the calendar. +
 Format: `calAdd event/EVENTNAME loc/LOCATION start/STARTDATETIME end/ENDDATETIME`
 
 Examples:
+
 * `calAdd event/IT Skills Training loc/Computer Lab 1 start/2018-06-06 10:00:00 end/2018-06-06 12:00:00` +
 Adds an event `IT Skills Training` at `Computer Lab 1` from `June 6th, 2018 10am` to `June 6th, 2018 12pm`
 
 ==== Delete event from the calendar: `calDel or calD` [3] (v1.5)
+
+Deletes an event from the first 10 events in the calendar. +
 Format: `calDel EVENTNUMBER`
 
 Examples:
-* `calDel 11` +
-Deletes the 11th event on the calendar events list
+
+* `calDel 5` +
+Deletes the 5th event on the calendar events list.
 
 // end::calendar[]
 
 === Deleting a person : `delete or d` [2]
 
-Deletes the specified person from the prison book. +
+Deletes the specified person from PrisonBook. +
 Format: `delete INDEX`
 
 ****
@@ -274,7 +285,7 @@ Examples:
 
 * `list` +
 `delete 2` +
-Deletes the 2nd person in the prison book.
+Deletes the 2nd person in PrisonBook.
 * `find Betsy` +
 `delete 1` +
 Deletes the 1st person in the results of the `find` command.
@@ -282,7 +293,7 @@ Deletes the 1st person in the results of the `find` command.
 //tag::deletecell[]
 === Deleting a person from a cell : `deletecell or dc` [2] (v1.4)
 
-Deletes the specified person from his/her cell in the PrisonBook. +
+Deletes the specified person from his/her cell in PrisonBook. +
 Format: `deletecell INDEX`
 
 ****
@@ -295,7 +306,7 @@ Format: `deletecell INDEX`
 Examples:
 
 * `dc 1` +
-Deletes the first person in the prison book if he/she is imprisoned here.
+Deletes the first person in PrisonBook from his/her cell if he/she is imprisoned here.
 * `listcell 1-1` +
 `deletecell 1` +
 Deletes the first person in the cell 1-1 if there are any prisoners inside it.
@@ -314,12 +325,12 @@ Pressing the kbd:[&uarr;] and kbd:[&darr;] arrows will display the previous and 
 // tag::undoredo[]
 === Undoing previous command : `undo or u` [0]
 
-Restores the prison book to the state before the previous _undoable_ command was executed. +
+Restores PrisonBook to the state before the previous _undoable_ command was executed. +
 Format: `undo`
 
 [NOTE]
 ====
-Undoable commands: those commands that modify the prison book's content (`add`, `delete`, `edit` and `clear`).
+Undoable commands: those commands that modify PrisonBook's content (`add`, `delete`, `edit` and `clear`).
 ====
 
 Examples:
@@ -333,7 +344,7 @@ Examples:
 The `undo` command fails as there are no undoable commands executed previously.
 
 * `delete 1` +
-`undo` (reverses the `delete 1` command) +
+`undo` (reverses the `delete 1` command)
 
 === Redoing the previously undone command : `redo or r` [0]
 
@@ -355,7 +366,7 @@ The `redo` command fails as there are no `undo` commands executed previously.
 `undo` (reverses the `edit` command) +
 `undo` (reverses the `delete 1` command) +
 `redo` (reapplies the `delete 1` command) +
-`redo` (reapplies the `edit` command) +
+`redo` (reapplies the `edit` command)
 // end::undoredo[]
 
 === Exiting the program : `exit` [0]
@@ -379,6 +390,11 @@ _{explain how the user can enable/disable data encryption}_
 *Q*: How do I transfer my data to another Computer? +
 *A*: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous Address Book folder.
 
+*Q*: Can I increase the size of the prison in terms of number of cells and the number of prisoners it can contain? +
+*A*: You cannot do it directly as we want to prevent users from accidentally changing these things.
+Let us know what you want and we will adjust it for you according to your custom specifications.
+
+//tag::commandsummary[]
 == Command Summary
 
 * Security Level 0: +
@@ -421,4 +437,4 @@ e.g. `adduser user/newuser pw/newpassword sl/1`
 e.g. `calDel 7` +
 ** *Add event to calendar* : `calAdd event/EVENTNAME loc/LOCATION start/STARTDATETIME end/ENDDATETIME` +
 e.g. `calAdd event/IT Skills Training loc/Computer Lab 1 start/2018-06-06 10:00:00 end/2018-06-06 12:00:00` +
-
+// end::commandsummary[]

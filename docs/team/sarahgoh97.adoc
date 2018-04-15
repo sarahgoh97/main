@@ -1,4 +1,4 @@
-= Sarah Goh Shi Ning- Project Portfolio
+= Sarah Goh Shi Ning - Project Portfolio
 :imagesDir: ../images
 :stylesDir: ../stylesheets
 
@@ -8,28 +8,35 @@
 
 == Overview
 
-Prisonbook is a desktop address book application used for Prison Guards/Inmates management. The user interacts with it using a CLI, and it has a GUI created with JavaFX. It is written in Java, and has about 10 kLoC.
+Prisonbook is a desktop address book application used for Prison Guards/Inmates management.
+The user interacts with it using a CLI, and it has a GUI created with JavaFX.
+It is written in Java, and has about 10 kLoC.
 
 == Summary of contributions
 
 * *Major enhancement*: Allowing users to manage the prison cells.
 ** What it does: There is a cell map that has a fixed size and certain number of cells.
-Allows guards and prison wardens to add prisoners to cells and to remove them and view them in cells.
-** Justification: This helps to keep track of prisoners and their locations.
+It allows guards and prison wardens to add prisoners to cells and to remove them.
+It also allows guards and prison wardens to view a list of prisoners in a specified cell to help them do the previously mentioned features.
+** Justification: This helps to keep track of prisoners and their locations and to take into consideration prisoner combinations
+when adding and removing them from cells.
 
-* *Minor enhancement*: Changing browser panel to show map of prison cells and initial GUI of application.
-
+* *Minor enhancement*: Map of prison cells on GUI. It hides information on GUI before logging in and after logging out.
+It will also show the list of persons in PrisonBook and people in the map when logged in successfully.
+** Justification: This helps to boost security for the application, by preventing users who have insufficient security level to view classified information.
 * *Code contributed*: [https://github.com/CS2103JAN2018-T11-B2/main/blob/master/collated/functional/sarahgoh97.md[Functional code]] [https://github.com/CS2103JAN2018-T11-B2/main/blob/master/collated/test/sarahgoh97.md[Test code]]
 
 * *Other contributions*:
 
 ** Project management:
 *** Managed release `v1.3` on GitHub
+*** Opened and tagged issues
 *** Assigned issues to different team members
 ** Enhancements to existing features:
 *** Status bar shows number of people in the PrisonBook
+*** Map panel to show cell system of prison
 ** Documentation:
-*** Did slight revisions to existing contents of the User Guide
+*** Did revisions to existing contents of the User Guide and Developer Guide
 
 == Contributions to the User Guide
 
@@ -39,9 +46,12 @@ Allows guards and prison wardens to add prisoners to cells and to remove them an
 |===
 
 include::../UserGuide.adoc[tag=addcell]
-include::../UserGuide.adoc[tag=listcell]
-include::../UserGuide.adoc[tag=map]
+
 include::../UserGuide.adoc[tag=deletecell]
+
+include::../UserGuide.adoc[tag=listcell]
+
+include::../UserGuide.adoc[tag=map]
 
 == Contributions to the Developer Guide
 
@@ -52,4 +62,6 @@ include::../UserGuide.adoc[tag=deletecell]
 include::../DeveloperGuide.adoc[tag=cellmap]
 
 include::../DeveloperGuide.adoc[tag=FeatureContributionSarah]
+
+include::../DeveloperGuide.adoc[tag=sarahtest]
 

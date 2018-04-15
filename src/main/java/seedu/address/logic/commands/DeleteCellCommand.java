@@ -25,6 +25,7 @@ public class DeleteCellCommand extends UndoableCommand {
             + "Example: " + COMMAND_WORD + "1";
 
     public static final String MESSAGE_DELETE_CELL_SUCCESS = "Prisoner %s has been released.";
+    public static final String MESSAGE_NOT_IMPRISONED = "The target person is not imprisoned here";
 
     public final Index targetIndex;
 
@@ -45,9 +46,9 @@ public class DeleteCellCommand extends UndoableCommand {
         try {
             model.deletePrisonerFromCell(prisonerToDelete);
         } catch (PersonNotFoundException pnfe) {
-            throw new CommandException("The target person cannot be missing");
+            throw new AssertionError("The target person cannot be missing");
         } catch (NotImprisonedException nie) {
-            throw new CommandException("The target person is not imprisoned here");
+            throw new CommandException(MESSAGE_NOT_IMPRISONED);
         }
 
         return new CommandResult(String.format(MESSAGE_DELETE_CELL_SUCCESS, prisonerToDelete.getName().toString()));

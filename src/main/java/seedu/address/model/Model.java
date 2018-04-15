@@ -104,6 +104,7 @@ public interface Model {
      */
     void updateFilteredPersonList(Predicate<Person> predicate);
 
+    //@@author sarahgoh97
     /**
      * Updates the filter of the filtered person list to show only people in the cell.
      */

@@ -132,6 +132,7 @@ import seedu.address.model.user.exceptions.UserDoesNotExistException;
 public class DeleteUserCommand extends UndoableCommand {
     public static final String COMMAND_WORD = "deleteuser";
     public static final String COMMAND_ALIAS = "du";
+    public static final int MIN_SECURITY_LEVEL = 2;
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Deletes specified user.\n"
             + "Parameters: user/USERNAME_TO_BE_DELETED\n"
@@ -172,12 +173,31 @@ public class DeleteUserCommand extends UndoableCommand {
     }
 
     @Override
+    /**
+     * Returns the MIN_SECURITY_LEVEL to caller
+     */
+    public int getMinSecurityLevel() {
+        return MIN_SECURITY_LEVEL;
+    }
+
+    @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof DeleteUserCommand // instanceof handles nulls
                 && this.userToDelete.equals(((DeleteUserCommand) other).userToDelete)); // state check
     }
 }
+```
+###### \java\seedu\address\logic\commands\EditCommand.java
+``` java
+
+    @Override
+    /**
+     * Returns the MIN_SECURITY_LEVEL to caller
+     */
+    public int getMinSecurityLevel() {
+        return MIN_SECURITY_LEVEL;
+    }
 ```
 ###### \java\seedu\address\logic\commands\LoginCommand.java
 ``` java
@@ -586,6 +606,30 @@ public class LoginCommandParser implements Parser<LoginCommand> {
 ```
 ###### \java\seedu\address\model\ModelManager.java
 ``` java
+        logger.info("Initialising session");
+        session = new Session();
+        logger.info("Initialised session");
+        //@@ author
+    }
+
+    public ModelManager() {
+        this(new AddressBook(), new UserPrefs());
+    }
+
+    @Override
+    public void resetData(ReadOnlyAddressBook newData) {
+        addressBook.resetData(newData);
+        indicateAddressBookChanged();
+    }
+
+    @Override
+    public ReadOnlyAddressBook getAddressBook() {
+        return addressBook;
+    }
+
+```
+###### \java\seedu\address\model\ModelManager.java
+``` java
     @Override
     public Session getSession() {
         return session;
@@ -643,6 +687,63 @@ public class LoginCommandParser implements Parser<LoginCommand> {
         addressBook.deleteUser(userToDelete, session.getUsername());
         indicateAddressBookChanged();
     }
+```
+###### \java\seedu\address\model\person\Role.java
+``` java
+package seedu.address.model.person;
+
+import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.util.AppUtil.checkArgument;
+
+/**
+ * Represents a Person's role in the address book.
+ * Guarantees: immutable; is valid as declared in {@link #isValidRole(String)}
+ */
+public class Role {
+
+
+    public static final String MESSAGE_ROLE_CONSTRAINTS =
+            "Role can only take on the values 'g' or 'p', which represents Guard or Prisoner respectively";
+    public static final Role PRISONER = new Role("p");
+    public static final Role GUARD = new Role("g");
+    public final String value;
+
+    /**
+     * Constructs a {@code Role}.
+     *
+     * @param role 'g' or 'p' to represent Guard or Prisoner respectively.
+     */
+    public Role(String role) {
+        requireNonNull(role);
+        checkArgument(isValidRole(role), MESSAGE_ROLE_CONSTRAINTS);
+        this.value = role;
+    }
+
+    /**
+     * Returns true if a given string is a valid person phone number.
+     */
+    public static boolean isValidRole(String test) {
+        return test.equals("g") || test.equals("p");
+    }
+
+    @Override
+    public String toString() {
+        return value;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof Role // instanceof handles nulls
+                && this.value.equals(((Role) other).value)); // state check
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
+
+}
 ```
 ###### \java\seedu\address\model\ReadOnlyAddressBook.java
 ``` java
@@ -956,6 +1057,21 @@ public class User {
 
 }
 
+```
+###### \java\seedu\address\model\util\SampleDataUtil.java
+``` java
+    public static User[] getSampleUsers() {
+        return new User[] {
+            new User("prisonguard", "password1", 1),
+            new User("prisonleader", "password2", 2),
+            new User("prisonwarden", "password3", 3),
+            new User("prisonguard2", "password1", 1),
+            new User("prisonguard3", "password1", 1),
+            new User("prisonleader2", "password2", 2),
+            new User("prisonleader3", "password2", 2),
+            new User("prisonwarden2", "password3", 3)
+        };
+    }
 ```
 ###### \java\seedu\address\storage\XmlAdaptedUser.java
 ``` java
