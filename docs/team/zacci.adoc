@@ -19,7 +19,7 @@ Prisonbook is a desktop address book application used for Prison Guards/Inmates 
 
 * *Minor enhancement*: added Prisoner and Guard tags to facilitate all further functionality to our PrisonBook
 
-* *Code contributed*: [https://github.com[Functional code]] [https://github.com[Test code]] _{give links to collated code files}_
+* *Code contributed*: [https://github.com/CS2103JAN2018-T11-B2/main/blob/master/collated/functional/zacci.md[Functional code]] [https://github.com/CS2103JAN2018-T11-B2/main/blob/master/collated/test/zacci.md[Test code]]
 
 * *Other contributions*:
 
