@@ -44,7 +44,7 @@ public class AddUserCommandTest {
 
     @Test
     public void execute_userAlreadyExists_failure() {
-        AddUserCommand addUserCommand = prepareCommand(PRISONGUARD.getUsername(),PRISONGUARD.getPassword(),
+        AddUserCommand addUserCommand = prepareCommand(PRISONGUARD.getUsername(), PRISONGUARD.getPassword(),
                 PRISONGUARD.getSecurityLevel());
 
         assertCommandFailure(addUserCommand, model,
