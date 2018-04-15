@@ -84,7 +84,10 @@ public class TypicalPersons {
             }
         }
         for (Cell cell: getTypicalCells()) {
-            ab.addCell(cell);
+            ArrayList<Person> prisoners = cell.getPrisoners();
+            String cellAddress = cell.getCellAddress();
+            boolean isLast = cell.getIsLast();
+            ab.addCell(new Cell(prisoners, cellAddress, isLast));
         }
         return ab;
     }

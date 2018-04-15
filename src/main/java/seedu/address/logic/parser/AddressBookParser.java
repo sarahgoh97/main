@@ -91,7 +91,6 @@ public class AddressBookParser {
         case CalendarDeleteCommand.COMMAND_WORD:
         case CalendarDeleteCommand.COMMAND_ALIAS:
             return new CalendarDeleteCommandParser().parse(arguments);
-        //@@author
 
         //@@author zacci
         case LoginCommand.COMMAND_WORD:

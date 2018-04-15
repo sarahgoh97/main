@@ -136,6 +136,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         // This can cause the tags master list to have additional tags that are not tagged to any person
         // in the person list.
         persons.setPerson(target, syncedEditedPerson);
+        //@@author sarahgoh97
         if (target.getIsInCell()) {
             cells.setPrisonerToCell(target, syncedEditedPerson);
         }
@@ -150,6 +151,7 @@ public class AddressBook implements ReadOnlyAddressBook {
 
         cells.setPrisonerToCell(changed, original);
     }
+    //@@author
 
     /**
      *  Updates the master tag list to include tags in {@code person} that are not in the list.
@@ -215,7 +217,7 @@ public class AddressBook implements ReadOnlyAddressBook {
      * @param prisoner to be added into the cell
      * @throws FullCellException if the cell already has the maximum number of prisoners
      * @throws NonExistentCellException if the cell address is invalid
-     * @throws NotPrisonerException is the cell is
+     * @throws NotPrisonerException if the Person passed is not a prisoner
      */
     public void addPrisonerToCell(String cellAddress, Person prisoner) throws FullCellException,
             NonExistentCellException, NotPrisonerException, AlreadyInCellException {
@@ -236,8 +238,8 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     /**
-     * Adding prisoner to cellmap once exceptions cleared
-     * @param prisoner is the correct person without requiring editting
+     * Adding prisoner to CellMap once exceptions cleared
+     * @param prisoner is the correct person without requiring editing
      * @param cellAddress is the String corresponding to the cell shown on map
      */
     public void addPrisonerToCellPermitted(Person prisoner, String cellAddress) {

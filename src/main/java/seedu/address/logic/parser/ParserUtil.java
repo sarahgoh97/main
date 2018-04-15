@@ -285,7 +285,7 @@ public class ParserUtil {
         String theDateTime = dateTime.replaceAll("[\\[\\]]", "").replaceAll("Optional", "");
 
         TemporalAccessor ta = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").parse(theDateTime);
-        String strDateTime = LocalDateTime.from(ta).toString() + ":00";
+        String strDateTime = LocalDateTime.from(ta).toString() + ":00+08:00";
         return new DateTime(strDateTime);
     }
 
