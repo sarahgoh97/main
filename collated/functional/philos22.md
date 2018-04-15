@@ -408,8 +408,9 @@ public class CalendarDeleteCommandParser implements Parser<CalendarDeleteCommand
     public CalendarDeleteCommand parse(String args) throws ParseException {
         try {
             int intCheck = Integer.parseInt(args);
-        } catch(Exception e) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, CalendarDeleteCommand.MESSAGE_USAGE));
+        } catch (Exception e) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    CalendarDeleteCommand.MESSAGE_USAGE));
         }
 
         return new CalendarDeleteCommand(args.trim());
@@ -436,7 +437,8 @@ public class CalendarDeleteCommandParser implements Parser<CalendarDeleteCommand
         if ((arePrefixesPresent(argMultimap, PREFIX_NAME)) && (arePrefixesPresent(argMultimap, PREFIX_TAG))) {
             String[] nameKeywords = argMultimap.getValue(PREFIX_NAME).get().split("\\s+");
             String[] tagKeywords = argMultimap.getValue(PREFIX_TAG).get().split("\\s+");
-            return new FindCommand(new ContainsKeywordsPredicate(Arrays.asList(nameKeywords), Arrays.asList(tagKeywords)));
+            return new FindCommand(new ContainsKeywordsPredicate(Arrays.asList(nameKeywords),
+                    Arrays.asList(tagKeywords)));
         } else if (arePrefixesPresent(argMultimap, PREFIX_NAME)) {
             String[] nameKeywords = argMultimap.getValue(PREFIX_NAME).get().split("\\s+");
             return new FindCommand(new NameContainsKeywordsPredicate(Arrays.asList(nameKeywords)));
@@ -463,7 +465,7 @@ public class CalendarDeleteCommandParser implements Parser<CalendarDeleteCommand
     /**
      * Parses a {@code Optional<String> DateTime} if present.
      */
-    public static DateTime parseDateTime(String dateTime) throws DateTimeParseException{
+    public static DateTime parseDateTime(String dateTime) throws DateTimeParseException {
 
         String theDateTime = dateTime.replaceAll("[\\[\\]]", "").replaceAll("Optional", "");
 
@@ -536,7 +538,7 @@ public class TagContainsKeywordsPredicate implements Predicate<Person> {
     @Override
     public boolean test(Person person) {
         // Making a string of all tags
-        if ( person.getTags().size() == 0 ) {
+        if (person.getTags().size() == 0) {
             return false;
         }
         Iterator tagIteration = person.getTags().iterator();

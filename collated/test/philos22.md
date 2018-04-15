@@ -8,6 +8,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.junit.Test;
 
 import com.google.api.client.util.DateTime;
@@ -50,6 +51,9 @@ public class CalendarTest extends Calendar {
         eventIDs.add(event);
     }
 
+    /**
+     * Manually creating a list of events for testing
+     */
     public static String listEventsTest() {
         StringBuilder result = new StringBuilder();
         for (String eventLine : pseudoEventList) {
@@ -178,7 +182,8 @@ public class CalendarAddCommandParserTest {
 
     @Test
     public void parse_emptyArg_throwsParseException() {
-        assertParseFailure(parser, "     ", String.format(MESSAGE_INVALID_COMMAND_FORMAT, CalendarAddCommand.MESSAGE_USAGE));
+        assertParseFailure(parser, "     ", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                CalendarAddCommand.MESSAGE_USAGE));
     }
 
     @Test
@@ -189,12 +194,17 @@ public class CalendarAddCommandParserTest {
         String startTime = "2019-01-01 12:00:00";
         String endTime = "2019-01-01 13:00:00";
         CalendarAddCommand expectedCalendarAddCommand =
-                new CalendarAddCommand(eventName, location, ParserUtil.parseDateTime(startTime), ParserUtil.parseDateTime(endTime));
+                new CalendarAddCommand(eventName, location, ParserUtil.parseDateTime(startTime),
+                        ParserUtil.parseDateTime(endTime));
 
-        assertParseSuccess(parser, "calAdd event/CalendarTest loc/CalendarLocation start/2019-01-01 12:00:00 end/2019-01-01 13:00:00", expectedCalendarAddCommand);
+        assertParseSuccess(parser,
+                "calAdd event/CalendarTest loc/CalendarLocation start/2019-01-01 12:00:00 end/2019-01-01 13:00:00",
+                expectedCalendarAddCommand);
 
         // multiple whitespaces between keywords
-        assertParseSuccess(parser, "calAdd \n event/CalendarTest \t \n loc/CalendarLocation \t start/2019-01-01 12:00:00 \n end/2019-01-01 13:00:00", expectedCalendarAddCommand);
+        assertParseSuccess(parser,
+                "calAdd \n event/CalendarTest \t \n loc/CalendarLocation \t start/2019-01-01 12:00:00 \n "
+                        + "end/2019-01-01 13:00:00", expectedCalendarAddCommand);
     }
 
     @Test
@@ -202,22 +212,27 @@ public class CalendarAddCommandParserTest {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, CalendarAddCommand.MESSAGE_USAGE);
 
         //missing event prefix
-        assertParseFailure(parser, COMMAND_WORD + " " + VALID_EVENT_NAME + EVENT_LOCATION_DESC + EVENT_START_DESC + EVENT_END_DESC, expectedMessage);
+        assertParseFailure(parser, COMMAND_WORD + " " + VALID_EVENT_NAME + EVENT_LOCATION_DESC
+                + EVENT_START_DESC + EVENT_END_DESC, expectedMessage);
 
         //missing location prefix
-        assertParseFailure(parser, COMMAND_WORD + " " + EVENT_NAME_DESC+ VALID_EVENT_LOCATION + EVENT_START_DESC + EVENT_END_DESC, expectedMessage);
+        assertParseFailure(parser, COMMAND_WORD + " " + EVENT_NAME_DESC+ VALID_EVENT_LOCATION + EVENT_START_DESC
+                 + EVENT_END_DESC, expectedMessage);
 
         //missing startDateTime prefix
-        assertParseFailure(parser, COMMAND_WORD + " " + EVENT_NAME_DESC + EVENT_LOCATION_DESC + VALID_EVENT_START + EVENT_END_DESC, expectedMessage);
+        assertParseFailure(parser, COMMAND_WORD + " " + EVENT_NAME_DESC + EVENT_LOCATION_DESC + VALID_EVENT_START
+                + EVENT_END_DESC, expectedMessage);
 
         //missing endDateTime prefix
-        assertParseFailure(parser, COMMAND_WORD + " " + EVENT_NAME_DESC + EVENT_LOCATION_DESC + EVENT_START_DESC + VALID_EVENT_END, expectedMessage);
+        assertParseFailure(parser, COMMAND_WORD + " " + EVENT_NAME_DESC + EVENT_LOCATION_DESC + EVENT_START_DESC
+                + VALID_EVENT_END, expectedMessage);
     }
 
     @Test
     public void parse_invalidArgs_failure() {
         //invalid date format - start and end dates are the same scenario
-        assertParseFailure(parser, COMMAND_WORD + " " + EVENT_NAME_DESC + EVENT_LOCATION_DESC + INVALID_EVENT_START + EVENT_END_DESC, MESSAGE_INVALID_DATETIME_FORMAT);
+        assertParseFailure(parser, COMMAND_WORD + " " + EVENT_NAME_DESC + EVENT_LOCATION_DESC + INVALID_EVENT_START
+                + EVENT_END_DESC, MESSAGE_INVALID_DATETIME_FORMAT);
     }
 
 }
@@ -231,7 +246,6 @@ import static org.junit.Assert.assertEquals;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
-
 
 import java.util.ArrayList;
 
@@ -250,12 +264,13 @@ public class CalendarDeleteCommandParserTest {
     public void parse_validArgs_returnsDeleteCommand() {
         ArrayList<String> eventIdsTest = new ArrayList<>(); //Same logic as delete event command
         eventIdsTest.add("a1b2c3d4e5f6g7");
-        assertEquals(eventIdsTest.get(1-1), "a1b2c3d4e5f6g7");
+        assertEquals(eventIdsTest.get(1 - 1), "a1b2c3d4e5f6g7");
     }
 
     @Test
     public void parse_invalidArgs_throwsParseException() {
-        assertParseFailure(parser, "a", String.format(MESSAGE_INVALID_COMMAND_FORMAT, CalendarDeleteCommand.MESSAGE_USAGE));
+        assertParseFailure(parser, "a", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                CalendarDeleteCommand.MESSAGE_USAGE));
     }
 }
 ```
@@ -284,23 +299,23 @@ public class FindCommandParserTest {
         assertParseFailure(parser, "     ", String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
     }
 
-        @Test
-        public void parse_validArgs_returnsFindCommand() {
-            // no leading and trailing whitespaces
-            List<String> nameList = new ArrayList<>();
-            nameList.add("Alice");
-            nameList.add("Bob");
-            List<String> tagList = new ArrayList<>();
-            tagList.add("Tag1");
-            tagList.add("Tag2");
-            FindCommand expectedFindCommand =
-                    new FindCommand(new ContainsKeywordsPredicate(nameList, tagList));
+    @Test
+    public void parse_validArgs_returnsFindCommand() {
+        // no leading and trailing whitespaces
+        List<String> nameList = new ArrayList<>();
+        nameList.add("Alice");
+        nameList.add("Bob");
+        List<String> tagList = new ArrayList<>();
+        tagList.add("Tag1");
+        tagList.add("Tag2");
+        FindCommand expectedFindCommand =
+                new FindCommand(new ContainsKeywordsPredicate(nameList, tagList));
 
-            assertParseSuccess(parser, "find n/Alice Bob t/Tag1 Tag2", expectedFindCommand);
+        assertParseSuccess(parser, "find n/Alice Bob t/Tag1 Tag2", expectedFindCommand);
 
-            // multiple whitespaces between keywords
-            assertParseSuccess(parser, "find \n n/Alice \n \t Bob  \t t/Tag1 \n Tag2", expectedFindCommand);
-        }
+        // multiple whitespaces between keywords
+        assertParseSuccess(parser, "find \n n/Alice \n \t Bob  \t t/Tag1 \n Tag2", expectedFindCommand);
+    }
 
 }
 ```
