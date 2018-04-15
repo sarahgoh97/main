@@ -1211,9 +1211,9 @@ Allows guards and prison warden to view the upcoming 10 events scheduled in Goog
    Test case: `calD 2` +
    Expected: The second event (Event 2) will have been deleted next time you call the `cal` list event command.
 
-.. Prerequisites: You must be logged in with a minimum security level of 2. +
-   Test case: `delete user/nonexistentuser`
-   Expected: `The username does not exist`
+.. Prerequisites: Have sufficient security level[3] +
+   Test case: `calD abc`
+   Expected: The application will not allow you to call this  because `abc` is not a valid event number listed.
 
 === Minor Feature: Find by Tags
 . Allow user to find persons by tags as well as names
