@@ -1212,8 +1212,8 @@ Allows guards and prison warden to view the upcoming 10 events scheduled in Goog
    Expected: The second event (Event 2) will have been deleted next time you call the `cal` list event command.
 
 .. Prerequisites: Have sufficient security level[3] +
-   Test case: `calD abc`
-   Expected: The application will not allow you to call this  because `abc` is not a valid event number listed.
+   Test case: `calD 11`
+   Expected: Since only 10 events are listed, this command will not affect anything as there is no EventID linked to 11.
 
 === Minor Feature: Find by Tags
 . Allow user to find persons by tags as well as names
