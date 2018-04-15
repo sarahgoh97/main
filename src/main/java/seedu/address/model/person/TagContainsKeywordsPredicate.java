@@ -19,6 +19,9 @@ public class TagContainsKeywordsPredicate implements Predicate<Person> {
 
     @Override
     public boolean test(Person person) {
+        if (person.getTags() == null) {
+            return false;
+        }
         // Making a string of all tags
         Iterator tagIteration = person.getTags().iterator();
         StringBuilder strBuild = new StringBuilder();

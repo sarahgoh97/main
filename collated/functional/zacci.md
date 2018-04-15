@@ -20,14 +20,12 @@ public class AddUserCommand extends Command {
     public static final int MIN_SECURITY_LEVEL = 3;
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a new user to the PrisonBook.\n"
-            + "Parameters: user/NEW_USERNAME pw/NEW_PASSWORD sl/SECURITY_LEVEL (integer from 0 tp 3)...\n"
+            + "Parameters: user/NEW_USERNAME pw/NEW_PASSWORD sl/SECURITY_LEVEL (integer from 0 to 3)...\n"
             + "Example: " + COMMAND_WORD + " user/newuser1 pw/password1 sl/2";
 
     public static final String MESSAGE_ADD_USER_SUCCESS = "New user %s added to PrisonBook";
     public static final String MESSAGE_ALREADY_EXISTING_USER = "%s is already a user in PrisonBook";
     private final String username;
-    private final String password;
-    private final int securityLevel;
 
     private User userToAdd;
 
@@ -40,8 +38,6 @@ public class AddUserCommand extends Command {
         requireNonNull(username);
         requireNonNull(password);
         this.username = username;
-        this.password = password;
-        this.securityLevel = securityLevel;
         userToAdd = new User(username, password, securityLevel);
     }
 
@@ -205,6 +201,8 @@ package seedu.address.logic.commands;
 
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
+import seedu.address.logic.commands.exceptions.CommandException;
+
 /**
  * Attempts to log in user with given Username and Password
  */
@@ -231,12 +229,12 @@ public class LoginCommand extends Command {
     }
 
     @Override
-    public CommandResult execute() {
+    public CommandResult execute() throws CommandException {
         if (model.checkIsLoggedIn()) {
-            return new CommandResult(MESSAGE_ALREADY_LOGGED_IN);
+            throw new CommandException(MESSAGE_ALREADY_LOGGED_IN);
         }
         if (!model.attemptLogin(username, password)) {
-            return new CommandResult(MESSAGE_LOGIN_FAILURE);
+            throw new CommandException(MESSAGE_LOGIN_FAILURE);
         } else {
             model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
             return new CommandResult(MESSAGE_LOGIN_SUCCESS);
@@ -253,6 +251,7 @@ import java.util.ArrayList;
 
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.events.ui.HideMapEvent;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 
 /**
@@ -266,10 +265,10 @@ public class LogoutCommand extends Command {
     public static final String MESSAGE_USER_NOT_LOGGED_IN = "You are not currently logged in";
 
     @Override
-    public CommandResult execute() {
+    public CommandResult execute() throws CommandException {
         undoRedoStack.clearStack();
         if (!model.checkIsLoggedIn()) {
-            return new CommandResult(MESSAGE_USER_NOT_LOGGED_IN);
+            throw new CommandException(MESSAGE_USER_NOT_LOGGED_IN);
         }
         model.logout();
         model.updateFilteredPersonList(new NameContainsKeywordsPredicate(new ArrayList<String>()));
@@ -401,6 +400,61 @@ public class AddUserCommandParser implements Parser<AddUserCommand> {
     public static final Prefix PREFIX_USERNAME = new Prefix("user/");
     public static final Prefix PREFIX_PASSWORD = new Prefix("pw/");
     public static final Prefix PREFIX_SECURITY_LEVEL = new Prefix("sl/");
+```
+###### \java\seedu\address\logic\parser\DeleteUserCommandParser.java
+``` java
+package seedu.address.logic.parser;
+
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_USERNAME;
+
+import java.util.stream.Stream;
+
+import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.logic.commands.DeleteUserCommand;
+import seedu.address.logic.parser.exceptions.ParseException;
+
+/**
+ * Parses input arguments and creates a new DeleteUserCommand object
+ */
+public class DeleteUserCommandParser implements Parser<DeleteUserCommand> {
+
+    /**
+     * Parses the given {@code String} of arguments in the context of the DeleteUserCommand
+     * and returns an AddUserCommand object for execution.
+     * @throws ParseException if the user input does not conform the expected format
+     */
+    public DeleteUserCommand parse(String args) throws ParseException {
+        ArgumentMultimap argMultimap =
+                ArgumentTokenizer.tokenize(args, PREFIX_USERNAME);
+
+        if (!arePrefixesPresent(argMultimap, PREFIX_USERNAME)
+                || !argMultimap.getPreamble().isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteUserCommand.MESSAGE_USAGE));
+        }
+
+        String username = "";
+
+        try {
+            username = ParserUtil.parseUsername(argMultimap.getValue(PREFIX_USERNAME));
+        } catch (IllegalValueException ive) {
+            throw new ParseException(ive.getMessage(), ive);
+        }
+
+
+        return new DeleteUserCommand(username);
+
+    }
+
+    /**
+     * Returns true if none of the prefixes contains empty {@code Optional} values in the given
+     * {@code ArgumentMultimap}.
+     */
+    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
+        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
+    }
+
+}
 ```
 ###### \java\seedu\address\logic\parser\LoginCommandParser.java
 ``` java
@@ -654,6 +708,7 @@ public class LoginCommandParser implements Parser<LoginCommand> {
 
     @Override
     public boolean attemptLogin(String username, String password) {
+        logger.info("Current session: " + getSessionDetails());
         int securityLevel = addressBook.attemptLogin(username, password);
         if (securityLevel < 0) {
             return false;
@@ -678,6 +733,7 @@ public class LoginCommandParser implements Parser<LoginCommand> {
     public void addUser(User userToAdd) throws UserAlreadyExistsException {
         addressBook.addUser(userToAdd);
         indicateAddressBookChanged();
+        logger.info("New user added: " + userToAdd.getUsername());
     }
 
     @Override
@@ -686,6 +742,7 @@ public class LoginCommandParser implements Parser<LoginCommand> {
             NotEnoughAuthorityToDeleteException {
         addressBook.deleteUser(userToDelete, session.getUsername());
         indicateAddressBookChanged();
+        logger.info("User deleted: " + userToDelete);
     }
 ```
 ###### \java\seedu\address\model\person\Role.java
