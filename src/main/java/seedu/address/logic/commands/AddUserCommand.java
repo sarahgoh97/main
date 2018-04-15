@@ -24,8 +24,6 @@ public class AddUserCommand extends Command {
     public static final String MESSAGE_ADD_USER_SUCCESS = "New user %s added to PrisonBook";
     public static final String MESSAGE_ALREADY_EXISTING_USER = "%s is already a user in PrisonBook";
     private final String username;
-    private final String password;
-    private final int securityLevel;
 
     private User userToAdd;
 
@@ -38,8 +36,6 @@ public class AddUserCommand extends Command {
         requireNonNull(username);
         requireNonNull(password);
         this.username = username;
-        this.password = password;
-        this.securityLevel = securityLevel;
         userToAdd = new User(username, password, securityLevel);
     }
 

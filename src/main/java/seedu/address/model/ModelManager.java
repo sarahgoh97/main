@@ -56,9 +56,9 @@ public class ModelManager extends ComponentManager implements Model {
         updateFilteredPersonList(new NameContainsKeywordsPredicate(new ArrayList<String>()));
 
         //@@author zacci
-        logger.info("Initialising session");
+        logger.fine("Initialising session");
         session = new Session();
-        logger.info("Initialised session");
+        logger.fine("Initialised session");
         //@@ author
     }
 
@@ -126,6 +126,7 @@ public class ModelManager extends ComponentManager implements Model {
     public void addUser(User userToAdd) throws UserAlreadyExistsException {
         addressBook.addUser(userToAdd);
         indicateAddressBookChanged();
+        logger.info("New user added: " + userToAdd.getUsername());
     }
 
     @Override
@@ -134,6 +135,7 @@ public class ModelManager extends ComponentManager implements Model {
             NotEnoughAuthorityToDeleteException {
         addressBook.deleteUser(userToDelete, session.getUsername());
         indicateAddressBookChanged();
+        logger.info("User deleted: " + userToDelete);
     }
     //@@author
 
