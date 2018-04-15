@@ -6,6 +6,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.junit.Test;
 
 import com.google.api.client.util.DateTime;
@@ -48,6 +49,9 @@ public class CalendarTest extends Calendar {
         eventIDs.add(event);
     }
 
+    /**
+     * Manually creating a list of events for testing
+     */
     public static String listEventsTest() {
         StringBuilder result = new StringBuilder();
         for (String eventLine : pseudoEventList) {
