@@ -9,4 +9,6 @@ public class CannotDeleteSelfException extends IllegalValueException {
     public CannotDeleteSelfException() {
         super("You cannot delete yourself");
     }
+
+    public static final String MESSAGE = "You cannot delete yourself";
 }

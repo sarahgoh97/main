@@ -9,4 +9,6 @@ public class UserDoesNotExistException extends IllegalValueException {
     public UserDoesNotExistException() {
         super("The username does not exist");
     }
+
+    public static final String MESSAGE = "The username does not exist";
 }

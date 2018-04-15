@@ -9,4 +9,7 @@ public class NotEnoughAuthorityToDeleteException extends IllegalValueException {
     public NotEnoughAuthorityToDeleteException() {
         super("You do not have the authority to delete this user");
     }
+
+    public static final String MESSAGE = "You do not have the authority to delete this user";
 }
+
