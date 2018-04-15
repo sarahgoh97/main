@@ -18,8 +18,8 @@ public class CalendarDeleteCommand extends UndoableCommand {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Deletes an event from the calendar. \n"
             + "Parameter: EVENT NUMBER (from the event list in Calendar command)"
-            + "Example: \n" + COMMAND_WORD + " 12\n"
-            + "Deletes the 12th event listed in cal command";
+            + "Example: \n" + COMMAND_WORD + " 2\n"
+            + "Deletes the second event listed in cal command";
 
     private final String toDel;
 
