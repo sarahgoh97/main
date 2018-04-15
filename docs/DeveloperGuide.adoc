@@ -364,21 +364,70 @@ image::UndoRedoActivityDiagram.png[width="650"]
 //tag::loginsecurity[]
 === Login and Security Feature
 ==== Current Implementation
-===== Model Aspect
 
-The implementation of the Login and Security feature is implemented by a `Session` which resides inside `Model Manager`. It supports the logging in and logging out of a user as well as support restricted access for specific commands. For example read access (list command) vs write access (add command and edit command).
+The Login and Security feature in the PrisonBook is implemented using Users and Sessions.
 
-image::ModelClassDiagramwSession.jpg[width="800"]
+===== Sessions
+Sessions are implemented with a `Session` class which resides inside `Model Manager`. It supports the logging in and logging out of a user as well as support restricted access for specific commands. For example read access (list command) vs write access (add command and edit command).
 
-As can be seen from the diagram, a Session is initialised upon the creation of the ModelManager.
+image::ModelClassDiagramwSessionwCells.png[width="800"]
 
-===== Logic Aspect
+As can be seen from the diagram, a Session is initialised upon the creation of the ModelManager. The session stores information such as the logged-in user's username, as well as the security level of the user.
 
-The implementation of the logging-in and the security levels is implemented in the `SessionManager` which is an additional step between the `LogicManager` and the `AddressBookParser`.
+The accessibility of each command by the user is implemented on the logic level. Each command has a static `minimumSecurityLevel`. The usage of a command goes through the sequence diagram as follows (the example command being used here is the Delete command).
 
-image::LogicClassDiagramwSession.png[width="800"]
+image::SecurityLevelSequenceDiagram.png[width="800"]
 
-Every user input will first go through the `SessionManager` which will check if the user is currently logged in, as well as retrieve the user's security level. It will then pass the security level to the `AddressBookParser` which will then decide whether or not to create the Command based on the required security level of the entered command.
+The `LogicManager` checks the `minSecurityLevel` of the command against the `securityLevel` of the current `Session` in the Model. If `the securityLevel` greater than or equal to the `minSecurityLevel`, the LogicManager will then call the `execute()` method on the Command.
+
+===== Design Considerations
+
+====== Aspect: Implementation for checking of security level for command access
+* **Alternative 1 (current choice):** Implemented by the `LogicManager`
+** Pros: Decreases coupling between `Command` and `Session`. This allows for flexibility in future implementation changes.
+** Cons: Sequence during execution needs to go back and forth with the `LogicManager`
+* **Alternative 2:** Implement at the `Command` level
+** Pros: Easy to understand, the sequence during execution keeps moving on to the next step instead of going back and forth with the LogicManager.
+** Cons: Commands are also responsible for checking if they should be run. Violates Single Responsibility Principle and Separation of Concerns as `HistoryManager` now needs to do two different things.
+
+
+===== Users
+Users are implemented with a `User` class, as well as a `UniqueUserMap` class which also reside in the `Model Manager`. +
+The `UniqueUserMap` is implemented using a Hashmap which maps `usernames` as Keys and `User` as Values. Additionally, there is an internal list implemented via an `ObservableList` of all the Users in the Hashmap.
+
+To save the database of the users, a new type is added to the storage so that it is able to store the Users in the storage file.
+
+image::StorageClassDiagramwUserwCells.png[width="800"]
+
+Upon initialization of the AddressBook, the AddressBook will read the user data from the storage file and create the internal list of Users. The list is then iterated through and mapped to the HashMap.
+
+When adding and deleting users, both the Hashmap and the internal list are updated so as to reflect accurately in the model and stored correctly in the storage.
+
+Currently, the user data, including passwords are stored in plaintext, which may pose a security problem. For future implementations, we will include hashing of the passwords before storage to as to increase the security of the application.
+
+
+===== Design Considerations
+
+====== Aspect: Data Structures for UniqueUserMap
+* **Alternative 1 (current choice):** Hashmap + ObservableList
+** Pros: Easy to access users, can immediately call up the correct `User` object by passing in the username key. Whereas the ObservableList is used to complement the storage of the user data, where it is necessary to iterate through all the Users in order to store in the storage .xml file.
+** Cons: Duplicate information stored in two different data structures.
+* **Alternative 2:** ObservableList only
+** Pros: No duplication of Users. Storing is also easy as it uses the existing AddressBook storage framework which works with ObservableLists.
+** Cons: Everytime we want to access a specific User, we have to iterate through the entire list of Users in order to do so.
+* **Alternative 3:** HashMap only
+** Pros: Fast access of users in O(1) time
+** Cons: Unable to be stored efficiently with the current method of storing which works with XML file.
+
+====== Aspect: Storage location of User Data
+* **Alternative 1 (current choice):** Stored in the same XML File with the AddressBook data
+** Pros: Easy to implement with current method of saving, where the entire AddressBook is upon an Address Book Changed Event. There is no need to maintain an additional stack for a User Database for UndoRedo.
+** Cons: User data should theoretically be separated from AddressBook data (persons, cells, tags).
+* **Alternative 2:** Store in a separate XML File
+** Pros: Separation of storage for two different aspects. If User data file is corrupted, it does not affect the AddressBook data and vice versa.
+** Cons: Very difficult to implement with the current method of saving. Furthermore, there needs to be addtional stacks implemented to keep track of the past states of User data for the UndoRedo functions.
+
+
 //end::loginsecurity[]
 
 // tag::cellmap[]
@@ -394,12 +443,12 @@ However, to prevent accidental changes, a read-only version of the cells are ret
 Since this is part of the `Model` component of the PrisonBook, the `Model` component has been updated accordingly as shown below.
 At the bottom of the `Model` class diagram, it has been updated to show how the cell system is linked to the other components.
 
-image::ModelClassDiagram.png[Width="550"]
+image::ModelClassDiagramwSessionwCells.png[Width="550"]
 
 To save and load the data of the cell system, storage also played an important component to ensure no data is lost when closing the app.
 Below is a class diagram of `Storage` to show how the cells are saved. A new type is added to the storage so that it knows how to save and load data for cells.
 
-image::StorageClassDiagram.png[Width="550"]
+image::StorageClassDiagramwUserwCells.png[Width="550"]
 
 This map is shown on the user interface on the right side area, shown in the picture below.
 Since the app is still being tested, the `map` command will also show the actual cells in the result display box.
