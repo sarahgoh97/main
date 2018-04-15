@@ -545,6 +545,8 @@ The arguments following each prefix will be made into a list. A mapping is then 
  and the argument-lists as values. The name search portion will run like before, the tag search will follow a similar
  approach; creating a new predicate instance and return matching results if they exist.
 
+image::FindCommand_sequence.png[Width="550"]
+
 ==== Design Considerations
 ===== Aspect: Find Command
 * **Alternative 1 (current choice):** Add on to the current Find command
@@ -568,13 +570,17 @@ The arguments following each prefix will be made into a list. A mapping is then 
 //tag::scheduling[]
 === Scheduling with Google Calendar
 ==== Current Implementation
-The PrisonBook calendar commands will send HTTPS requests to the REST Calendar API, whether it is calling the listEvents, addEvents or delEvents API command.
+The PrisonBook calendar commands will instantiate a calendar class to interact with the Google Calendar API.
+The initial step is to obtain valid credentials authorized from the API side to access its resources, then
+the calendar class will send HTTPS requests to the server, whether it is calling the listEvents, addEvents or delEvents API command.
 Upon receiving a success confirmation from the API, the change will be reflected next time any calendar commands are called.
 
 Calendar Commands that are supported are:
 * listing upcoming events
 * adding an event
 * removing an event
+
+image::CalendarCommands_classDiagrams.png[Width="550"]
 
 ===== Aspect: Choosing Number of Accounts to Work With
 
@@ -619,6 +625,8 @@ It allows guards/wardens to see upcoming events and their start times.
 The Add Event feature can be accessed via entering the command `calAdd event/EVENTNAME loc/LOCATION start/STARTDATETIME end/ENDDATETIME`.
 It allows guards/wardens to add an event, specifying the event name, location, starting and ending times.
 
+image::CalendarAddCommand_sequence.png[Width="550"]
+
 ===== Aspect: Relevancy of Event Attendee List
 
 * **Alternative 1 (current choice):** Excluding Attendee List
@@ -632,6 +640,9 @@ It allows guards/wardens to add an event, specifying the event name, location, s
 ==== Current Implementation
 The Delete Event feature can be accessed via entering the command `calDel EVENTNUMBER`.
 It allows guards/wardens to remove events from the upcoming events list.
+Since each event has its own eventID which is a random alphanumeric String, they are mapped to Integers through an ArrayList for easier selection by the users.
+
+image::CalendarDeleteCommand_sequence.png[Width="550"]
 
 ===== Aspect: Specification of Which Event to Delete
 
@@ -1170,6 +1181,48 @@ Refer to Section 5: Command Summary for the detailed list of commands and their 
 // end::sarahtest[]
 
 // tag::philostest[]
+=== Major Feature: Scheduling with Google Calendar
+
+==== Listing 10 upcoming events
+Allows guards and prison warden to view the upcoming 10 events scheduled in Google Calendar.
+
+.. Prerequisites: Have sufficient security level[1] +
+   Test case: Type `cal` or `calendar`, if this is your first time connecting to Google Calendar, you will need to log into the PrisonBook Calendar account:
+   A new browser window will open, do NOT close the window before you have logged in!
+   Use email: prisonbooksystem@gmail.com
+   Use password: prisonbook2018
+   Expected: 10 upcoming events will be listed, each showing an assigned Event Number, Event Name, Time range and Location. +
+
+==== Adding an event
+. You can add new events to the PrisonBook Calendar.
+
+.. Prerequisites: Have sufficient security level[3] +
+   Test case: `calA event/Showing this works loc/NUS start/2018-04-28 12:00:00 end/2018-04-28 13:00:00` +
+   Expected: `A new event will have been added to the calendar on April 28 at 12 o'clock.`
+
+.. Prerequisites: Have sufficient security level[3] +
+   Test case: `calA event/Showing this works loc/NUS start/2018-04-28 12:00:00 end/2017-04-28 13:00:00` +
+   Expected: `The API will throw an error because the end date is earlier than the start date. It will tell you the time range is empty.` +
+
+==== Deleting an event
+. You can delete events from the listed Calendar events
+
+.. Prerequisites: Have sufficient security level[3] +
+   Test case: `calD 2` +
+   Expected: The second event (Event 2) will have been deleted next time you call the `cal` list event command.
+
+.. Prerequisites: Have sufficient security level[3] +
+   Test case: `calD abc`
+   Expected: The application will not allow you to call this  because `abc` is not a valid event number listed.
+
+=== Minor Feature: Find by Tags
+. Allow user to find persons by tags as well as names
+
+.. Prerequisites: Have sufficient security level[1]
+.. Test case: `find n/Alex t/ChickenAllergy` +
+   Expected: 1 person listed: Alex Yeoh who is allergic to chickens.
+.. Test case: `find t/Vegetarian` +
+   Expected: 1 person listed: Bernice Yu who is a Vegetarian.
 // end::philostest[]
 
 === Saving data
