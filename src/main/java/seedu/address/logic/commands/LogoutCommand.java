@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.events.ui.HideMapEvent;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 
 /**
@@ -18,10 +19,10 @@ public class LogoutCommand extends Command {
     public static final String MESSAGE_USER_NOT_LOGGED_IN = "You are not currently logged in";
 
     @Override
-    public CommandResult execute() {
+    public CommandResult execute() throws CommandException {
         undoRedoStack.clearStack();
         if (!model.checkIsLoggedIn()) {
-            return new CommandResult(MESSAGE_USER_NOT_LOGGED_IN);
+            throw new CommandException(MESSAGE_USER_NOT_LOGGED_IN);
         }
         model.logout();
         model.updateFilteredPersonList(new NameContainsKeywordsPredicate(new ArrayList<String>()));

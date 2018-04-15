@@ -102,6 +102,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public boolean attemptLogin(String username, String password) {
+        logger.info("Current session: " + getSessionDetails());
         int securityLevel = addressBook.attemptLogin(username, password);
         if (securityLevel < 0) {
             return false;
@@ -126,6 +127,7 @@ public class ModelManager extends ComponentManager implements Model {
     public void addUser(User userToAdd) throws UserAlreadyExistsException {
         addressBook.addUser(userToAdd);
         indicateAddressBookChanged();
+        logger.info("New user added: " + userToAdd.getUsername());
     }
 
     @Override
@@ -134,6 +136,7 @@ public class ModelManager extends ComponentManager implements Model {
             NotEnoughAuthorityToDeleteException {
         addressBook.deleteUser(userToDelete, session.getUsername());
         indicateAddressBookChanged();
+        logger.info("User deleted: " + userToDelete);
     }
     //@@author
 
