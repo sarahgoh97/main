@@ -110,15 +110,15 @@ public class Calendar {
                 .build();
     }
 
+    //@@author philos22
+
     /**
      * iterate through events and list them out with their respective start times
      * @return a list of upcoming events
      * @throws IOException
      */
     public static String listEvents() throws IOException {
-        // Build a new authorized API client service.
-        // Note: Do not confuse this class with the
-        //   com.google.api.services.calendar.model.Calendar class.
+
         com.google.api.services.calendar.Calendar service =
                 getCalendarService();
 
@@ -136,7 +136,6 @@ public class Calendar {
         if (items.size() == 0) {
             result.append("No upcoming events found.");
         } else {
-            System.out.println("Upcoming events");
             Integer eventNumber = 1;
             for (Event event : items) {
                 String eventId = event.getId();
@@ -149,7 +148,7 @@ public class Calendar {
         }
         return result.toString();
     }
-    //@@author philos22
+
     /**
      * Adds event to the calendar - specifying Name, Location, StartTime, EndTime
      * @return success code
@@ -160,9 +159,6 @@ public class Calendar {
 
         String successAddedMessage = "Event added successfully";
 
-        // Build a new authorized API client service.
-        // Note: Do not confuse this class with the
-        //   com.google.api.services.calendar.model.Calendar class.
         com.google.api.services.calendar.Calendar service =
                 getCalendarService();
 
