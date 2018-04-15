@@ -18,7 +18,7 @@ public class AddUserCommand extends Command {
     public static final int MIN_SECURITY_LEVEL = 3;
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a new user to the PrisonBook.\n"
-            + "Parameters: user/NEW_USERNAME pw/NEW_PASSWORD sl/SECURITY_LEVEL (integer from 0 tp 3)...\n"
+            + "Parameters: user/NEW_USERNAME pw/NEW_PASSWORD sl/SECURITY_LEVEL (integer from 0 to 3)...\n"
             + "Example: " + COMMAND_WORD + " user/newuser1 pw/password1 sl/2";
 
     public static final String MESSAGE_ADD_USER_SUCCESS = "New user %s added to PrisonBook";

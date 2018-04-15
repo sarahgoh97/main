@@ -25,6 +25,8 @@ Prisonbook is a desktop address book application used for Prison Guards/Inmates 
 
 ** Project management:
 *** Code Quality Manager
+*** Opened and Tagged Issues
+*** Assigned issues to different team members
 ** Enhancements to existing features:
 *** Command Aliases to shorten the amount of typing that users have to do
 ** Documentation:
@@ -55,6 +57,10 @@ include::../UserGuide.adoc[tag=adduser]
 |===
 
 include::../DeveloperGuide.adoc[tag=loginsecurity]
+
+include::../DeveloperGuide.adoc[tag=FeatureContributionIsaac]
+
+include::../DeveloperGuide.adoc[tag=isaactest]
 
 ---
 
