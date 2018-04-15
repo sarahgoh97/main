@@ -26,12 +26,12 @@ public class AddCellCommand extends UndoableCommand {
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a prisoner to the specified cell."
             + "by the index number used in the last person listing.\n"
             + "Parameters: INDEX (must be a positive integer) "
-            + "CELLADDRESS (block-unit)"
+            + "CELLADDRESS (block-unit)\n"
             + "Example: " + COMMAND_WORD + " 1 1-1";
 
     public static final String MESSAGE_ADD_CELL_SUCCESS = "Prisoner %s added to %s.";
-    public static final String MESSAGE_FULL_CELL = "Cell %s is already full. Here is the map:\n%s";
-    public static final String MESSAGE_NON_EXISTENT_CELL = "This cell %s does not exist. Here is the map:\n%s";
+    public static final String MESSAGE_FULL_CELL = "Cell %s is already full. Below is the map.";
+    public static final String MESSAGE_NON_EXISTENT_CELL = "This cell %s does not exist. Below is the map.";
     public static final String MESSAGE_NOT_PRISONER = "%s is not a prisoner.";
     public static final String MESSAGE_ALREADY_IN_CELL = "%s is already in cell %s";
 
@@ -70,9 +70,7 @@ public class AddCellCommand extends UndoableCommand {
                     cellAddress, new ShowCellsCommand().getMapString(
                             model.getAddressBook().getCellList().toString())));
         } catch (NonExistentCellException nece) {
-            throw new CommandException(String.format(MESSAGE_NON_EXISTENT_CELL,
-                    cellAddress, new ShowCellsCommand().getMapString(
-                            model.getAddressBook().getCellList().toString())));
+            throw new CommandException(String.format(MESSAGE_NON_EXISTENT_CELL, cellAddress));
         } catch (NotPrisonerException npe) {
             throw new CommandException(String.format(MESSAGE_NOT_PRISONER, prisonerToAdd.getName()));
         } catch (AlreadyInCellException aice) {
@@ -106,6 +104,7 @@ public class AddCellCommand extends UndoableCommand {
         return other == this // short circuit if same object
                 || (other instanceof AddCellCommand // instanceof handles nulls
                 && this.index.equals(((AddCellCommand) other).index) // state check
-                && Objects.equals(this.prisonerToAdd, ((AddCellCommand) other).prisonerToAdd));
+                && Objects.equals(this.prisonerToAdd, ((AddCellCommand) other).prisonerToAdd)  //prisoner check
+                && Objects.equals(this.cellAddress, ((AddCellCommand) other).cellAddress)); //celladdress check
     }
 }

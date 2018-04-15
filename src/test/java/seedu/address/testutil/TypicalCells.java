@@ -21,6 +21,11 @@ public class TypicalCells {
             .withPrisoner(GEORGE).build();
     public static final Cell LAST_CELL_OF_ROW = new CellBuilder().withCellAddress("1-5").withIsLast(true).build();
 
+    public static final String FIRST_CELL_ADDRESS = "1-1";
+    public static final String LAST_CELL_ADDRESS = "3-5";
+    public static final String INVALID_FIRST_CELL_ADDRESS = "0-1";
+    public static final String INVALID_SECOND_CELL_ADDRESS = "3-6";
+
 
     public static List<Cell> getTypicalCells() {
         return new ArrayList<>(Arrays.asList(EMPTY_CELL, LAST_CELL_OF_ROW, CELL_WITH_PRISONER, FULL_CELL));

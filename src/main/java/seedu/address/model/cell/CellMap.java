@@ -28,9 +28,10 @@ public class CellMap {
      * @return Cell from cellAddress
      */
     public Cell getCell(String cellAddress) {
-        int row = Cell.getRow(cellAddress) - 1;
-        int col = Cell.getCol(cellAddress) - 1;
-        return internalList.get(row * MAX_COL + col);
+        int row = getCellMapRow(cellAddress);
+        int col = getCellMapCol(cellAddress);
+        int index = getIndex(row, col);
+        return internalList.get(index);
     }
 
     public void setCells(ObservableList<Cell> cells) {
@@ -42,10 +43,10 @@ public class CellMap {
     }
 
     public void setCell(Cell cell, String cellAddress) {
-        int row = Cell.getRow(cellAddress) - 1;
-        int col = Cell.getCol(cellAddress) - 1;
+        int row = getCellMapRow(cellAddress);
+        int col = getCellMapCol(cellAddress);
         cellMap[row][col] = cell;
-        int num = row * MAX_COL + col;
+        int num = getIndex(row, col);
         if (num >= internalList.size()) {
             internalList.add(cell);
         } else {
@@ -53,12 +54,20 @@ public class CellMap {
         }
     }
 
+    private int getCellMapRow(String cellAddress) {
+        return Cell.getRow(cellAddress) - 1;
+    }
+
+    private int getCellMapCol(String cellAddress) {
+        return Cell.getCol(cellAddress) - 1;
+    }
+
     /**
      * Adds a prisoner to a specified cell.
      */
     public void addPrisonerToCell(Person prisoner, String cellAddress) {
-        int row = Cell.getRow(cellAddress) - 1;
-        int col = Cell.getCol(cellAddress) - 1;
+        int row = getCellMapRow(cellAddress);
+        int col = getCellMapCol(cellAddress);
         addPrisonerToCell(prisoner, row, col);
     }
 
@@ -68,16 +77,20 @@ public class CellMap {
     private void addPrisonerToCell(Person prisoner, int row, int col) {
         Cell cell = cellMap[row][col];
         cellMap[row][col].addPrisoner(prisoner);
-        int index = (row) * MAX_COL + col;
+        int index = getIndex(row, col);
         internalList.set(index, cell);
+    }
+
+    private int getIndex(int row, int col) {
+        return row * MAX_COL + col;
     }
 
     /**
      * Removes a prisoner from a specified cell
      */
     public void deletePrisonerFromCell(Person prisoner, String cellAddress) {
-        int row = Cell.getRow(cellAddress) - 1;
-        int col = Cell.getCol(cellAddress) - 1;
+        int row = getCellMapRow(cellAddress);
+        int col = getCellMapCol(cellAddress);
         deletePrisonerFromCell(prisoner, row, col);
     }
 
@@ -87,14 +100,17 @@ public class CellMap {
     private void deletePrisonerFromCell(Person prisoner, int row, int col) {
         Cell cell = cellMap[row][col];
         cell.deletePrisoner(prisoner);
-        int index = row * MAX_COL + col;
+        int index = getIndex(row, col);
         internalList.set(index, cell);
     }
 
     /**
-     * Sets new edited person to original cell, target must be imprisoned
+     * Sets new edited person to original cell
+     * Precondition: target must be imprisoned
      */
     public void setPrisonerToCell(Person target, Person updatedPrisoner) {
+        assert(target.getIsInCell());
+        assert(updatedPrisoner.getIsInCell());
         String cellAddress = target.getCellAddress().toString();
         deletePrisonerFromCell(target, cellAddress);
         addPrisonerToCell(updatedPrisoner, cellAddress);

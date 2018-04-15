@@ -29,7 +29,7 @@ public class XmlAdaptedCell {
     public XmlAdaptedCell() {}
 
     /**
-     * Constructs a {@code XmlAdaptedCell} with the given cell.
+     * Constructs a {@code XmlAdaptedCell} with the given Cell.
      */
     public XmlAdaptedCell(String cellAddress, List<XmlAdaptedPerson> prisoners) {
         this.cellAddress = cellAddress;
@@ -51,7 +51,7 @@ public class XmlAdaptedCell {
     }
 
     /**
-     * Converts this jaxb-friendly adapted cell object into the model's Cell object.
+     * Converts this jaxb-friendly adapted Cell object into the model's Cell object.
      *
      * @throws IllegalValueException if there were any data constraints violated in the adapted cell
      */

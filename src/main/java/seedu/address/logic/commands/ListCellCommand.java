@@ -19,7 +19,7 @@ public class ListCellCommand extends Command {
             + " Parameters: CELLADDRESS\n"
             + "Example: " + COMMAND_WORD + " 1-1";
 
-    public static final String MESSAGE_SUCCESS = "Listed persons in cell %s";
+    public static final String MESSAGE_LISTCELL_SUCCESS = "Listed persons in cell %s";
     public static final String MESSAGE_NON_EXISTENT_CELL = "This cell %s does not exist";
     private final Predicate<Person> predicate;
     private final String cellAddress;
@@ -36,7 +36,7 @@ public class ListCellCommand extends Command {
         } catch (NonExistentCellException nece) {
             throw new CommandException(String.format(MESSAGE_NON_EXISTENT_CELL, cellAddress));
         }
-        return new CommandResult(String.format(MESSAGE_SUCCESS, cellAddress));
+        return new CommandResult(String.format(MESSAGE_LISTCELL_SUCCESS, cellAddress));
     }
 
     @Override

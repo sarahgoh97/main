@@ -19,12 +19,14 @@ Prisonbook is a desktop address book application used for Prison Guards/Inmates 
 
 * *Minor enhancement*: added Prisoner and Guard tags to facilitate all further functionality to our PrisonBook
 
-* *Code contributed*: [https://github.com[Functional code]] [https://github.com[Test code]] _{give links to collated code files}_
+* *Code contributed*: [https://github.com/CS2103JAN2018-T11-B2/main/blob/master/collated/functional/zacci.md[Functional code]] [https://github.com/CS2103JAN2018-T11-B2/main/blob/master/collated/test/zacci.md[Test code]]
 
 * *Other contributions*:
 
 ** Project management:
 *** Code Quality Manager
+*** Opened and Tagged Issues
+*** Assigned issues to different team members
 ** Enhancements to existing features:
 *** Command Aliases to shorten the amount of typing that users have to do
 ** Documentation:
@@ -48,6 +50,8 @@ include::../UserGuide.adoc[tag=status]
 
 include::../UserGuide.adoc[tag=adduser]
 
+include::../UserGuide.adoc[tag=deleteuser]
+
 == Contributions to the Developer Guide
 
 |===
@@ -55,6 +59,10 @@ include::../UserGuide.adoc[tag=adduser]
 |===
 
 include::../DeveloperGuide.adoc[tag=loginsecurity]
+
+include::../DeveloperGuide.adoc[tag=FeatureContributionIsaac]
+
+include::../DeveloperGuide.adoc[tag=isaactest]
 
 ---
 

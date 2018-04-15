@@ -55,9 +55,11 @@ public class ModelManager extends ComponentManager implements Model {
         filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
         updateFilteredPersonList(new NameContainsKeywordsPredicate(new ArrayList<String>()));
 
+        //@@author zacci
         logger.info("Initialising session");
         session = new Session();
         logger.info("Initialised session");
+        //@@ author
     }
 
     public ModelManager() {
@@ -100,6 +102,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public boolean attemptLogin(String username, String password) {
+        logger.info("Current session: " + getSessionDetails());
         int securityLevel = addressBook.attemptLogin(username, password);
         if (securityLevel < 0) {
             return false;
@@ -124,6 +127,7 @@ public class ModelManager extends ComponentManager implements Model {
     public void addUser(User userToAdd) throws UserAlreadyExistsException {
         addressBook.addUser(userToAdd);
         indicateAddressBookChanged();
+        logger.info("New user added: " + userToAdd.getUsername());
     }
 
     @Override
@@ -132,6 +136,7 @@ public class ModelManager extends ComponentManager implements Model {
             NotEnoughAuthorityToDeleteException {
         addressBook.deleteUser(userToDelete, session.getUsername());
         indicateAddressBookChanged();
+        logger.info("User deleted: " + userToDelete);
     }
     //@@author
 
@@ -178,7 +183,12 @@ public class ModelManager extends ComponentManager implements Model {
         indicateAddressBookChanged();
     }
 
-    /* this is for delete cell command */
+    /**
+     * Deletes a prisoner from a cell from DeleteCellCommand
+      * @param prisoner to be removed from cell
+     * @throws PersonNotFoundException if prisoner does not exist
+     * @throws NotImprisonedException if person chosen is not imprisoned here
+     */
     @Override
     public void deletePrisonerFromCell(Person prisoner) throws PersonNotFoundException, NotImprisonedException {
         requireNonNull(prisoner);
@@ -198,7 +208,7 @@ public class ModelManager extends ComponentManager implements Model {
         indicateAddressBookChanged();
     }
 
-    /* this is to undo add prisoner to cell */
+    /* this is to undo AddCellCommand*/
     @Override
     public void deletePrisonerFromCellFromUndo(Person prisoner, String cellAddress) {
         requireAllNonNull(prisoner, cellAddress);
@@ -207,7 +217,7 @@ public class ModelManager extends ComponentManager implements Model {
         indicateAddressBookChanged();
     }
 
-    /* this is to undo deleting a person from prison */
+    /* this is to undo DeleteCellCommand*/
     @Override
     public void addPrisonerToCellFromUndo(Person prisoner, String cellAddress) {
         requireAllNonNull(prisoner, cellAddress);
@@ -251,6 +261,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     //@@author sarahgoh97
+    /* This is for ListCellCommand */
     @Override
     public void updateFilteredPersonListForCell(Predicate<Person> predicate, String cellAddress)
             throws NonExistentCellException {
@@ -262,6 +273,7 @@ public class ModelManager extends ComponentManager implements Model {
             throw new NonExistentCellException();
         }
     }
+    //@@author
 
     @Override
     public String toString() {
