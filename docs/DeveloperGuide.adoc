@@ -1120,10 +1120,10 @@ Refer to Section 5: Command Summary for the detailed list of commands and their 
 
 .. Prerequisites: Have sufficient security level[1]
 .. Test case: Starting up the app and before logging in +
-   Expected: No details regarding cells shown on the map.
+   Expected: No details regarding cells shown on the map. Will show 0 persons in PrisonBook.
    Map shows that user has insufficient access to view information.
 .. Test case: Using features below while logged in +
-   Expected: UI matches what `map` command shows on the display.
+   Expected: UI matches what `map` command shows on the display. Will show number of persons in PrisonBook.
 
 === Major Feature: Managing prisoners in a prison
 ==== Adding a prisoner to a cell

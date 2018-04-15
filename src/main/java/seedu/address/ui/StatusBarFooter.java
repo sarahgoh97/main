@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
+import seedu.address.commons.events.ui.HideMapEvent;
 import seedu.address.model.person.Person;
 
 /**
@@ -79,6 +80,12 @@ public class StatusBarFooter extends UiPart<Region> {
 
     private void setNumberOfPeopleStatus(int numberOfPeople) {
         Platform.runLater(() -> this.numberOfPeopleStatus.setText(numberOfPeople + " person(s) total."));
+    }
+
+    @Subscribe
+    private void handleHideMapRequestEvent(HideMapEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        setNumberOfPeopleStatus(0);
     }
 
     @Subscribe
