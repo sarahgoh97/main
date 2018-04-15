@@ -3,6 +3,8 @@ package seedu.address.logic.commands;
 
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
+import seedu.address.logic.commands.exceptions.CommandException;
+
 /**
  * Attempts to log in user with given Username and Password
  */
@@ -29,12 +31,12 @@ public class LoginCommand extends Command {
     }
 
     @Override
-    public CommandResult execute() {
+    public CommandResult execute() throws CommandException {
         if (model.checkIsLoggedIn()) {
-            return new CommandResult(MESSAGE_ALREADY_LOGGED_IN);
+            throw new CommandException(MESSAGE_ALREADY_LOGGED_IN);
         }
         if (!model.attemptLogin(username, password)) {
-            return new CommandResult(MESSAGE_LOGIN_FAILURE);
+            throw new CommandException(MESSAGE_LOGIN_FAILURE);
         } else {
             model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
             return new CommandResult(MESSAGE_LOGIN_SUCCESS);

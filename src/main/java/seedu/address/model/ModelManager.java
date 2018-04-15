@@ -56,9 +56,9 @@ public class ModelManager extends ComponentManager implements Model {
         updateFilteredPersonList(new NameContainsKeywordsPredicate(new ArrayList<String>()));
 
         //@@author zacci
-        logger.fine("Initialising session");
+        logger.info("Initialising session");
         session = new Session();
-        logger.fine("Initialised session");
+        logger.info("Initialised session");
         //@@ author
     }
 
@@ -102,6 +102,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public boolean attemptLogin(String username, String password) {
+        logger.info("Current session: " + getSessionDetails());
         int securityLevel = addressBook.attemptLogin(username, password);
         if (securityLevel < 0) {
             return false;

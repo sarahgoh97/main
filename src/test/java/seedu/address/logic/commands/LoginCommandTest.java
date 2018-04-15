@@ -2,6 +2,9 @@ package seedu.address.logic.commands;
 
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
+import static seedu.address.testutil.TypicalUsers.PRISONGUARD;
+import static seedu.address.testutil.TypicalUsers.VALID_PASSWORD;
+import static seedu.address.testutil.TypicalUsers.VALID_USERNAME;
 import static seedu.address.testutil.TypicalUsers.getTypicalUserDatabase;
 
 import org.junit.Rule;
@@ -20,21 +23,45 @@ public class LoginCommandTest {
     public LoginCommandTest() {}
 
     @Test
-    public void execute_validUsernameValidPasswordValidSecurityLevel_success() throws Exception {
-        AddUserCommand addUserCommand = prepareCommand(VALID_USERNAME, VALID_PASSWORD,
-                VALID_MINIMUM_SECURITY_LEVEL);
+    public void execute_validUsernameValidPassword_success() throws Exception {
+        LoginCommand loginCommand = prepareCommand(PRISONGUARD.getUsername(), PRISONGUARD.getPassword());
 
-        String expectedMessage = String.format(AddUserCommand.MESSAGE_ADD_USER_SUCCESS, VALID_USERNAME);
+        String expectedMessage = LoginCommand.MESSAGE_LOGIN_SUCCESS;
         ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
-        User userToAdd = new User(VALID_USERNAME,VALID_PASSWORD,VALID_MINIMUM_SECURITY_LEVEL);
-        expectedModel.addUser(userToAdd);
+        expectedModel.attemptLogin(PRISONGUARD.getUsername(),PRISONGUARD.getPassword());
 
-        assertCommandSuccess(addUserCommand, model, expectedMessage, expectedModel);
+        assertCommandSuccess(loginCommand, model, expectedMessage, expectedModel);
     }
+
+    @Test
+    public void execute_userDoesNotExist_failure() {
+
+        LoginCommand loginCommand = prepareCommand(VALID_USERNAME,VALID_PASSWORD);
+
+        assertCommandFailure(loginCommand, model, LoginCommand.MESSAGE_LOGIN_FAILURE);
+    }
+
+    @Test
+    public void execute_userAlreadyLoggedIn_failure() {
+
+        ModelManager tempModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        tempModel.attemptLogin(PRISONGUARD.getUsername(),PRISONGUARD.getPassword());
+        LoginCommand loginCommand = prepareCommand(VALID_USERNAME,VALID_PASSWORD,tempModel);
+
+        assertCommandFailure(loginCommand, model, LoginCommand.MESSAGE_ALREADY_LOGGED_IN);
+    }
+
+
 
     private LoginCommand prepareCommand(String username, String password) {
         LoginCommand loginCommand = new LoginCommand(username, password);
         loginCommand.setData(model, new CommandHistory(), new UndoRedoStack());
+        return loginCommand;
+    }
+
+    private LoginCommand prepareCommand(String username, String password, Model tempModel){
+        LoginCommand loginCommand = new LoginCommand(username,password);
+        loginCommand.setData(tempModel, new CommandHistory(), new UndoRedoStack());
         return loginCommand;
     }
 }
