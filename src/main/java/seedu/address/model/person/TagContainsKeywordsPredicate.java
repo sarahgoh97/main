@@ -20,7 +20,7 @@ public class TagContainsKeywordsPredicate implements Predicate<Person> {
     @Override
     public boolean test(Person person) {
         // Making a string of all tags
-        if ( person.getTags().size() == 0 ) {
+        if (person.getTags().size() == 0) {
             return false;
         }
         Iterator tagIteration = person.getTags().iterator();

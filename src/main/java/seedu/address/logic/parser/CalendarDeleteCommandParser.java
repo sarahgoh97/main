@@ -20,8 +20,9 @@ public class CalendarDeleteCommandParser implements Parser<CalendarDeleteCommand
     public CalendarDeleteCommand parse(String args) throws ParseException {
         try {
             int intCheck = Integer.parseInt(args);
-        } catch(Exception e) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, CalendarDeleteCommand.MESSAGE_USAGE));
+        } catch (Exception e) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    CalendarDeleteCommand.MESSAGE_USAGE));
         }
 
         return new CalendarDeleteCommand(args.trim());
