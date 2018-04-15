@@ -50,6 +50,8 @@ include::../UserGuide.adoc[tag=status]
 
 include::../UserGuide.adoc[tag=adduser]
 
+include::../UserGuide.adoc[tag=deleteuser]
+
 == Contributions to the Developer Guide
 
 |===
