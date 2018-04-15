@@ -55,7 +55,7 @@ public class AddCellCommand extends UndoableCommand {
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a prisoner to the specified cell."
             + "by the index number used in the last person listing.\n"
             + "Parameters: INDEX (must be a positive integer) "
-            + "CELLADDRESS (block-unit)"
+            + "CELLADDRESS (block-unit)\n"
             + "Example: " + COMMAND_WORD + " 1 1-1";
 
     public static final String MESSAGE_ADD_CELL_SUCCESS = "Prisoner %s added to %s.";
@@ -486,6 +486,23 @@ public class ListCellCommandParser implements Parser<ListCellCommand> {
 ```
 ###### \java\seedu\address\model\AddressBook.java
 ``` java
+        if (target.getIsInCell()) {
+            cells.setPrisonerToCell(target, syncedEditedPerson);
+        }
+    }
+
+    /**
+     * Replaces the given person {@code changed} in the list with {@code original} in the cellMap.
+     * This is only done from undo.
+     */
+    public void updatePrisonerFromUndo(Person changed, Person original) {
+        requireAllNonNull(original, changed);
+
+        cells.setPrisonerToCell(changed, original);
+    }
+```
+###### \java\seedu\address\model\AddressBook.java
+``` java
             if (key.getIsInCell() == true) {
                 String cellAddress = key.getCellAddress().toString();
                 cells.deletePrisonerFromCell(key, cellAddress);
@@ -510,7 +527,7 @@ public class ListCellCommandParser implements Parser<ListCellCommand> {
      * @param prisoner to be added into the cell
      * @throws FullCellException if the cell already has the maximum number of prisoners
      * @throws NonExistentCellException if the cell address is invalid
-     * @throws NotPrisonerException is the cell is
+     * @throws NotPrisonerException if the Person passed is not a prisoner
      */
     public void addPrisonerToCell(String cellAddress, Person prisoner) throws FullCellException,
             NonExistentCellException, NotPrisonerException, AlreadyInCellException {
@@ -531,8 +548,8 @@ public class ListCellCommandParser implements Parser<ListCellCommand> {
     }
 
     /**
-     * Adding prisoner to cellmap once exceptions cleared
-     * @param prisoner is the correct person without requiring editting
+     * Adding prisoner to CellMap once exceptions cleared
+     * @param prisoner is the correct person without requiring editing
      * @param cellAddress is the String corresponding to the cell shown on map
      */
     public void addPrisonerToCellPermitted(Person prisoner, String cellAddress) {
@@ -580,7 +597,7 @@ import seedu.address.model.person.Person;
 
 /**
  * Represents a cell in the prison.
- * Guarantees: cell cannot exceed maximum number of people
+ * Guarantees: Cells created are all part of the CellMap
  */
 public class Cell {
 
@@ -701,7 +718,8 @@ public class CellMap {
     public Cell getCell(String cellAddress) {
         int row = getCellMapRow(cellAddress);
         int col = getCellMapCol(cellAddress);
-        return internalList.get(row * MAX_COL + col);
+        int index = getIndex(row, col);
+        return internalList.get(index);
     }
 
     public void setCells(ObservableList<Cell> cells) {
@@ -716,7 +734,7 @@ public class CellMap {
         int row = getCellMapRow(cellAddress);
         int col = getCellMapCol(cellAddress);
         cellMap[row][col] = cell;
-        int num = row * MAX_COL + col;
+        int num = getIndex(row, col);
         if (num >= internalList.size()) {
             internalList.add(cell);
         } else {
@@ -747,8 +765,12 @@ public class CellMap {
     private void addPrisonerToCell(Person prisoner, int row, int col) {
         Cell cell = cellMap[row][col];
         cellMap[row][col].addPrisoner(prisoner);
-        int index = (row) * MAX_COL + col;
+        int index = getIndex(row, col);
         internalList.set(index, cell);
+    }
+
+    private int getIndex(int row, int col) {
+        return row * MAX_COL + col;
     }
 
     /**
@@ -766,14 +788,17 @@ public class CellMap {
     private void deletePrisonerFromCell(Person prisoner, int row, int col) {
         Cell cell = cellMap[row][col];
         cell.deletePrisoner(prisoner);
-        int index = row * MAX_COL + col;
+        int index = getIndex(row, col);
         internalList.set(index, cell);
     }
 
     /**
-     * Sets new edited person to original cell, target must be imprisoned
+     * Sets new edited person to original cell
+     * Precondition: target must be imprisoned
      */
     public void setPrisonerToCell(Person target, Person updatedPrisoner) {
+        assert(target.getIsInCell());
+        assert(updatedPrisoner.getIsInCell());
         String cellAddress = target.getCellAddress().toString();
         deletePrisonerFromCell(target, cellAddress);
         addPrisonerToCell(updatedPrisoner, cellAddress);
@@ -946,7 +971,12 @@ public class NotPrisonerException extends IllegalValueException {
         indicateAddressBookChanged();
     }
 
-    /* this is for delete cell command */
+    /**
+     * Deletes a prisoner from a cell from DeleteCellCommand
+      * @param prisoner to be removed from cell
+     * @throws PersonNotFoundException if prisoner does not exist
+     * @throws NotImprisonedException if person chosen is not imprisoned here
+     */
     @Override
     public void deletePrisonerFromCell(Person prisoner) throws PersonNotFoundException, NotImprisonedException {
         requireNonNull(prisoner);
@@ -966,7 +996,7 @@ public class NotPrisonerException extends IllegalValueException {
         indicateAddressBookChanged();
     }
 
-    /* this is to undo add prisoner to cell */
+    /* this is to undo AddCellCommand*/
     @Override
     public void deletePrisonerFromCellFromUndo(Person prisoner, String cellAddress) {
         requireAllNonNull(prisoner, cellAddress);
@@ -975,7 +1005,7 @@ public class NotPrisonerException extends IllegalValueException {
         indicateAddressBookChanged();
     }
 
-    /* this is to undo deleting a person from prison */
+    /* this is to undo DeleteCellCommand*/
     @Override
     public void addPrisonerToCellFromUndo(Person prisoner, String cellAddress) {
         requireAllNonNull(prisoner, cellAddress);
@@ -985,6 +1015,7 @@ public class NotPrisonerException extends IllegalValueException {
 ```
 ###### \java\seedu\address\model\ModelManager.java
 ``` java
+    /* This is for ListCellCommand */
     @Override
     public void updateFilteredPersonListForCell(Predicate<Person> predicate, String cellAddress)
             throws NonExistentCellException {
@@ -1126,7 +1157,7 @@ public class XmlAdaptedCell {
     public XmlAdaptedCell() {}
 
     /**
-     * Constructs a {@code XmlAdaptedCell} with the given cell.
+     * Constructs a {@code XmlAdaptedCell} with the given Cell.
      */
     public XmlAdaptedCell(String cellAddress, List<XmlAdaptedPerson> prisoners) {
         this.cellAddress = cellAddress;
@@ -1148,7 +1179,7 @@ public class XmlAdaptedCell {
     }
 
     /**
-     * Converts this jaxb-friendly adapted cell object into the model's Cell object.
+     * Converts this jaxb-friendly adapted Cell object into the model's Cell object.
      *
      * @throws IllegalValueException if there were any data constraints violated in the adapted cell
      */

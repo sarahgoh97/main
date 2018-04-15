@@ -1,6 +1,44 @@
 # philos22
 ###### \java\seedu\address\Calendar.java
 ``` java
+
+    /**
+     * iterate through events and list them out with their respective start times
+     * @return a list of upcoming events
+     * @throws IOException
+     */
+    public static String listEvents() throws IOException {
+
+        com.google.api.services.calendar.Calendar service =
+                getCalendarService();
+
+        // List the next 10 events from the primary calendar.
+        DateTime now = new DateTime(System.currentTimeMillis());
+        Events events = service.events().list("primary")
+                .setMaxResults(10)
+                .setTimeMin(now)
+                .setOrderBy("startTime")
+                .setSingleEvents(true)
+                .execute();
+        List<Event> items = events.getItems();
+        StringBuilder result = new StringBuilder();
+
+        if (items.size() == 0) {
+            result.append("No upcoming events found.");
+        } else {
+            Integer eventNumber = 1;
+            for (Event event : items) {
+                String eventId = event.getId();
+                addEventIDs(eventId);
+                result.append(String.format("[Event %s] \t %s \t [%s] to [%s] \tLocation: %s\n",
+                        eventNumber, event.getSummary(), event.getStart().getDateTime(),
+                        event.getEnd().getDateTime(), event.getLocation()));
+                eventNumber++;
+            }
+        }
+        return result.toString();
+    }
+
     /**
      * Adds event to the calendar - specifying Name, Location, StartTime, EndTime
      * @return success code
@@ -11,9 +49,6 @@
 
         String successAddedMessage = "Event added successfully";
 
-        // Build a new authorized API client service.
-        // Note: Do not confuse this class with the
-        //   com.google.api.services.calendar.model.Calendar class.
         com.google.api.services.calendar.Calendar service =
                 getCalendarService();
 
@@ -205,8 +240,8 @@ public class CalendarDeleteCommand extends UndoableCommand {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Deletes an event from the calendar. \n"
             + "Parameter: EVENT NUMBER (from the event list in Calendar command)"
-            + "Example: \n" + COMMAND_WORD + " 12\n"
-            + "Deletes the 12th event listed in cal command";
+            + "Example: \n" + COMMAND_WORD + " 2\n"
+            + "Deletes the second event listed in cal command";
 
     private final String toDel;
 
@@ -300,6 +335,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_EVENT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_LOCATION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_START;
 
+import java.time.format.DateTimeParseException;
 import java.util.stream.Stream;
 
 import com.google.api.client.util.DateTime;
@@ -319,15 +355,13 @@ public class CalendarAddCommandParser implements Parser<CalendarAddCommand> {
      * and returns the message of whether execution was successful or not.
      * @throws ParseException if the user input does not conform the expected format
      */
-    public CalendarAddCommand parse(String args) throws ParseException {
+    public CalendarAddCommand parse(String args) throws ParseException, DateTimeParseException {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_EVENT, PREFIX_LOCATION, PREFIX_START, PREFIX_END);
 
-        if (!arePrefixesPresent(argMultimap, PREFIX_EVENT, PREFIX_LOCATION, PREFIX_START, PREFIX_END)
-                || !argMultimap.getPreamble().isEmpty()) {
+        if (!arePrefixesPresent(argMultimap, PREFIX_EVENT, PREFIX_LOCATION, PREFIX_START, PREFIX_END)) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, CalendarAddCommand.MESSAGE_USAGE));
         }
-
 
         try {
             String eventName = ParserUtil.parseName(argMultimap.getValue(PREFIX_EVENT)).get().toString();
@@ -336,8 +370,8 @@ public class CalendarAddCommandParser implements Parser<CalendarAddCommand> {
             DateTime endDateTime = ParserUtil.parseDateTime(argMultimap.getValue(PREFIX_END).toString());
             return new CalendarAddCommand(eventName, eventLocation, startDateTime, endDateTime);
 
-        } catch (IllegalValueException ive) {
-            throw new ParseException(ive.getMessage(), ive);
+        } catch (IllegalValueException | DateTimeParseException e) {
+            throw new ParseException(e.getMessage(), e);
         }
     }
 
@@ -355,6 +389,8 @@ public class CalendarAddCommandParser implements Parser<CalendarAddCommand> {
 ``` java
 package seedu.address.logic.parser;
 
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+
 import seedu.address.logic.commands.CalendarDeleteCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
@@ -370,6 +406,12 @@ public class CalendarDeleteCommandParser implements Parser<CalendarDeleteCommand
      * @throws ParseException if the user input does not conform the expected format
      */
     public CalendarDeleteCommand parse(String args) throws ParseException {
+        try {
+            int intCheck = Integer.parseInt(args);
+        } catch(Exception e) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, CalendarDeleteCommand.MESSAGE_USAGE));
+        }
+
         return new CalendarDeleteCommand(args.trim());
     }
 }
@@ -391,7 +433,11 @@ public class CalendarDeleteCommandParser implements Parser<CalendarDeleteCommand
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
 
-        if (arePrefixesPresent(argMultimap, PREFIX_NAME)) {
+        if ((arePrefixesPresent(argMultimap, PREFIX_NAME)) && (arePrefixesPresent(argMultimap, PREFIX_TAG))) {
+            String[] nameKeywords = argMultimap.getValue(PREFIX_NAME).get().split("\\s+");
+            String[] tagKeywords = argMultimap.getValue(PREFIX_TAG).get().split("\\s+");
+            return new FindCommand(new ContainsKeywordsPredicate(Arrays.asList(nameKeywords), Arrays.asList(tagKeywords)));
+        } else if (arePrefixesPresent(argMultimap, PREFIX_NAME)) {
             String[] nameKeywords = argMultimap.getValue(PREFIX_NAME).get().split("\\s+");
             return new FindCommand(new NameContainsKeywordsPredicate(Arrays.asList(nameKeywords)));
         } else if (arePrefixesPresent(argMultimap, PREFIX_TAG)) {
@@ -417,13 +463,17 @@ public class CalendarDeleteCommandParser implements Parser<CalendarDeleteCommand
     /**
      * Parses a {@code Optional<String> DateTime} if present.
      */
-    public static DateTime parseDateTime(String dateTime) throws IllegalValueException {
+    public static DateTime parseDateTime(String dateTime) throws DateTimeParseException{
 
         String theDateTime = dateTime.replaceAll("[\\[\\]]", "").replaceAll("Optional", "");
 
-        TemporalAccessor ta = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").parse(theDateTime);
-        String strDateTime = LocalDateTime.from(ta).toString() + ":00+08:00";
-        return new DateTime(strDateTime);
+        try {
+            TemporalAccessor ta = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").parse(theDateTime);
+            String strDateTime = LocalDateTime.from(ta).toString() + ":00+08:00";
+            return new DateTime(strDateTime);
+        } catch (DateTimeParseException e) {
+            throw new DateTimeParseException(MESSAGE_INVALID_DATETIME_FORMAT, theDateTime, 0, e);
+        }
     }
 
 }
@@ -486,6 +536,9 @@ public class TagContainsKeywordsPredicate implements Predicate<Person> {
     @Override
     public boolean test(Person person) {
         // Making a string of all tags
+        if ( person.getTags().size() == 0 ) {
+            return false;
+        }
         Iterator tagIteration = person.getTags().iterator();
         StringBuilder strBuild = new StringBuilder();
         strBuild.append(tagIteration.next());
