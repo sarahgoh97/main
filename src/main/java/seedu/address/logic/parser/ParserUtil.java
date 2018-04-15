@@ -282,7 +282,7 @@ public class ParserUtil {
     /**
      * Parses a {@code Optional<String> DateTime} if present.
      */
-    public static DateTime parseDateTime(String dateTime) throws DateTimeParseException{
+    public static DateTime parseDateTime(String dateTime) throws DateTimeParseException {
 
         String theDateTime = dateTime.replaceAll("[\\[\\]]", "").replaceAll("Optional", "");
 

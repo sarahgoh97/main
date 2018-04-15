@@ -74,7 +74,8 @@ public class CommandTestUtil {
     public static final String INVALID_ADDRESS_DESC = " " + PREFIX_ADDRESS; // empty string not allowed for addresses
     public static final String INVALID_ROLE_DESC = " " + PREFIX_ROLE + "s"; // only 'p' or 'g' allowed for roles
     public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + "hubby*"; // '*' not allowed in tags
-    public static final String INVALID_EVENT_START = " " + PREFIX_START + "June 1, 1997 4:00"; // must be in DateTime format yyyy-mm-dd hh:MM:ss
+    public static final String INVALID_EVENT_START = " " + PREFIX_START + "June 1, 1997 4:00";
+    // must be in DateTime format yyyy-mm-dd hh:MM:ss
 
 
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
