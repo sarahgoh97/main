@@ -998,10 +998,71 @@ These instructions only provide a starting point for testers to work on; testers
 .. Re-launch the app by double-clicking the jar file. +
    Expected: The most recent window size and location is retained.
 
-// tag::philostest[]
-// end::philostest[]
-
 // tag::isaactest[]
+
+=== Major Feature: Users, Sessions and Security Levels
+==== Logging in and Logging out
+. For security purposes, users of PrisonBook need to login with their user details in order to to view the information on the PrisonBook. They can also logout after finishing their session, so that the next person will need to login again.
+
+.. Prerequisites: You must not be logged in. (By default, you are not logged in when you first open the application.) +
+   Test case: Type `login user/prisonguard pw/password1` +
+   Expected: PrisonBook will display `Login Success`
+
+.. Prerequisites: You are logged in. +
+   Test case: Type `status` to show your current session's details +
+   Expected: `Username: prisonguard Security Level: 1`
+
+.. Prerequisites: You are logged in. +
+   Test case: Type `logout` to logout +
+   Expected: PrisonBook will display `Successfully logged out`. Furthermore the person details in the left panel will be cleared, and the cell details in the right panel will reflect that you have insufficient authority to view the information.
+
+==== Commands have restricted access
+. A minimum Security Level is required to use and access certain commands. +
+Refer to Section 5: Command Summary for the detailed list of commands and their respective minimum security level ranging from 0 to 3.
+
+.. Test case: Type `logout` to ensure that you are logged out. (By default you are not logged in when you first open the application) +
+   Type `list` +
+   Expected: PrisonBook will show `Your security level is insufficient to access this command.` +
+.. Test case: Login using `login user/prisonleader pw/password2` (This user has Security Level of 2) +
+   Type `list` +
+   Expected: PrisonBook will say `Listed all persons` and show the full list of persons on the left column of the UI. +
+   You can test the other commands with the following user details:
+   ... `login user/prisonwarden pw/password3` Security Level 3.
+   ... `login user/prisonleader pw/password2` Security Level 2.
+   ... `login user/prisonguard pw/password1` Security Level 1.
+
+==== Adding a new user
+. You can add new users to the PrisonBook when you want to give access to new people.
+
+.. Prerequisites: Have sufficient security level[3] +
+   Test case: `adduser user/prisonguard99 pw/password2 sl/1` +
+   Expected: `New user prisonguard99 added to PrisonBook` +
+   You can then proceed to logout and attempt to login with the new user `prisonguard99`.
+
+.. Prerequisites: Have sufficient security level[3] +
+   Test case: `adduser user/prisonwarden pw/password3 sl/3` +
+   Expected: `prisonwarden is already a user in PrisonBook` +
+
+==== Deleting a user
+. You can delete users from the PrisonBook
+
+.. Prerequisites: You must be logged in with a higher security level than the user you want to delete. (Users with security level 3 can delete anyone, including other security level 3 users.) +
+   Test case: Login with `login user/prisonleader pw/password2`, then type `deleteuser user/prisonguard99` (Which was added above in F.2.3) +
+   Expected: `User has been successfully deleted`. You can logout and attempt to login to `prisonguard99` but you will not be able to successfully login as the user has been deleted.
+
+.. Prerequisites: You must be logged in with a minimum security level of 2. +
+   Test case: `delete user/nonexistentuser`
+   Expected: `The username does not exist`
+
+=== Minor Feature: Role Attribute added to Persons
+. Allow user to indicate to the PrisonBook if added person is a Guard or a Prisoner.
+
+.. Prerequisites: Have sufficient security level[2]
+.. Test case: `add n/Sample Prisoner a/Chua Chu Kang p/91234567 e/sp@example.com r/p` +
+   Expected: New person to show up on the UI with the name Sample Prisoner and shown to be a Prisoner on the person card.
+.. Test case: `add n/Sample Guard a/Chua Chu Kang p/91234567 e/sg@example.com r/g` +
+   Expected: New person to show up on the UI with the name Sample Guard and shown to be a Guard on the person card.
+
 // end::isaactest[]
 
 // tag::sarahtest[]
@@ -1058,6 +1119,9 @@ These instructions only provide a starting point for testers to work on; testers
    Expected: Similar to previous.
 
 // end::sarahtest[]
+
+// tag::philostest[]
+// end::philostest[]
 
 === Saving data
 
