@@ -8,6 +8,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_EVENT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_LOCATION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_START;
 
+import java.time.format.DateTimeParseException;
 import java.util.stream.Stream;
 
 import com.google.api.client.util.DateTime;
@@ -27,15 +28,13 @@ public class CalendarAddCommandParser implements Parser<CalendarAddCommand> {
      * and returns the message of whether execution was successful or not.
      * @throws ParseException if the user input does not conform the expected format
      */
-    public CalendarAddCommand parse(String args) throws ParseException {
+    public CalendarAddCommand parse(String args) throws ParseException, DateTimeParseException {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_EVENT, PREFIX_LOCATION, PREFIX_START, PREFIX_END);
 
-        if (!arePrefixesPresent(argMultimap, PREFIX_EVENT, PREFIX_LOCATION, PREFIX_START, PREFIX_END)
-                || !argMultimap.getPreamble().isEmpty()) {
+        if (!arePrefixesPresent(argMultimap, PREFIX_EVENT, PREFIX_LOCATION, PREFIX_START, PREFIX_END)) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, CalendarAddCommand.MESSAGE_USAGE));
         }
-
 
         try {
             String eventName = ParserUtil.parseName(argMultimap.getValue(PREFIX_EVENT)).get().toString();
@@ -44,8 +43,8 @@ public class CalendarAddCommandParser implements Parser<CalendarAddCommand> {
             DateTime endDateTime = ParserUtil.parseDateTime(argMultimap.getValue(PREFIX_END).toString());
             return new CalendarAddCommand(eventName, eventLocation, startDateTime, endDateTime);
 
-        } catch (IllegalValueException ive) {
-            throw new ParseException(ive.getMessage(), ive);
+        } catch (IllegalValueException | DateTimeParseException e) {
+            throw new ParseException(e.getMessage(), e);
         }
     }
 
