@@ -63,7 +63,7 @@ public class CalendarAddCommandParserTest {
                 + EVENT_START_DESC + EVENT_END_DESC, expectedMessage);
 
         //missing location prefix
-        assertParseFailure(parser, COMMAND_WORD + " " + EVENT_NAME_DESC+ VALID_EVENT_LOCATION + EVENT_START_DESC 
+        assertParseFailure(parser, COMMAND_WORD + " " + EVENT_NAME_DESC + VALID_EVENT_LOCATION + EVENT_START_DESC
                  + EVENT_END_DESC, expectedMessage);
 
         //missing startDateTime prefix
