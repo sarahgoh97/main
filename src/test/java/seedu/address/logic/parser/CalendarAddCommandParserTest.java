@@ -50,8 +50,8 @@ public class CalendarAddCommandParserTest {
 
         // multiple whitespaces between keywords
         assertParseSuccess(parser,
-                "calAdd \n event/CalendarTest \t \n loc/CalendarLocation \t start/2019-01-01 12:00:00 \n " +
-                        "end/2019-01-01 13:00:00", expectedCalendarAddCommand);
+                "calAdd \n event/CalendarTest \t \n loc/CalendarLocation \t start/2019-01-01 12:00:00 \n "
+                        + "end/2019-01-01 13:00:00", expectedCalendarAddCommand);
     }
 
     @Test
@@ -59,12 +59,12 @@ public class CalendarAddCommandParserTest {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, CalendarAddCommand.MESSAGE_USAGE);
 
         //missing event prefix
-        assertParseFailure(parser, COMMAND_WORD + " " + VALID_EVENT_NAME + EVENT_LOCATION_DESC +
-                EVENT_START_DESC + EVENT_END_DESC, expectedMessage);
+        assertParseFailure(parser, COMMAND_WORD + " " + VALID_EVENT_NAME + EVENT_LOCATION_DESC
+                + EVENT_START_DESC + EVENT_END_DESC, expectedMessage);
 
         //missing location prefix
         assertParseFailure(parser, COMMAND_WORD + " " + EVENT_NAME_DESC+ VALID_EVENT_LOCATION + EVENT_START_DESC
-                + EVENT_END_DESC, expectedMessage);
+                 + EVENT_END_DESC, expectedMessage);
 
         //missing startDateTime prefix
         assertParseFailure(parser, COMMAND_WORD + " " + EVENT_NAME_DESC + EVENT_LOCATION_DESC + VALID_EVENT_START
@@ -78,8 +78,8 @@ public class CalendarAddCommandParserTest {
     @Test
     public void parse_invalidArgs_failure() {
         //invalid date format - start and end dates are the same scenario
-        assertParseFailure(parser, COMMAND_WORD + " " + EVENT_NAME_DESC + EVENT_LOCATION_DESC + INVALID_EVENT_START +
-                EVENT_END_DESC, MESSAGE_INVALID_DATETIME_FORMAT);
+        assertParseFailure(parser, COMMAND_WORD + " " + EVENT_NAME_DESC + EVENT_LOCATION_DESC + INVALID_EVENT_START
+                + EVENT_END_DESC, MESSAGE_INVALID_DATETIME_FORMAT);
     }
 
 }
